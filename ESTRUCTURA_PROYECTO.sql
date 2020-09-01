@@ -55,7 +55,7 @@ CREATE TABLE Medico(
 	dni_persona VARCHAR(12) NOT NULL,
 	CONSTRAINT PK_id_medico PRIMARY KEY (id_medico),
 	CONSTRAINT FK_id_especialidad_medico FOREIGN KEY (id_especialidad) REFERENCES Especialidad(id_especialidad),
-	CONSTRAINT FK_dni_persona_medico FOREIGN KEY (dni_persona) REFERENCES Persona(dni_persona) ,
+	CONSTRAINT FK_dni_persona_medico FOREIGN KEY (dni_persona) REFERENCES Persona(dni_persona)  ON DELETE CASCADE,
 	CONSTRAINT FK_id_usuario_medico FOREIGN KEY (id_usuario ) REFERENCES Usuario (id_usuario),
 
 )
@@ -91,7 +91,7 @@ CREATE TABLE Paciente (
 	fechaa_ingreso DATE NOT NULL,
 	dni_persona VARCHAR(12),
 	CONSTRAINT PK_id_paciente PRIMARY KEY (id_paciente),
-	CONSTRAINT FK_dni_persona_paciente FOREIGN KEY (dni_persona) REFERENCES Persona(dni_persona),
+	CONSTRAINT FK_dni_persona_paciente FOREIGN KEY (dni_persona) REFERENCES Persona(dni_persona) ON DELETE CASCADE,
 )
 GO
 
