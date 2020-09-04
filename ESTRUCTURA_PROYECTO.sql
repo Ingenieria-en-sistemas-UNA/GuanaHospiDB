@@ -49,15 +49,14 @@ USE	GUANA_HOSPI
 GO
 CREATE TABLE Medico(
     id_medico INT IDENTITY(1,1) ,
+	codigo_medico INT NOT NULL,
 	id_usuario INT NOT NULL,
-    codigo_medico INT NOT NULL,
 	id_especialidad INT NOT NULL,
 	dni_persona VARCHAR(12) NOT NULL,
 	CONSTRAINT PK_id_medico PRIMARY KEY (id_medico),
 	CONSTRAINT FK_id_especialidad_medico FOREIGN KEY (id_especialidad) REFERENCES Especialidad(id_especialidad),
 	CONSTRAINT FK_dni_persona_medico FOREIGN KEY (dni_persona) REFERENCES Persona(dni_persona) ,
 	CONSTRAINT FK_id_usuario_medico FOREIGN KEY (id_usuario ) REFERENCES Usuario (id_usuario),
-
 )
 GO
 
