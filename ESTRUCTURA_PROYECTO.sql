@@ -73,7 +73,7 @@ GO
 
 USE	GUANA_HOSPI
 GO
-CREATE TABLE unidad_medico(
+CREATE TABLE Unidad_medico(
    id_unidad_medico INT,
    id_unidad INT,
    id_medico INT,
@@ -98,7 +98,7 @@ CREATE TABLE Paciente (
 	id_paciente INT IDENTITY (1,1),
 	numeroSeguroSocial INT NOT NULL,
 	edad INT NOT NULL,
-	fechaa_ingreso DATE NOT NULL,
+	fecha_ingreso DATE NOT NULL,
 	dni_persona VARCHAR(12),
 	CONSTRAINT PK_id_paciente PRIMARY KEY (id_paciente),
 	CONSTRAINT FK_dni_persona_paciente FOREIGN KEY (dni_persona) REFERENCES Persona(dni_persona) ON DELETE CASCADE,

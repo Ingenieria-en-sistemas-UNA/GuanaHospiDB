@@ -30,22 +30,17 @@ GO
 USE GUANA_HOSPI
 GO
 CREATE PROC SP_CrearUsuario
-	@IdUsuario VARCHAR(5),
 	@Nombre VARCHAR(30),
 	@Contrasenna VARCHAR(30)
 AS
-	IF(@IdUsuario = '' OR @Nombre = '' OR @Contrasenna = '')
+	IF(@Nombre = '' OR @Contrasenna = '')
 		BEGIN
 			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
 		END
-	ELSE IF(ISNUMERIC(@IdUsuario) = 0)
-		BEGIN
-			PRINT 'EL ID USUARIO ES DE TIPO NUMERICO'
-		END
 	ELSE
 		BEGIN
-			INSERT INTO Usuario( id_usuario, nombre, contrasenna)
-			VALUES (CONVERT(int, @IdUsuario), @Nombre, @Contrasenna)
+			INSERT INTO Usuario(nombre, contrasenna)
+			VALUES (@Nombre, @Contrasenna)
 			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
 GO
@@ -53,21 +48,16 @@ GO
 USE GUANA_HOSPI
 GO
 CREATE PROC SP_CrearEspecialidad
-	@IdEspecialidad VARCHAR(5),
 	@NombreEspecialidad VARCHAR(30)
 AS
-	IF(@IdEspecialidad = '' OR @NombreEspecialidad = '')
+	IF(@NombreEspecialidad = '')
 		BEGIN
 			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
 		END
-	ELSE IF(ISNUMERIC(@IdEspecialidad) = 0)
-		BEGIN
-			PRINT 'EL ID DE LA ESPECIALIDAD ES DE TIPO NUMERICO'
-		END
 	ELSE
 		BEGIN
-			INSERT INTO Especialidad( id_especialidad, nombreEspecialdad)
-			VALUES (CONVERT(int, @IdEspecialidad), @NombreEspecialidad)
+			INSERT INTO Especialidad(nombreEspecialdad)
+			VALUES (@NombreEspecialidad)
 			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
 GO
@@ -75,17 +65,16 @@ GO
 USE GUANA_HOSPI
 GO
 CREATE PROC SP_CrearMedico
-	@IdMedico varchar(5),
 	@CodigoMedico varchar(5),
 	@IdUsuario varchar(5),
 	@IdEspecialidad varchar(5),
 	@DniPersona varchar(12)
 AS
-	IF(@IdMedico = '' OR @CodigoMedico = '' OR @IdUsuario = '' OR @IdEspecialidad = '' OR @DniPersona = '')
+	IF(@CodigoMedico = '' OR @IdUsuario = '' OR @IdEspecialidad = '' OR @DniPersona = '')
 		BEGIN
 			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
 		END
-	ELSE IF(ISNUMERIC(@IdMedico) = 0 OR ISNUMERIC(@CodigoMedico) = 0 OR ISNUMERIC(@IdUsuario) = 0 OR ISNUMERIC(@IdEspecialidad) = 0)
+	ELSE IF(ISNUMERIC(@CodigoMedico) = 0 OR ISNUMERIC(@IdUsuario) = 0 OR ISNUMERIC(@IdEspecialidad) = 0)
 		BEGIN
 			PRINT 'LOS DATOS DEBEN SER DE TIPO NUMERICO'
 		END
@@ -109,14 +98,14 @@ AS
 		BEGIN
 			PRINT 'ESTA PERSONA YA ES UN MEDICO'
 		END
-	ELSE IF (EXISTS(SELECT codigo_medico FROM Medico WHERE codigo_medico=@CodigoMedico))
+	ELSE IF (EXISTS(SELECT codigo_medico FROM Medico WHERE codigo_medico = @CodigoMedico))
 		BEGIN
 			PRINT 'ESTA PERSONA YA ES UN MEDICO'
 		END
 	ELSE 
 		BEGIN
-			INSERT INTO Medico(id_usuario, codigo_medico, id_usuario, id_especialidad, dni_persona)
-			VALUES (CONVERT(int, @IdMedico), CONVERT(int, @CodigoMedico), CONVERT(int, @IdUsuario), CONVERT(int, @IdEspecialidad), @DniPersona)
+			INSERT INTO Medico(codigo_medico, id_usuario, id_especialidad, dni_persona)
+			VALUES (CONVERT(int, @CodigoMedico), CONVERT(int, @IdUsuario), CONVERT(int, @IdEspecialidad), @DniPersona)
 			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
 GO
@@ -124,15 +113,14 @@ GO
 USE GUANA_HOSPI
 GO
 CREATE PROC SP_CrearUnidad
-	@IdUnidad varchar(5),
 	@Nombre varchar(5),
 	@NumeroPlanta varchar(5)
 AS
-	IF ((@IdUnidad = '') OR (@Nombre = '') OR ( @NumeroPlanta = ''))
+	IF (@Nombre = '' OR @NumeroPlanta = '')
 		BEGIN
 			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
 		END
-	ELSE IF(ISNUMERIC(@IdUnidad) = 0 OR ISNUMERIC(@NumeroPlanta) = 0)
+	ELSE IF(ISNUMERIC(@NumeroPlanta) = 0)
 	    BEGIN
             PRINT 'NO SE PERMITEN CARACTERES'
         END
@@ -142,8 +130,30 @@ AS
 		END
 	ELSE
 		BEGIN
-			INSERT INTO Unidad(id_unidad, nombre, numeroPlanta)
-			VALUES (CONVERT(int, @IdUnidad), @Nombre, CONVERT(int, @NumeroPlanta))
+			INSERT INTO Unidad(nombre, numeroPlanta)
+			VALUES (@Nombre, CONVERT(int, @NumeroPlanta))
+			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
+		END
+GO
+-------------------------------------------------------------------------------------------------------------------------------------------------
+USE GUANA_HOSPI
+GO
+CREATE PROC SP_CrearUnidadMedico
+	@IdUnidad varchar(5),
+	@IdMedico varchar(5)
+AS
+	IF(@IdUnidad = '' OR @IdMedico = '')
+		BEGIN 
+			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+		END
+	ELSE IF(ISNUMERIC(@IdUnidad) = 0 OR ISNUMERIC(@IdMedico) = 0)
+		BEGIN
+			PRINT 'NO SE PERMITEN CARACTERES'
+		END
+	ELSE
+		BEGIN
+			INSERT INTO Unidad_medico(id_unidad, id_medico)
+			VALUES (CONVERT(int, @IdUnidad), CONVERT(int, @IdMedico))
 			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
 GO
@@ -170,6 +180,46 @@ AS
 		BEGIN
 			INSERT INTO Sintoma(id_sintoma, nombre)
 			VALUES (CONVERT(int, @IdSintoma), @Nombre)
+			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
+		END
+GO
+---------------------------------------------------------------------------------------------------------------------------------------------------
+USE GUANA_HOSPI
+GO
+CREATE PROC SP_CrearPaciente
+	@NumeroSeguroSocial VARCHAR(8),
+	@Edad VARCHAR(3),
+	@FechaIngreso VARCHAR(5),
+	@DniPersona VARCHAR(12)
+AS
+	IF(@NumeroSeguroSocial = '' OR @Edad = '' OR @FechaIngreso = '' OR @DniPersona = '')
+		BEGIN
+			PRINT 'NO SE PERMITEN DATOS VACIOS'
+		END
+	ELSE IF(ISNUMERIC(@NumeroSeguroSocial) = 0 OR ISNUMERIC(@Edad) = 0)
+		BEGIN	
+			PRINT 'NO SE PERMITEN CARACTERES'
+		END
+	ELSE IF(ISDATE(@FechaIngreso) = 0)
+		BEGIN
+			PRINT 'DEBE SER UN FORMATO FECHA VALIDO'
+		END
+	ELSE IF EXISTS(SELECT numeroSeguroSocial FROM Paciente WHERE numeroSeguroSocial = @NumeroSeguroSocial)
+		BEGIN
+			PRINT 'EL NUMERO DE SEGURO SOCIAL YA HA SIDO REGISTRADO'
+		END
+	ELSE IF NOT EXISTS(SELECT dni_persona FROM Persona WHERE dni_persona = @DniPersona)
+		BEGIN
+			PRINT 'LA PERSONA NO EXISTE'
+		END
+	ELSE IF NOT EXISTS(SELECT dni_persona FROM Paciente WHERE dni_persona = @DniPersona)
+		BEGIN
+			PRINT 'EL PACIENTE YA HABIA SIDO REGISTRADO'
+		END
+		ELSE
+	BEGIN
+			INSERT INTO Paciente(numeroSeguroSocial, edad, fecha_ingreso, dni_persona)
+			VALUES (CONVERT(int, @NumeroSeguroSocial), CONVERT(int, @Edad), CONVERT(date, @FechaIngreso), @DniPersona)
 			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
 GO
