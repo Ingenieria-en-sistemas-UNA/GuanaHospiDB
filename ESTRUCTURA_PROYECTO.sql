@@ -56,7 +56,7 @@ CREATE TABLE Medico(
 	CONSTRAINT PK_id_medico PRIMARY KEY (id_medico),
 	CONSTRAINT FK_id_especialidad_medico FOREIGN KEY (id_especialidad) REFERENCES Especialidad(id_especialidad),
 	CONSTRAINT FK_dni_persona_medico FOREIGN KEY (dni_persona) REFERENCES Persona(dni_persona)  ON DELETE CASCADE,
-	CONSTRAINT FK_id_usuario_medico FOREIGN KEY (id_usuario ) REFERENCES Usuario (id_usuario),
+	CONSTRAINT FK_id_usuario_medico FOREIGN KEY (id_usuario ) REFERENCES Usuario (id_usuario) ,
 
 )
 GO
