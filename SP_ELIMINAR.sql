@@ -8,10 +8,23 @@ AS
 		BEGIN
 			PRINT 'EL ID DE DE PERSONA NO PUEDE SER VACIO'
 		END
-	ELSE IF EXISTS (SELECT dni_persona FROM Persona WHERE Persona.dni_persona = @dni_persona)
+	ELSE IF EXISTS (SELECT dni_persona FROM Persona WHERE dni_persona = @dni_persona)
 		BEGIN
-			DELETE FROM Persona WHERE Persona.dni_persona = @dni_persona
-			PRINT 'SE HA ELIMINADO LA PERONA'
+	        IF EXISTS (SELECT dni_persona  FROM Medico where dni_persona = @dni_persona)
+				BEGIN
+					DECLARE @idUsuarioMedico INT
+					SET @idUsuarioMedico = (SELECT  id_usuario FROM Medico WHERE dni_persona = @dni_persona)
+					DELETE FROM Persona WHERE Persona.dni_persona = @dni_persona
+					PRINT 'SE HA ELIMINADO LA MEDICO'
+					DELETE FROM Usuario  WHERE Usuario.id_usuario = @idUsuarioMedico
+					PRINT 'SE HA ELIMINADO EL USUARIO DE LA PERSONA'
+				END
+			ELSE IF EXISTS (SELECT @dni_persona FROM Paciente WHERE dni_persona = @dni_persona)
+				BEGIN
+					DELETE FROM Persona WHERE Persona.dni_persona = @dni_persona
+					PRINT 'SE HA ELIMINADO PERSONA'
+					PRINT 'SE HA ELIMINADO PACIENTE'
+				END
 		END
 	ELSE
 		BEGIN
@@ -50,12 +63,16 @@ AS
 		END
 	ELSE IF EXISTS (SELECT id_medico FROM Medico WHERE id_medico  = @id_medico )
 		BEGIN
-		    DELETE FROM Persona WHERE Persona.dni_persona = @id_medico
-			PRINT 'SE HA ELIMINADO EL PERSONA'
-			 DELETE FROM Usuario WHERE Usuario.id_usuario = @id_medico
-			PRINT 'SE HA ELIMINADO EL USUARIO'
+		    DECLARE @idUsuarioMedico INT
+			DECLARE @idPersonaMedico VARCHAR(12)
+			SET @idUsuarioMedico = (SELECT id_usuario FROM Medico WHERE id_medico = @id_medico)
+			SET @idPersonaMedico = (SELECT dni_persona FROM Medico WHERE id_medico = @id_medico)
 			DELETE FROM Medico WHERE Medico.id_medico = @id_medico
-			PRINT 'SE HA ELIMINADO EN MEDICO'
+			PRINT 'SE HA ELIMINADO EL MEDICO'
+			DELETE FROM Usuario WHERE Usuario.id_usuario = @idUsuarioMedico
+			PRINT 'SE HA ELIMINADO EL USUARIO'
+		    DELETE FROM Persona WHERE Persona.dni_persona = @idPersonaMedico
+			PRINT 'SE HA ELIMINADO EL PERSONA'
 		END
 	ELSE
 		BEGIN
@@ -77,6 +94,7 @@ AS
 		END
 	ELSE IF EXISTS (SELECT id_usuario FROM Usuario WHERE Usuario.id_usuario = @id_usuario)
 		BEGIN
+
 			DELETE FROM Usuario WHERE Usuario.id_usuario = @id_usuario
 			PRINT 'SE HA ELIMINADO EL USUARIO'
 		END
