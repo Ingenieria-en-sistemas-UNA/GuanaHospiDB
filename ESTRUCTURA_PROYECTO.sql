@@ -153,23 +153,23 @@ CREATE TABLE Padece(
 GO
 
 USE	GUANA_HOSPI
-GO
-CREATE TABLE TipoIntervension(
-	id_tipo_intervision INT IDENTITY (1,1),
+GO	
+CREATE TABLE TipoIntervencion(
+	id_tipo_intervencion INT IDENTITY (1,1),
 	nombre VARCHAR(50) NOT NULL,
-	CONSTRAINT PK_id_tipo_intervension PRIMARY KEY (id_tipo_intervision),
+	CONSTRAINT PK_id_tipo_intervension PRIMARY KEY (id_tipo_intervencion),
 )
 GO
 
 USE	GUANA_HOSPI
 GO
-CREATE TABLE Intervencines(
+CREATE TABLE Intervenciones(
 	id_intervencion INT IDENTITY (1,1),
 	tratamiento VARCHAR(150) NOT NULL,
-	id_tipo_intervision INT NOT NULL,
+	id_tipo_intervencion INT NOT NULL,
 	id_consulta INT NOT NULL,
 	CONSTRAINT PK_id_intervencion PRIMARY KEY (id_intervencion),
-	CONSTRAINT FK_id_tipo_intervenciones FOREIGN KEY (id_tipo_intervision) REFERENCES TipoIntervension(id_tipo_intervision),
+	CONSTRAINT FK_id_tipo_intervenciones FOREIGN KEY (id_tipo_intervencion) REFERENCES TipoIntervencion(id_tipo_intervencion),
 	CONSTRAINT FK_id_consulta_intervenciones FOREIGN KEY (id_consulta) REFERENCES Consulta (id_consulta) ON DELETE CASCADE,
 )
 GO
