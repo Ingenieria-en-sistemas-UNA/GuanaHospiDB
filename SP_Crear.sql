@@ -26,6 +26,8 @@ AS
 			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
 GO
+
+--EXEC SP_CrearPersona '123', 'Luis', 'Rodriguez', 'Baltodano', 21
 --------------------------------------------------------------------------------------------------------------
 USE GUANA_HOSPI
 GO
@@ -44,6 +46,7 @@ AS
 			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
 GO
+--EXEC SP_CrearUsuario 'Luis1', 'contrasenna'
 ----------------------------------------------------------------------------------------------------------------
 USE GUANA_HOSPI
 GO
@@ -61,6 +64,7 @@ AS
 			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
 GO
+--EXEC SP_CrearEspecialidad 'Cirujano'
 -----------------------------------------------------------------------------------------------------------
 USE GUANA_HOSPI
 GO
@@ -109,6 +113,7 @@ AS
 			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
 GO
+--EXEC SP_CrearMedico 2313, 1, 1, '123'
 -------------------------------------------------------------------------------------------------------------------------
 USE GUANA_HOSPI
 GO
@@ -135,6 +140,7 @@ AS
 			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
 GO
+--EXEC SP_CrearUnidad 'Sala de Cirugia', 2
 -------------------------------------------------------------------------------------------------------------------------------------------------
 USE GUANA_HOSPI
 GO
@@ -150,6 +156,14 @@ AS
 		BEGIN
 			PRINT 'NO SE PERMITEN CARACTERES'
 		END
+	ELSE IF(NOT EXISTS(SELECT id_unidad FROM Unidad WHERE id_unidad = @IdUnidad))
+		BEGIN
+			PRINT 'EL ID DE LA UNIDAD NO EXISTE'
+		END
+	ELSE IF(NOT EXISTS(SELECT id_medico FROM Medico WHERE id_medico = @IdMedico))
+		BEGIN
+			PRINT 'EL ID DEL MEDICO NO EXISTE'
+		END
 	ELSE
 		BEGIN
 			INSERT INTO Unidad_medico(id_unidad, id_medico)
@@ -157,6 +171,7 @@ AS
 			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
 GO
+--EXEC SP_CrearUnidadMedico 1, 1
 -------------------------------------------------------------------------------------------------------------------------------------------------
 USE GUANA_HOSPI
 GO

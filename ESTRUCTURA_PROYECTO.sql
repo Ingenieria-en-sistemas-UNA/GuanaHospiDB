@@ -18,7 +18,7 @@ USE MASTER
 USE	GUANA_HOSPI
 GO
 CREATE TABLE Persona(
-    dni_persona VARCHAR(12) ,
+    dni_persona VARCHAR(12) NOT NULL,
 	nombre VARCHAR(40) NOT NULL,
 	apellido_1 VARCHAR(40) NOT NULL,
 	apellido_2 VARCHAR(40)NOT NULL,
@@ -28,7 +28,7 @@ CREATE TABLE Persona(
 GO
 
 CREATE TABLE Usuario(
-    id_usuario INT IDENTITY (1,1) NOT NULL,
+    id_usuario INT IDENTITY (1,1),
 	nombre VARCHAR(40) NOT NULL,
 	contrasenna VARCHAR(30) NOT NULL,
 	CONSTRAINT PK_id_usuario PRIMARY KEY (id_usuario),
@@ -48,7 +48,7 @@ GO
 USE	GUANA_HOSPI
 GO
 CREATE TABLE Medico(
-    id_medico INT IDENTITY(1,1) ,
+    id_medico INT IDENTITY(1,1),
 	codigo_medico INT NOT NULL,
 	id_usuario INT NOT NULL,
 	id_especialidad INT NOT NULL,
@@ -64,7 +64,7 @@ GO
 USE	GUANA_HOSPI
 GO
 CREATE TABLE Unidad(
-	id_unidad INT IDENTITY (1,1) ,
+	id_unidad INT IDENTITY (1,1),
 	nombre VARCHAR(50) NOT NULL,
 	numeroPlanta INT NOT NULL,
 	CONSTRAINT PK_id_unidad PRIMARY KEY (id_unidad),
@@ -74,9 +74,9 @@ GO
 USE	GUANA_HOSPI
 GO
 CREATE TABLE Unidad_medico(
-   id_unidad_medico INT,
-   id_unidad INT,
-   id_medico INT,
+   id_unidad_medico INT IDENTITY (1,1),
+   id_unidad INT NOT NULL,
+   id_medico INT NOT NULL,
    CONSTRAINT PK_id_unidad_medico PRIMARY KEY (id_unidad_medico),
    CONSTRAINT FK_id_unidad_unidad FOREIGN KEY (id_unidad) REFERENCES Unidad (id_unidad),
    CONSTRAINT FK_id_medico_medico FOREIGN KEY (id_medico) REFERENCES Medico (id_medico) ON DELETE CASCADE
