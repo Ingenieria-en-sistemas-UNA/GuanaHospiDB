@@ -23,25 +23,25 @@ GO
 
 CREATE PROC SP_Obtener_Usuarios
 AS
-	SELECT 'Id_Usuario' = id_usuario, 'Nombre_Usuario' = nombre_usuario, 'Contrasenna' = contrasenna
+	SELECT 'Id_Usuario' = id_usuario, 'Nombre_Usuario' = nombre_usuario, 'Contrasenna' = contrasenna, 'Id_Medico' = id_medico
 	FROM Usuario
 GO
 
 CREATE PROC SP_Obtener_Medicos
 AS
-	SELECT 'Id_Medico' = id_medico, 'Codigo_Medico' = codigo_medico , 'Id_Usuario' = id_usuario, 'Cedula_Persona' = dni_persona
+	SELECT 'Id_Medico' = id_medico, 'Codigo_Medico' = codigo_medico , 'Cedula_Persona' = dni_persona
 	FROM Medico
 GO
 
 CREATE PROC SP_Obtener_Unidad_Medicos
 AS
 	SELECT 'Id_Unidad_Medico' = id_unidad_medico, 'Id_Unidad' = id_unidad , 'Id_Medico' = id_medico
-	FROM Unidad_medico
+	FROM Unidad_Medico
 GO
 
 CREATE PROC SP_Obtener_Consultas
 AS
-	SELECT 'Id_Consulta' = id_consulta, 'Fehca_Consulta' = fecha_consulta , 'Sintoma_Observado' = sintoma_observado, 'Id_Paciente' = id_paciente, 'Id_Unidad' = id_unidad
+	SELECT 'Id_Consulta' = id_consulta, 'Fehca_Consulta' = fecha_consulta , 'Id_Paciente' = id_paciente, 'Id_Unidad' = id_unidad
 	FROM Consulta
 GO
 
@@ -66,7 +66,7 @@ GO
 CREATE PROC SP_Obtener_Paciente_Unidades
 AS
 	SELECT 'Id_Paciente_Unidad' = id_paciente_unidad, 'Id_Paciente' = id_paciente, 'Id_Unidad' = id_unidad
-	FROM Paciente_unidad
+	FROM Paciente_Unidad
 GO
 
 CREATE PROC SP_Obtener_Padece
@@ -84,7 +84,7 @@ GO
 CREATE PROC SP_Obtener_Tipos_Intervenciones
 AS
 	SELECT 'Id_Tipo_Intervencion' = id_tipo_intervencion, 'Nombre_Tipo_Intervencion' = nombre_tipo_intervencion
-	FROM TipoIntervencion
+	FROM Tipo_Intervencion
 GO
 
 CREATE PROC SP_Obtener_Presenta
