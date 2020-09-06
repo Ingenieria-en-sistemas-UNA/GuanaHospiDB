@@ -75,7 +75,7 @@ CREATE TABLE Unidad_medico(
    id_unidad INT NOT NULL,
    id_medico INT NOT NULL,
    CONSTRAINT PK_id_unidad_medico PRIMARY KEY (id_unidad_medico),
-   CONSTRAINT FK_id_unidad_unidad_medico FOREIGN KEY (id_unidad) REFERENCES Unidad (id_unidad),
+   CONSTRAINT FK_id_unidad_unidad_medico FOREIGN KEY (id_unidad) REFERENCES Unidad (id_unidad)ONE DELETE CASCADE,
    CONSTRAINT FK_id_medico_unidad_medico FOREIGN KEY (id_medico) REFERENCES Medico (id_medico) ON DELETE CASCADE
  )
 GO
@@ -111,7 +111,7 @@ CREATE TABLE Consulta(
 	id_unidad INT NOT NULL,
 	CONSTRAINT PK_id_consulta PRIMARY KEY (id_consulta),
 	CONSTRAINT FK_id_paciente_consulta FOREIGN KEY(id_paciente) REFERENCES Paciente(id_paciente) ON DELETE CASCADE,
-	CONSTRAINT FK_id_unidad_consulta FOREIGN KEY(id_unidad) REFERENCES Unidad(id_unidad),
+	CONSTRAINT FK_id_unidad_consulta FOREIGN KEY(id_unidad) REFERENCES Unidad(id_unidad) ,
 )
 GO
 
@@ -178,7 +178,7 @@ CREATE TABLE Paciente_unidad(
 	id_unidad INT NOT NULL,
 	CONSTRAINT PK_id_paciente_unidad PRIMARY KEY (id_paciente_unidad),
 	CONSTRAINT FK_id_paciente_paciente_unidad FOREIGN KEY (id_paciente) REFERENCES Paciente (id_paciente) ON DELETE CASCADE,
-	CONSTRAINT FK_id_unidad_paciente_unidad FOREIGN KEY (id_unidad) REFERENCES Unidad(id_unidad),
+	CONSTRAINT FK_id_unidad_paciente_unidad FOREIGN KEY (id_unidad) REFERENCES Unidad(id_unidad) ON DELETE CASCADE,
 )
 GO
 
