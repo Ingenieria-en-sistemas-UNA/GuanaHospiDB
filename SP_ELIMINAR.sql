@@ -176,23 +176,15 @@ CREATE PROC SP_EliminarPaciente (@id_paciente INT)
 AS
 	IF (@id_paciente = '') 
 		BEGIN
-			PRINT 'EL ID DE COCINERO NO PUEDE SER VACIO'
+			PRINT 'EL ID DE PACIENTE NO PUEDE SER VACIO'
 		END
 	ELSE IF EXISTS (SELECT id_paciente FROM Paciente WHERE id_paciente  = @id_paciente )
 		BEGIN
-		    DECLARE @idPacientePadece INT
 			DECLARE @idPersonaPaciente VARCHAR(12)
-			DECLARE @idconsultaPaciente INT
-			SET @idPacientePadece = (SELECT id_pacienteEnfermedad FROM Padece WHERE id_paciente = @id_paciente)
 			SET @idPersonaPaciente = (SELECT dni_persona FROM Paciente WHERE id_paciente = @id_paciente)
-			SET @idconsultaPaciente = (SELECT id_consulta FROM Consulta WHERE id_paciente = @id_paciente)
 			DELETE FROM Paciente WHERE Paciente.id_paciente = @id_paciente
 			PRINT 'SE HA ELIMINADO EL PACIENTE'
-			DELETE FROM Padece WHERE Padece.id_pacienteEnfermedad = @idPacientePadece
-			PRINT 'SE HA ELIMINADO EL PADECIMIENTE'
-		    DELETE FROM Consulta WHERE Consulta.id_consulta = @idPersonaPaciente
-			PRINT 'SE HA ELIMINADO LA CONSULTA'
-			  DELETE FROM Persona WHERE Persona.dni_persona = @idconsultaPaciente
+			  DELETE FROM Persona WHERE Persona.dni_persona = @idPersonaPaciente
 			PRINT 'SE HA ELIMINADO EL PERSONA'
 		END
 	ELSE
@@ -209,24 +201,16 @@ AS
 		BEGIN
 			PRINT 'EL ID DE LA CONSULTA NO PUEDE SER VACIO'
 		END
-	ELSE IF EXISTS (SELECT id_consulta FROM Consulta WHERE id_consulta  = @id_consulta )
+				ELSE IF EXISTS (SELECT id_consulta FROM Consulta WHERE Consulta.id_consulta = @id_consulta)
 		BEGIN
-		    DECLARE @idConsultaPresenta INT
-			DECLARE @idConsultaIntervenciones INT
-			SET @idConsultaPresenta = (SELECT id_presenta FROM Consulta WHERE id_consulta = @id_consulta)
-			SET @idConsultaIntervenciones = (SELECT dni_persona FROM Consulta WHERE id_consulta = @id_consulta)
-			DELETE FROM Medico WHERE Medico.id_medico = @id_consulta
-			PRINT 'SE HA ELIMINADO EL MEDICO'
-			DELETE FROM Usuario WHERE Usuario.id_usuario = @idConsultaPresenta
-			PRINT 'SE HA ELIMINADO EL USUARIO'
-		    DELETE FROM Persona WHERE Persona.dni_persona = @idConsultaIntervenciones
-			PRINT 'SE HA ELIMINADO EL PERSONA'
+			DELETE FROM Consulta WHERE Consulta.id_consulta = @id_consulta
+			PRINT 'SE HA ELIMINADO LA CONSULTA'
 		END
 	ELSE
 		BEGIN
-			PRINT 'EL MEDICO NO EXISTE'
+			PRINT 'LA CONSULTA NO EXISTE'
 		END
-
+GO
 
 -------------------------------------------ELIMINAR PRESENTA--------------------------------------------------------
 USE	GUANA_HOSPI
@@ -237,20 +221,11 @@ AS
 		BEGIN
 			PRINT 'EL ID DEL PRESENTAA SINTOMA NO PUEDE SER VACIO'
 		END
-	ELSE IF EXISTS (SELECT id_presenta FROM Presenta WHERE id_presenta  = @id_presenta )
-		BEGIN
-		    DECLARE @idPesentaSintoma INT
-			SET @idPesentaSintoma = (SELECT id_sintoma FROM Padece WHERE id_padece = @id_presenta)
-			DELETE FROM Presenta WHERE Presenta.id_presenta = @idPesentaSintoma
-			PRINT 'SE HA ELIMINADO LA PRESENCIA SINTOMA '
-			END
-	ELSE IF EXISTS (SELECT id_presente FROM Presenta WHERE Presenta.id_presenta = @id_presenta)
+					ELSE IF EXISTS (SELECT id_presenta FROM Presenta WHERE Presenta.id_presenta = @id_presenta)
 		BEGIN
 			DELETE FROM Presenta WHERE Presenta.id_presenta = @id_presenta
-			PRINT 'SE HA ELIMINADO  LA PRESENCIA DE SINTOMA'
-	    END
-    
-	  ELSE
+			PRINT 'SE HA ELIMINADO EL PRESENTA ESPECIALIDAD'
+		END
 		 BEGIN
 			PRINT 'EL ID DE DEL PRESENTA SINTOMA NO EXISTE'
 		END
