@@ -93,16 +93,8 @@ AS
 		BEGIN
 	        IF EXISTS (SELECT id_paciente_unidad  FROM Paciente_unidad where id_unidad = @id_unidad)
 				BEGIN
-					DECLARE @idUnidadPaciente INT
-                    SET @idUnidadPaciente = (SELECT  id_unidad FROM Paciente_unidad WHERE id_unidad = @id_unidad)
-					DELETE FROM Unidad WHERE Unidad.id_unidad = @idUnidadPaciente
-					PRINT 'SE HA ELIMINADO LA UNIDAD PACIENTE'
-				END
-		ELSE IF EXISTS (SELECT @id_unidad FROM Unidad_medico WHERE id_unidad = @id_unidad)
-				BEGIN
 					DELETE FROM Unidad WHERE Unidad.id_unidad = @id_unidad
 					PRINT 'SE HA ELIMINADO UNIDAD'
-					PRINT 'SE HA ELIMINADO LA UNIDAD MEDICO'
 				END
 		END
 	ELSE
@@ -140,9 +132,9 @@ AS
 		END
 	ELSE IF EXISTS (SELECT id_sintoma FROM Sintoma WHERE id_sintoma = @id_sintoma)
 		BEGIN
-					DELETE FROM Sintoma WHERE id_sintoma = @id_sintoma
-					PRINT 'SE HA ELIMINADO EL SINTOMA'
-			END
+			DELETE FROM Sintoma WHERE id_sintoma = @id_sintoma
+			PRINT 'SE HA ELIMINADO EL SINTOMA'
+		END
 	ELSE
 		BEGIN
 			PRINT 'EL ID DE SINTOMA NO EXISTE'
@@ -163,7 +155,7 @@ AS
 			SET @idPersonaPaciente = (SELECT dni_persona FROM Paciente WHERE id_paciente = @id_paciente)
 			DELETE FROM Paciente WHERE Paciente.id_paciente = @id_paciente
 			PRINT 'SE HA ELIMINADO EL PACIENTE'
-			  DELETE FROM Persona WHERE Persona.dni_persona = @idPersonaPaciente
+			DELETE FROM Persona WHERE Persona.dni_persona = @idPersonaPaciente
 			PRINT 'SE HA ELIMINADO EL PERSONA'
 		END
 	ELSE
@@ -180,7 +172,7 @@ AS
 		BEGIN
 			PRINT 'EL ID DE LA CONSULTA NO PUEDE SER VACIO'
 		END
-				ELSE IF EXISTS (SELECT id_consulta FROM Consulta WHERE Consulta.id_consulta = @id_consulta)
+	ELSE IF EXISTS (SELECT id_consulta FROM Consulta WHERE Consulta.id_consulta = @id_consulta)
 		BEGIN
 			DELETE FROM Consulta WHERE Consulta.id_consulta = @id_consulta
 			PRINT 'SE HA ELIMINADO LA CONSULTA'
@@ -200,7 +192,7 @@ AS
 		BEGIN
 			PRINT 'EL ID DEL PRESENTAA SINTOMA NO PUEDE SER VACIO'
 		END
-					ELSE IF EXISTS (SELECT id_presenta FROM Presenta WHERE Presenta.id_presenta = @id_presenta)
+	ELSE IF EXISTS (SELECT id_presenta FROM Presenta WHERE Presenta.id_presenta = @id_presenta)
 		BEGIN
 			DELETE FROM Presenta WHERE Presenta.id_presenta = @id_presenta
 			PRINT 'SE HA ELIMINADO EL PRESENTA ESPECIALIDAD'
@@ -219,7 +211,7 @@ AS
 		BEGIN
 			PRINT 'EL ID DE LA ENFERMEDAD NO PUEDE SER VACIO'
 		END
-	ELSE IF EXISTS (SELECT id_enfermedad FROM Enfermedad WHERE Enfermedad.id_enfermedad = @id_enfermedad)
+	ELSE IF EXISTS (SELECT id_enfermedad FROM Enfermedad WHERE id_enfermedad = @id_enfermedad)
 		BEGIN
 			DELETE FROM Enfermedad WHERE Enfermedad.id_enfermedad = @id_enfermedad
 			PRINT 'SE HA ELIMINADO LA ENFERMEDAD'
@@ -240,19 +232,10 @@ AS
 		END
 	ELSE IF EXISTS (SELECT id_padece FROM Padece WHERE id_padece  = @id_padece )
 		BEGIN
-		    DECLARE @idPadeceEnfermedad INT
-			SET @idPadeceEnfermedad = (SELECT id_enfermedad FROM Padece WHERE id_padece = @id_padece)
-			DELETE FROM Padece WHERE Padece.id_enfermedad = @idPadeceEnfermedad
-			PRINT 'SE HA ELIMINADO LA ENFERMEDAD'
-			END
-	ELSE IF EXISTS (SELECT @id_padece FROM Padece WHERE Padece.id_enfermedad = @id_padece)
+			DELETE FROM Padece WHERE id_padece = @id_padece
+	    END    
+	ELSE
 		BEGIN
-			DELETE FROM Padece WHERE Padece.id_padece = @id_padece
-			PRINT 'SE HA ELIMINADO	EL PADECIMINETO'
-	    END
-    
-	  ELSE
-		 BEGIN
 			PRINT 'EL ID DE PADECIMINTO NO EXISTE'
 		END
 GO
@@ -265,9 +248,12 @@ AS
 		BEGIN
 			PRINT 'EL ID DE LA INTERVENSION NO PUEDE SER VACIO'
 		END
-	ELSE IF EXISTS (SELECT id_intervencion FROM Intervencion WHERE Intervencion.id_intervencion = @id_tipo_intervencion)
+	ELSE IF EXISTS (SELECT id_tipo_intervencion FROM Tipo_Intervencion WHERE id_tipo_intervencion = @id_tipo_intervencion)
 		BEGIN
-			DELETE FROM Intervencion WHERE Intervencion.id_intervencion = @id_tipo_intervencion
+			DECLARE @IdIntervencion INT
+			SET @IdIntervencion = (SELECT id_intervencion FROM Intervencion WHERE id_tipo_intervencion = @IdIntervencion)
+			DELETE FROM Intervencion WHERE Intervencion.id_intervencion = @IdIntervencion
+			DELETE FROM Tipo_Intervencion WHERE Tipo_Intervencion.id_tipo_intervencion = @id_tipo_intervencion
 			PRINT 'SE HA ELIMINADO LA INTERVENSION'
 		END
 	ELSE
@@ -284,22 +270,14 @@ AS
 		BEGIN
 			PRINT 'EL ID DEL ESTANTE NO PUEDE SER VACIO'
 		END
-	ELSE IF EXISTS (SELECT id_intervencion FROM Intervenciones WHERE id_intervencion  = @id_intervencion )
+	ELSE IF EXISTS(SELECT id_intervencion FROM Intervencion WHERE id_intervencion  = @id_intervencion )
 		BEGIN
-		    DECLARE @idTipoIntervencion INT
-			SET @idTipoIntervencion = (SELECT id_tipo_intervencion FROM Intervenciones WHERE id_intervencion = @id_intervencion)
-			DELETE FROM Intervenciones WHERE Intervenciones.id_tipo_intervencion = @idTipoIntervencion
-			PRINT 'SE HA ELIMINADO EL TIPO INTERVENCION'
-			END
-	ELSE IF EXISTS (SELECT @id_intervencion FROM Intervenciones WHERE Intervenciones.id_intervencion = @id_intervencion)
-		BEGIN
-			DELETE FROM Intervenciones WHERE Intervenciones.id_intervencion = @id_intervencion
+			DELETE FROM Intervencion WHERE Intervencion.id_tipo_intervencion = @id_intervencion
 			PRINT 'SE HA ELIMINADO LA INTERVENCION'
 	    END
-    
-	  ELSE
+	ELSE
 		 BEGIN
-			PRINT 'EL ID DE LA INTERENCION NO EXISTE'
+			PRINT 'EL ID DE LA INTERVENCION NO EXISTE'
 		END
 GO
 
@@ -312,7 +290,7 @@ AS
 		BEGIN
 			PRINT 'EL ID DE UNIDAD PACIENTE NO PUEDE SER VACIO'
 		END
-			ELSE IF EXISTS (SELECT id_paciente_unidad FROM Paciente_unidad WHERE Paciente_unidad.id_paciente_unidad = @id_paciente_unidad)
+	ELSE IF EXISTS (SELECT id_paciente_unidad FROM Paciente_unidad WHERE id_paciente_unidad = @id_paciente_unidad)
 		BEGIN
 			DELETE FROM Paciente_unidad WHERE Paciente_unidad.id_paciente_unidad = @id_paciente_unidad
 			PRINT 'SE HA ELIMINADO LA UNIDAD PACENTE'
@@ -332,7 +310,7 @@ AS
 		BEGIN
 			PRINT 'EL ID DE MEDIICO ESPECIALIDAD NO PUEDE SER VACIO'
 		END
-					ELSE IF EXISTS (SELECT id_medico_especialidad FROM Medico_especialidad WHERE Medico_especialidad.id_medico_especialidad = @id_medico_especialidad)
+	ELSE IF EXISTS (SELECT id_medico_especialidad FROM Medico_especialidad WHERE id_medico_especialidad = @id_medico_especialidad)
 		BEGIN
 			DELETE FROM Medico_especialidad WHERE Medico_especialidad.id_medico_especialidad = @id_medico_especialidad
 			PRINT 'SE HA ELIMINADO MEDICO ESPECIALIDAD'
