@@ -163,7 +163,7 @@ CREATE TABLE Intervencion(
 	id_tipo_intervencion INT NOT NULL,
 	id_consulta INT NOT NULL,
 	CONSTRAINT PK_id_intervencion PRIMARY KEY (id_intervencion),
-	CONSTRAINT FK_id_tipo_intervenciones FOREIGN KEY (id_tipo_intervencion) REFERENCES TipoIntervencion(id_tipo_intervencion),
+	CONSTRAINT FK_id_tipo_intervenciones FOREIGN KEY (id_tipo_intervencion) REFERENCES Tipo_Intervencion(id_tipo_intervencion),
 	CONSTRAINT FK_id_consulta_intervenciones FOREIGN KEY (id_consulta) REFERENCES Consulta (id_consulta) ON DELETE CASCADE,
 )
 GO

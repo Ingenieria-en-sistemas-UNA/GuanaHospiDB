@@ -32,7 +32,7 @@ GO
 CREATE PROC SP_Crear_Usuario
 	@Nombre VARCHAR(40),
 	@Contrasenna VARCHAR(30),
-	@IdMedico
+	@IdMedico VARCHAR(5)
 AS
 	IF(@Nombre = '' OR @Contrasenna = '' OR @IdMedico = '')
 		BEGIN
@@ -301,8 +301,8 @@ AS
 		END
 	ELSE
 		BEGIN
-			INSERT INTO Consulta(fecha_consulta, sintoma_observado, id_paciente, id_unidad)
-			VALUES (CONVERT(date, @FechaConsulta), @SintomaObservado, CONVERT(int, @IdPaciente), CONVERT(int, @IdUnidad))
+			INSERT INTO Consulta(fecha_consulta, id_paciente, id_unidad)
+			VALUES (CONVERT(date, @FechaConsulta), CONVERT(int, @IdPaciente), CONVERT(int, @IdUnidad))
 			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
 GO

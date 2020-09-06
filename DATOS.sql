@@ -13,14 +13,6 @@ EXEC SP_Crear_Persona '8', 'Daniel', 'Sequeira', 'Parra', 38
 EXEC SP_Crear_Persona '9', 'Carlos', 'Salgado', 'Arias', 31
 EXEC SP_Crear_Persona '10','Jafet', 'Morataya', 'Galvez', 51
 
-
-----------------------USUARIO------------------------------
-EXEC SP_Crear_Usuario 'tamo', '12345'
-EXEC SP_Crear_Usuario 'luis1', 'password'
-EXEC SP_Crear_Usuario 'Nelra', '54321'
-EXEC SP_Crear_Usuario 'ricmor', 'contrasenna'
-EXEC SP_Crear_Usuario 'enrique777', 'abcdef'
-
 ----------------------ESPECIALIDAD--------------------------
 EXEC SP_Crear_Especialidad 'Dermatología'
 EXEC SP_Crear_Especialidad 'Urología'
@@ -29,11 +21,18 @@ EXEC SP_Crear_Especialidad 'Otorrinolaringología'
 EXEC SP_Crear_Especialidad 'Oftalmología'
 
 -----------------------MEDICO-------------------------------
-EXEC SP_Crear_Medico 1234, 1, '1'
-EXEC SP_Crear_Medico 5466, 2, '2'
-EXEC SP_Crear_Medico 5344, 3, '3'
-EXEC SP_Crear_Medico 6453, 4, '4'
-EXEC SP_Crear_Medico 4656, 5, '5'
+EXEC SP_Crear_Medico 1234, '1'
+EXEC SP_Crear_Medico 5466, '2'
+EXEC SP_Crear_Medico 5344, '3'
+EXEC SP_Crear_Medico 6453, '4'
+EXEC SP_Crear_Medico 4656, '5'
+
+----------------------USUARIO------------------------------
+EXEC SP_Crear_Usuario 'tamo', '12345', 1
+EXEC SP_Crear_Usuario 'luis1', 'password', 2
+EXEC SP_Crear_Usuario 'Nelra', '54321', 3
+EXEC SP_Crear_Usuario 'ricmor', 'contrasenna', 4
+EXEC SP_Crear_Usuario 'enrique777', 'abcdef', 5
 
 ------------------------MEDICO ESPECIALIDAD-------------------
 EXEC SP_Crear_Medico_Especialidad 1,1
@@ -76,10 +75,10 @@ EXEC SP_Crear_Paciente 4039, '2020/07/3', '8'
 EXEC SP_Crear_Paciente 9284, '2020/06/16', '9'
 
 -----------------------CONSULTA-----------------------------------
-EXEC SP_Crear_Consulta '2020/09/5', 'DOLOR DE CABEZA', 1, 1
-EXEC SP_Crear_Consulta '2020/09/5', 'DOLOR DE CUELLO', 2, 2
-EXEC SP_Crear_Consulta '2020/09/5', 'DOLOR DE ESPALDA', 3, 3
-EXEC SP_Crear_Consulta '2020/09/5', 'DOLOR DE MUELA', 4, 4
+EXEC SP_Crear_Consulta '2020/09/5', 1, 1
+EXEC SP_Crear_Consulta '2020/09/5', 2, 2
+EXEC SP_Crear_Consulta '2020/09/5', 3, 3
+EXEC SP_Crear_Consulta '2020/09/5', 4, 4
 
 -----------------------PRESENTE----------------------------------
 EXEC SP_Crear_Presenta 1, 1, 'Tiene que consumir mas agua'
