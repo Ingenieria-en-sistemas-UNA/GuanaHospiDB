@@ -67,9 +67,9 @@ AS
 		BEGIN
 			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
 		END
-			ELSE IF(EXISTS(SELECT nombre_especialdad FROM Especialidad WHERE nombre_especialdad = @NombreEspecialidad))
+	ELSE IF(EXISTS(SELECT nombre_especialdad FROM Especialidad WHERE nombre_especialdad = @NombreEspecialidad))
 		BEGIN
-			PRINT 'NOMBRE DE  ESPECILIDAD YA EXISTE'
+			PRINT 'LA ESPECIALIDAD YA EXISTE'
 		END
 	ELSE
 		BEGIN
@@ -275,11 +275,10 @@ USE GUANA_HOSPI
 GO
 CREATE PROC SP_Crear_Consulta
 	@FechaConsulta VARCHAR(12),
-	@SintomaObservado VARCHAR(150),
 	@IdPaciente VARCHAR(5),
 	@IdUnidad VARCHAR(5)
 AS
-	IF(@FechaConsulta = '' OR @SintomaObservado = '' OR @IdPaciente = '' OR @IdUnidad = '')
+	IF(@FechaConsulta = '' OR @IdPaciente = '' OR @IdUnidad = '')
 		BEGIN
 			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
 		END
