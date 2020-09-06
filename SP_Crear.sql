@@ -26,8 +26,6 @@ AS
 			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
 GO
-
---EXEC SP_CrearPersona '123', 'Luis', 'Rodriguez', 'Baltodano', 21
 --------------------------------------------------------------------------------------------------------------
 USE GUANA_HOSPI
 GO
@@ -46,7 +44,6 @@ AS
 			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
 GO
---EXEC SP_CrearUsuario 'Luis1', 'contrasenna'
 ----------------------------------------------------------------------------------------------------------------
 USE GUANA_HOSPI
 GO
@@ -64,7 +61,6 @@ AS
 			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
 GO
---EXEC SP_CrearEspecialidad 'Cirujano'
 -----------------------------------------------------------------------------------------------------------
 USE GUANA_HOSPI
 GO
@@ -113,12 +109,11 @@ AS
 			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
 GO
---EXEC SP_CrearMedico 2313, 1, 1, '123'
 -------------------------------------------------------------------------------------------------------------------------
 USE GUANA_HOSPI
 GO
 CREATE PROC SP_CrearUnidad
-	@Nombre varchar(5),
+	@Nombre varchar(50),
 	@NumeroPlanta varchar(5)
 AS
 	IF (@Nombre = '' OR @NumeroPlanta = '')
@@ -129,7 +124,7 @@ AS
 	    BEGIN
             PRINT 'NO SE PERMITEN CARACTERES'
         END
-	ELSE IF (EXISTS(SELECT nombre, numeroPlanta FROM Unidad WHERE nombre= @Nombre AND numeroPlanta = @NumeroPlanta))
+	ELSE IF (EXISTS(SELECT nombre, numeroPlanta FROM Unidad WHERE nombre = @Nombre AND numeroPlanta = CONVERT(int, @NumeroPlanta)))
 		BEGIN
 			PRINT 'ESTA UNIDA YA HA SIDO REGISTRADA'
 		END
@@ -140,7 +135,6 @@ AS
 			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
 GO
---EXEC SP_CrearUnidad 'Sala de Cirugia', 2
 -------------------------------------------------------------------------------------------------------------------------------------------------
 USE GUANA_HOSPI
 GO
@@ -164,6 +158,14 @@ AS
 		BEGIN
 			PRINT 'EL ID DEL MEDICO NO EXISTE'
 		END
+	ELSE IF(EXISTS(SELECT id_medico FROM Unidad_medico WHERE id_medico = @IdMedico))
+		BEGIN
+			PRINT 'EL MEDICO YA TIENE UNA UNIDAD'
+		END
+	ELSE IF(EXISTS(SELECT id_unidad FROM Unidad_medico WHERE id_unidad = @IdUnidad))
+		BEGIN
+			PRINT 'LA UNIDAD SE ENCUENTRA OCUPADA'
+		END
 	ELSE
 		BEGIN
 			INSERT INTO Unidad_medico(id_unidad, id_medico)
@@ -171,7 +173,6 @@ AS
 			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
 GO
---EXEC SP_CrearUnidadMedico 1, 1
 -------------------------------------------------------------------------------------------------------------------------------------------------
 USE GUANA_HOSPI
 GO
@@ -198,15 +199,14 @@ USE GUANA_HOSPI
 GO
 CREATE PROC SP_CrearPaciente
 	@NumeroSeguroSocial VARCHAR(8),
-	@Edad VARCHAR(3),
 	@FechaIngreso VARCHAR(12),
 	@DniPersona VARCHAR(12)
 AS
-	IF(@NumeroSeguroSocial = '' OR @Edad = '' OR @FechaIngreso = '' OR @DniPersona = '')
+	IF(@NumeroSeguroSocial = '' OR @FechaIngreso = '' OR @DniPersona = '')
 		BEGIN
 			PRINT 'NO SE PERMITEN DATOS VACIOS'
 		END
-	ELSE IF(ISNUMERIC(@NumeroSeguroSocial) = 0 OR ISNUMERIC(@Edad) = 0)
+	ELSE IF(ISNUMERIC(@NumeroSeguroSocial) = 0)
 		BEGIN	
 			PRINT 'NO SE PERMITEN CARACTERES'
 		END
@@ -222,14 +222,14 @@ AS
 		BEGIN
 			PRINT 'LA PERSONA NO EXISTE'
 		END
-	ELSE IF NOT EXISTS(SELECT dni_persona FROM Paciente WHERE dni_persona = @DniPersona)
+	ELSE IF EXISTS(SELECT dni_persona FROM Paciente WHERE dni_persona = @DniPersona)
 		BEGIN
 			PRINT 'EL PACIENTE YA HABIA SIDO REGISTRADO'
 		END
 	ELSE
 		BEGIN
-			INSERT INTO Paciente(numeroSeguroSocial, edad, fecha_ingreso, dni_persona)
-			VALUES (CONVERT(int, @NumeroSeguroSocial), CONVERT(int, @Edad), CONVERT(date, @FechaIngreso), @DniPersona)
+			INSERT INTO Paciente(numeroSeguroSocial, fecha_ingreso, dni_persona)
+			VALUES (CONVERT(int, @NumeroSeguroSocial), CONVERT(date, @FechaIngreso), @DniPersona)
 			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
 GO
@@ -375,7 +375,7 @@ GO
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 USE GUANA_HOSPI
 GO
-CREATE PROC SP_CrearIntervenciones
+CREATE PROC SP_CrearIntervencion
 	@Tratamiento VARCHAR(150),
 	@IdTipoIntervencion VARCHAR(5),
 	@IdConsulta VARCHAR(5)
@@ -406,7 +406,7 @@ GO
 --------------------------------------------------------------------------------------------------------------------------------
 USE GUANA_HOSPI
 GO
-CREATE PROC SP_CrearPacienteunidad
+CREATE PROC SP_CrearPacienteUnidad
 	@IdPaciente VARCHAR(5),
 	@IdUnidad VARCHAR(5)
 AS

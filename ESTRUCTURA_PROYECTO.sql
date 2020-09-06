@@ -1,5 +1,5 @@
 USE MASTER
-	GO 
+GO 
 	CREATE DATABASE  GUANA_HOSPI
 	ON PRIMARY
 	(NAME = 'GUANA_HOSPIL_Data',
@@ -13,7 +13,7 @@ USE MASTER
 	SIZE = 5Mb,
 	MAXSIZE = 10Mb,
 	FILEGROWTH = 1Mb)
-	GO
+GO
 
 USE	GUANA_HOSPI
 GO
@@ -40,8 +40,7 @@ GO
 CREATE TABLE Especialidad(
 	id_especialidad INT IDENTITY (1,1),
 	nombreEspecialdad VARCHAR(50) NOT NULL,
-	CONSTRAINT PK_id_especialidad PRIMARY KEY (id_especialidad),
-
+	CONSTRAINT PK_id_especialidad PRIMARY KEY (id_especialidad),	
 )
 GO
 
@@ -97,7 +96,6 @@ GO
 CREATE TABLE Paciente (
 	id_paciente INT IDENTITY (1,1),
 	numeroSeguroSocial INT NOT NULL,
-	edad INT NOT NULL,
 	fecha_ingreso DATE NOT NULL,
 	dni_persona VARCHAR(12),
 	CONSTRAINT PK_id_paciente PRIMARY KEY (id_paciente),
