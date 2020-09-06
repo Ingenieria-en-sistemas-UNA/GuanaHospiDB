@@ -129,6 +129,7 @@ EXEC SP_Obtener_Unidades
 EXEC SP_Obtener_Usuarios
 EXEC SP_Obtener_Medicos
 EXEC SP_Obtener_Unidad_Medicos
+SELECT * FROM Medico_especialidad
 EXEC SP_Obtener_Consultas
 EXEC SP_Obtener_Enfermedades
 EXEC SP_Obtener_Intervenciones

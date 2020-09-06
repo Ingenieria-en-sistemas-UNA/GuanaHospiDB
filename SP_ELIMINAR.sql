@@ -363,10 +363,4 @@ AS
 			PRINT 'LA ESPECIALIDAD MEDICO NO EXISTE'
 		END
 GO
-		
-	
-GO
-
-drop proc SP_EliminarMedico
-drop proc SP_EliminarPaciente
 
