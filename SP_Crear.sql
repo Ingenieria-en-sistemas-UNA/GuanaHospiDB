@@ -58,6 +58,10 @@ AS
 		BEGIN
 			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
 		END
+			ELSE IF(EXISTS(SELECT nombre_especialdad FROM Especialidad WHERE nombre_especialdad = @NombreEspecialidad))
+		BEGIN
+			PRINT 'NOMBRE DE  ESPECILIDAD YA EXISTE'
+		END
 	ELSE
 		BEGIN
 			INSERT INTO Especialidad(nombre_especialdad)
