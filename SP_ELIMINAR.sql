@@ -31,25 +31,47 @@ AS
 			PRINT 'EL ID PERSONA NO EXISTE'
 		END
 GO
------------------------------ELIMINAR Paciente-----------------------------------------------------------------
+-------------------------------------------------Eliminar Usuario------------------------------------------------------------------
 USE	GUANA_HOSPI
 GO
-CREATE PROC SP_EliminarPaciente (@id_paciente INT)
+CREATE PROC SP_EliminarUsuario (@id_usuario INT)
 AS
-	IF (@id_paciente = '') 
+	IF (@id_usuario = '') 
 		BEGIN
-			PRINT 'EL ID DE COCINERO NO PUEDE SER VACIO'
+			PRINT 'EL ID DE DE USUARIO NO PUEDE SER VACIO'
 		END
-	ELSE IF EXISTS (SELECT @id_paciente  FROM Paciente WHERE Paciente.id_paciente = @id_paciente )
+	ELSE IF EXISTS (SELECT id_usuario FROM Usuario WHERE id_usuario  = @id_usuario)
 		BEGIN
-		    DELETE FROM Persona WHERE Persona.dni_persona = @id_paciente 
-			PRINT 'SE HA ELIMINADO EL PERSONA'
-			DELETE FROM Paciente WHERE Paciente.id_paciente = @id_paciente 
-			PRINT 'SE HA ELIMINADO EN PACIENTE'
+		    DECLARE @idUsuarioMedico INT
+			SET @idUsuarioMedico = (SELECT id_usuario FROM Medico WHERE id_medico = @id_usuario)
+			DELETE FROM Medico WHERE Medico.id_medico = @id_usuario
+			PRINT 'SE HA ELIMINADO EL MEDICO'
+			DELETE FROM Usuario WHERE Usuario.id_usuario = @idUsuarioMedico
+			PRINT 'SE HA ELIMINADO EL USUARIO'
 		END
 	ELSE
 		BEGIN
-			PRINT 'EL PACIENTE NO EXISTE'
+			PRINT 'EL USUARIO NO EXISTE'
+		END
+GO
+---------------------------------SP_ELIMINAR_ESPECIALIDAD-------------------------------
+
+USE	GUANA_HOSPI
+GO
+CREATE PROC SP_EliminarEspecialidad (@id_especialidad INT)
+AS
+	IF (@id_especialidad = '') 
+		BEGIN
+			PRINT 'EL ID DE DE ESPECIALIDAD NO PUEDE SER VACIO'
+		END
+	ELSE IF EXISTS (SELECT id_especialidad FROM Especialidad WHERE Especialidad.id_especialidad = @id_especialidad)
+		BEGIN
+			DELETE FROM Especialidad WHERE Especialidad.id_especialidad = @id_especialidad
+			PRINT 'SE HA ELIMINADO LA ESPECIALIDAD'
+		END
+	ELSE
+		BEGIN
+			PRINT 'EL ID ESPECIALIDAD NO EXISTE'
 		END
 GO
 -------------------------------------------------Eliminar Medico------------------------------------------------------------------
@@ -79,50 +101,179 @@ AS
 			PRINT 'EL MEDICO NO EXISTE'
 		END
 GO
--------------------------------------------------Eliminar Usuario------------------------------------------------------------------
+---------------------------------------------ELIMINAR UNIDAD-----------------------------------------------------
 USE	GUANA_HOSPI
 GO
-CREATE PROC SP_EliminarUsuario (@id_usuario INT)
+CREATE PROC SP_EliminarUnidad (@id_unidad INT)
 AS
-	IF (@id_usuario = '') 
+	IF (@id_unidad = '') 
 		BEGIN
-			PRINT 'EL ID DE DE USUARIO NO PUEDE SER VACIO'
+			PRINT 'EL ID DE DE PERSONA NO PUEDE SER VACIO'
 		END
-	ELSE IF (ISNUMERIC(@id_usuario) = 0) 
+	ELSE IF EXISTS (SELECT id_unidad FROM Unidad WHERE id_unidad = @id_unidad)
 		BEGIN
-			PRINT 'EL ID DE DE USUARIO NO PUEDE CONTENER CARACTERES'
+	        IF EXISTS (SELECT id_paciente_unidad  FROM Paciente_unidad where id_unidad = @id_unidad)
+				BEGIN
+					DECLARE @idUnidadPaciente INT
+                    SET @idUnidadPaciente = (SELECT  id_unidad FROM Paciente_unidad WHERE id_unidad = @id_unidad)
+					DELETE FROM Unidad WHERE Unidad.id_unidad = @idUnidadPaciente
+					PRINT 'SE HA ELIMINADO LA UNIDAD PACIENTE'
+				END
+		ELSE IF EXISTS (SELECT @id_unidad FROM Unidad_medico WHERE id_unidad = @id_unidad)
+				BEGIN
+					DELETE FROM Unidad WHERE Unidad.id_unidad = @id_unidad
+					PRINT 'SE HA ELIMINADO UNIDAD'
+					PRINT 'SE HA ELIMINADO LA UNIDAD MEDICO'
+				END
 		END
-	ELSE IF EXISTS (SELECT id_usuario FROM Usuario WHERE Usuario.id_usuario = @id_usuario)
+	ELSE
 		BEGIN
-
-			DELETE FROM Usuario WHERE Usuario.id_usuario = @id_usuario
+			PRINT 'LA UNIDAD NO EXISTE'
+		END
+GO
+---------------------------------------------------UNIDAD MEDICO-----------------------------------------------------
+USE	GUANA_HOSPI
+GO
+CREATE PROC SP_EliminarUnidadMedico (@id_unidad_medico INT)
+AS
+	IF (@id_unidad_medico = '') 
+		BEGIN
+			PRINT 'EL ID DE UNIDAD MEDICO NO PUEDE SER VACIO'
+		END
+	ELSE IF EXISTS (SELECT id_unidad_medico FROM Unidad_medico WHERE id_unidad_medico  = @id_unidad_medico )
+		BEGIN
+		    DECLARE @idUnidadMedicoMedico INT
+			DECLARE @idUnidaMedicoUnidad INT
+			SET @idUnidadMedicoMedico = (SELECT id_medico FROM Unidad_medico WHERE id_medico = @id_unidad_medico)
+			SET v@idUnidadPacientePaciente = (SELECT id_unidad FROM Unidad_medico WHERE id_unidad = @id_unidad_medico)
+			DELETE FROM Unidad_medico WHERE Unidad_medico.id_unidad_medico = @id_unidad_medico
+			PRINT 'SE HA ELIMINADO LA UNIDAD MEDICO'
+			DELETE FROM Medico WHERE Medico.id_medico = @idUnidadMedicoMedico
 			PRINT 'SE HA ELIMINADO EL USUARIO'
+		    DELETE FROM Unidad WHERE Unidad.id_unidad = @idUnidaMedicoUnidad
+			PRINT 'SE HA ELIMINADO EL PERSONA'
 		END
 	ELSE
 		BEGIN
-			PRINT 'EL ID USUARIO NO EXISTE'
+			PRINT 'LA UNIDAD MEDICO NO EXISTE'
 		END
 GO
----------------------------------SP_ELIMINAR_ESPECIALIDAD-------------------------------
-
+------------------------------------------------------------ELIMINAR SINTOMA-------------------------------------
 USE	GUANA_HOSPI
 GO
-CREATE PROC SP_EliminarEspecialidad (@id_especialidad INT)
+CREATE PROC SP_EliminarSintoma (@id_sintoma INT)
 AS
-	IF (@id_especialidad = '') 
+	IF (@id_sintoma = '') 
 		BEGIN
-			PRINT 'EL ID DE DE ESPECIALIDAD NO PUEDE SER VACIO'
+			PRINT 'EL ID DE DE PADECIMIENTO NO PUEDE SER VACIO'
 		END
-	ELSE IF EXISTS (SELECT id_especialidad FROM Especialidad WHERE Especialidad.id_especialidad = @id_especialidad)
+	ELSE IF EXISTS (SELECT id_sintoma FROM Sintoma WHERE id_sintoma = @id_sintoma)
 		BEGIN
-			DELETE FROM Especialidad WHERE Especialidad.id_especialidad = @id_especialidad
-			PRINT 'SE HA ELIMINADO LA ESPECIALIDAD'
+					DECLARE @idSintomaPresenta INT
+					SET @idSintomaPresenta = (SELECT  id_padecimiento FROM Presenta WHERE id_sintoma = @id_sintoma)
+					DELETE FROM Sintoma WHERE id_sintoma = @id_sintoma
+					PRINT 'SE HA ELIMINADO EL SINTOMA'
+					DELETE FROM Presenta  WHERE Presenta.id_padecimiento = @idSintomaPresenta
+					PRINT 'SE HA ELIMINADO EL PADECIMINETO'
+			END
+	ELSE
+		BEGIN
+			PRINT 'EL ID DE SINTOMA NO EXISTE'
+		END
+GO
+-----------------------------ELIMINAR Paciente-----------------------------------------------------------------
+USE	GUANA_HOSPI
+GO
+CREATE PROC SP_EliminarPaciente (@id_paciente INT)
+AS
+	IF (@id_paciente = '') 
+		BEGIN
+			PRINT 'EL ID DE COCINERO NO PUEDE SER VACIO'
+		END
+	ELSE IF EXISTS (SELECT id_paciente FROM Paciente WHERE id_paciente  = @id_paciente )
+		BEGIN
+		    DECLARE @idPacientePadece INT
+			DECLARE @idPersonaPaciente VARCHAR(12)
+			DECLARE @idconsultaPaciente INT
+			SET @idPacientePadece = (SELECT id_pacienteEnfermedad FROM Padece WHERE id_paciente = @id_paciente)
+			SET @idPersonaPaciente = (SELECT dni_persona FROM Paciente WHERE id_paciente = @id_paciente)
+			SET @idconsultaPaciente = (SELECT id_consulta FROM Consulta WHERE id_paciente = @id_paciente)
+			DELETE FROM Paciente WHERE Paciente.id_paciente = @id_paciente
+			PRINT 'SE HA ELIMINADO EL PACIENTE'
+			DELETE FROM Padece WHERE Padece.id_pacienteEnfermedad = @idPacientePadece
+			PRINT 'SE HA ELIMINADO EL PADECIMIENTE'
+		    DELETE FROM Consulta WHERE Consulta.id_consulta = @idPersonaPaciente
+			PRINT 'SE HA ELIMINADO LA CONSULTA'
+			  DELETE FROM Persona WHERE Persona.dni_persona = @idconsultaPaciente
+			PRINT 'SE HA ELIMINADO EL PERSONA'
 		END
 	ELSE
 		BEGIN
-			PRINT 'EL ID ESPECIALIDAD NO EXISTE'
+			PRINT 'EL PACIENTE NO EXISTE'
 		END
 GO
+------------------------------------------ELIMINAR CONSULTA------------------------------------------------------------
+USE	GUANA_HOSPI
+GO
+CREATE PROC SP_EliminaConsulta (@id_consulta INT)
+AS
+	IF (@id_consulta = '') 
+		BEGIN
+			PRINT 'EL ID DE LA CONSULTA NO PUEDE SER VACIO'
+		END
+
+
+-------------------------------------------ELIMINAR PRESENTA--------------------------------------------------------
+USE	GUANA_HOSPI
+GO
+CREATE PROC SP_EliminarPresenta (@id_presenta INT)
+AS
+	IF (@id_presenta = '') 
+		BEGIN
+			PRINT 'EL ID DEL PADECIMIENTO NO PUEDE SER VACIO'
+		END
+
+-----------------------------------ELIMINAR ENFERMEDAD-----------------------------------
+USE	GUANA_HOSPI
+GO
+CREATE PROC SP_EliminarEnfermedad (@id_enfermedad INT)
+AS
+	IF (@id_enfermedad = '') 
+		BEGIN
+			PRINT 'EL ID DE LA ENFERMEDAD NO PUEDE SER VACIO'
+		END
+	ELSE IF EXISTS (SELECT id_enfermedad FROM Enfermedad WHERE Enfermedad.id_enfermedad = @id_enfermedad)
+		BEGIN
+			DELETE FROM Enfermedad WHERE Enfermedad.id_enfermedad = @id_enfermedad
+			PRINT 'SE HA ELIMINADO LA ENFERMEDAD'
+		END
+	ELSE
+		BEGIN
+			PRINT 'EL ID ENFERMEDAD NO EXISTE'
+		END
+GO
+----------------------------------------ELIMINAR PADECIINETO------------------------------------------------
+
+---------------------------------------------ELIMINAR TIPO INTERVENSION-----------------------------------------
+USE	GUANA_HOSPI
+GO
+CREATE PROC SP_EliminarIntervension(@id_tipo_intervencion INT)
+AS
+	IF (@id_tipo_intervencion = '') 
+		BEGIN
+			PRINT 'EL ID DE LA INTERVENSION NO PUEDE SER VACIO'
+		END
+	ELSE IF EXISTS (SELECT id_intervencion FROM Intervenciones WHERE Intervenciones.id_intervencion = @id_tipo_intervencion)
+		BEGIN
+			DELETE FROM Intervenciones WHERE Intervenciones.id_intervencion = @id_tipo_intervencion
+			PRINT 'SE HA ELIMINADO LA INTERVENSION'
+		END
+	ELSE
+		BEGIN
+			PRINT 'EL ID DE LA INTERVENSION NO EXISTE'
+		END
+GO
+------------------------------------ELIMINAR INTERVENSIONES------------------------------
 
 
 
