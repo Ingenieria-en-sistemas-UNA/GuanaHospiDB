@@ -19,7 +19,7 @@ USE	GUANA_HOSPI
 GO
 CREATE TABLE Persona(
     dni_persona VARCHAR(12) NOT NULL,
-	nombre VARCHAR(40) NOT NULL,
+	nombre_persona VARCHAR(40) NOT NULL,
 	apellido_1 VARCHAR(40) NOT NULL,
 	apellido_2 VARCHAR(40)NOT NULL,
 	edad INT NOT NULL,
@@ -29,7 +29,7 @@ GO
 
 CREATE TABLE Usuario(
     id_usuario INT IDENTITY (1,1),
-	nombre VARCHAR(40) NOT NULL,
+	nombre_usuario VARCHAR(40) NOT NULL,
 	contrasenna VARCHAR(30) NOT NULL,
 	CONSTRAINT PK_id_usuario PRIMARY KEY (id_usuario),
 )
@@ -39,7 +39,7 @@ USE	GUANA_HOSPI
 GO
 CREATE TABLE Especialidad(
 	id_especialidad INT IDENTITY (1,1),
-	nombreEspecialdad VARCHAR(50) NOT NULL,
+	nombre_especialdad VARCHAR(50) NOT NULL,
 	CONSTRAINT PK_id_especialidad PRIMARY KEY (id_especialidad),	
 )
 GO
@@ -64,8 +64,8 @@ USE	GUANA_HOSPI
 GO
 CREATE TABLE Unidad(
 	id_unidad INT IDENTITY (1,1),
-	nombre VARCHAR(50) NOT NULL,
-	numeroPlanta INT NOT NULL,
+	nombre_unidad VARCHAR(50) NOT NULL,
+	numero_planta INT NOT NULL,
 	CONSTRAINT PK_id_unidad PRIMARY KEY (id_unidad),
 )
 GO
@@ -86,7 +86,7 @@ USE	GUANA_HOSPI
 GO
 CREATE TABLE Sintoma(
 	id_sintoma INT IDENTITY (1,1),
-	nombre VARCHAR(50) NOT NULL,
+	nombre_sintoma VARCHAR(50) NOT NULL,
 	CONSTRAINT PK_id_sintoma PRIMARY KEY (id_sintoma),
 )
 GO
@@ -95,7 +95,7 @@ USE	GUANA_HOSPI
 GO
 CREATE TABLE Paciente (
 	id_paciente INT IDENTITY (1,1),
-	numeroSeguroSocial INT NOT NULL,
+	numero_seguro_social INT NOT NULL,
 	fecha_ingreso DATE NOT NULL,
 	dni_persona VARCHAR(12),
 	CONSTRAINT PK_id_paciente PRIMARY KEY (id_paciente),
@@ -107,7 +107,7 @@ USE	GUANA_HOSPI
 GO
 CREATE TABLE Consulta(
 	id_consulta INT IDENTITY (1,1),
-	fecha DATE NOT NULL,
+	fecha_consulta DATE NOT NULL,
 	sintoma_observado VARCHAR(150) NOT NULL,
 	id_paciente INT NOT NULL,
 	id_unidad INT NOT NULL,
@@ -118,11 +118,11 @@ CREATE TABLE Consulta(
 GO
 
 CREATE TABLE Presenta (
-	id_padecimiento INT IDENTITY (1,1),
+	id_presenta INT IDENTITY (1,1),
 	id_consulta INT NOT NULL,
 	id_sintoma INT NOT NULL,
-	descripcion VARCHAR(50) NOT NULL,
-	CONSTRAINT PK_id_padecimiento PRIMARY KEY (id_padecimiento) ,
+	descripcion_presenta VARCHAR(50) NOT NULL,
+	CONSTRAINT PK_id_presenta PRIMARY KEY (id_presenta) ,
 	CONSTRAINT FK_id_sintoma_presenta FOREIGN KEY (id_sintoma) REFERENCES  Sintoma(id_sintoma), 
 	CONSTRAINT FK_id_consulta_presenta FOREIGN KEY (id_consulta) REFERENCES Consulta(id_consulta) ON DELETE CASCADE,
 )
@@ -132,7 +132,7 @@ USE	GUANA_HOSPI
 GO
 CREATE TABLE Enfermedad(
 	id_enfermedad INT IDENTITY (1,1),
-	nombre VARCHAR(50) NOT NULL,
+	nombre_enfermedad VARCHAR(50) NOT NULL,
 	CONSTRAINT PK_id_enfermedad PRIMARY KEY (id_enfermedad),
 )
 GO
@@ -141,10 +141,10 @@ GO
 USE	GUANA_HOSPI
 GO
 CREATE TABLE Padece(
-	id_pacienteEnfermedad INT IDENTITY (1,1),
+	id_padece INT IDENTITY (1,1),
 	id_paciente INT NOT NULL,
 	id_enfermedad INT NOT NULL,
-	CONSTRAINT PK_id_pacienteEnfermedad PRIMARY KEY (id_pacienteEnfermedad),
+	CONSTRAINT PK_id_padece PRIMARY KEY (id_padece),
 	CONSTRAINT FK_id_paciente_padece FOREIGN  KEY (id_paciente) REFERENCES Paciente (id_paciente) ON DELETE CASCADE,
 	CONSTRAINT FK_id_enfermedad_padece FOREIGN KEY (id_enfermedad) REFERENCES Enfermedad(id_enfermedad),
 )
@@ -154,7 +154,7 @@ USE	GUANA_HOSPI
 GO	
 CREATE TABLE TipoIntervencion(
 	id_tipo_intervencion INT IDENTITY (1,1),
-	nombre VARCHAR(50) NOT NULL,
+	nombre_tipo_intervencion VARCHAR(50) NOT NULL,
 	CONSTRAINT PK_id_tipo_intervension PRIMARY KEY (id_tipo_intervencion),
 )
 GO

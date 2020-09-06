@@ -21,7 +21,7 @@ AS
 		END
 	ELSE
 		BEGIN
-			INSERT INTO Persona( dni_persona, nombre, apellido_1, apellido_2, edad)
+			INSERT INTO Persona( dni_persona, nombre_persona, apellido_1, apellido_2, edad)
 			VALUES (@Dni, @Nombre, @Apellido1, @Apellido2, CONVERT(int, @Edad))
 			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
@@ -39,7 +39,7 @@ AS
 		END
 	ELSE
 		BEGIN
-			INSERT INTO Usuario(nombre, contrasenna)
+			INSERT INTO Usuario(nombre_usuario, contrasenna)
 			VALUES (@Nombre, @Contrasenna)
 			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
@@ -56,7 +56,7 @@ AS
 		END
 	ELSE
 		BEGIN
-			INSERT INTO Especialidad(nombreEspecialdad)
+			INSERT INTO Especialidad(nombre_especialdad)
 			VALUES (@NombreEspecialidad)
 			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
@@ -144,24 +144,24 @@ USE GUANA_HOSPI
 GO
 CREATE PROC SP_CrearUnidad
 	@Nombre varchar(50),
-	@NumeroPlanta varchar(5)
+	@Numero_planta varchar(5)
 AS
-	IF (@Nombre = '' OR @NumeroPlanta = '')
+	IF (@Nombre = '' OR @Numero_planta = '')
 		BEGIN
 			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
 		END
-	ELSE IF(ISNUMERIC(@NumeroPlanta) = 0)
+	ELSE IF(ISNUMERIC(@Numero_planta) = 0)
 	    BEGIN
             PRINT 'NO SE PERMITEN CARACTERES'
         END
-	ELSE IF (EXISTS(SELECT nombre, numeroPlanta FROM Unidad WHERE nombre = @Nombre AND numeroPlanta = CONVERT(int, @NumeroPlanta)))
+	ELSE IF (EXISTS(SELECT nombre_unidad, numero_planta FROM Unidad WHERE nombre_unidad = @Nombre AND numero_planta = CONVERT(int, @Numero_planta)))
 		BEGIN
 			PRINT 'ESTA UNIDA YA HA SIDO REGISTRADA'
 		END
 	ELSE
 		BEGIN
-			INSERT INTO Unidad(nombre, numeroPlanta)
-			VALUES (@Nombre, CONVERT(int, @NumeroPlanta))
+			INSERT INTO Unidad(nombre_unidad, numero_planta)
+			VALUES (@Nombre, CONVERT(int, @numero_planta))
 			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
 GO
@@ -213,13 +213,13 @@ AS
 		BEGIN
 			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
 		END
-	ELSE IF (EXISTS(SELECT nombre FROM Sintoma WHERE nombre = @Nombre))
+	ELSE IF (EXISTS(SELECT nombre_sintoma FROM Sintoma WHERE nombre_sintoma = @Nombre))
 		BEGIN
 			PRINT 'ESTE SINTOMA YA EXISTE'
 		END
 	ELSE
 		BEGIN
-			INSERT INTO Sintoma(nombre)
+			INSERT INTO Sintoma(nombre_sintoma)
 			VALUES (@Nombre)
 			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
@@ -228,15 +228,15 @@ GO
 USE GUANA_HOSPI
 GO
 CREATE PROC SP_CrearPaciente
-	@NumeroSeguroSocial VARCHAR(8),
+	@Numero_seguro_social VARCHAR(8),
 	@FechaIngreso VARCHAR(12),
 	@DniPersona VARCHAR(12)
 AS
-	IF(@NumeroSeguroSocial = '' OR @FechaIngreso = '' OR @DniPersona = '')
+	IF(@Numero_seguro_social = '' OR @FechaIngreso = '' OR @DniPersona = '')
 		BEGIN
 			PRINT 'NO SE PERMITEN DATOS VACIOS'
 		END
-	ELSE IF(ISNUMERIC(@NumeroSeguroSocial) = 0)
+	ELSE IF(ISNUMERIC(@Numero_seguro_social) = 0)
 		BEGIN	
 			PRINT 'NO SE PERMITEN CARACTERES'
 		END
@@ -244,7 +244,7 @@ AS
 		BEGIN
 			PRINT 'DEBE SER UN FORMATO FECHA VALIDO'
 		END
-	ELSE IF EXISTS(SELECT numeroSeguroSocial FROM Paciente WHERE numeroSeguroSocial = @NumeroSeguroSocial)
+	ELSE IF EXISTS(SELECT numero_seguro_social FROM Paciente WHERE numero_seguro_social = @Numero_seguro_social)
 		BEGIN
 			PRINT 'EL NUMERO DE SEGURO SOCIAL YA HA SIDO REGISTRADO'
 		END
@@ -258,8 +258,8 @@ AS
 		END
 	ELSE
 		BEGIN
-			INSERT INTO Paciente(numeroSeguroSocial, fecha_ingreso, dni_persona)
-			VALUES (CONVERT(int, @NumeroSeguroSocial), CONVERT(date, @FechaIngreso), @DniPersona)
+			INSERT INTO Paciente(numero_seguro_social, fecha_ingreso, dni_persona)
+			VALUES (CONVERT(int, @Numero_seguro_social), CONVERT(date, @FechaIngreso), @DniPersona)
 			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
 GO
@@ -294,7 +294,7 @@ AS
 		END
 	ELSE
 		BEGIN
-			INSERT INTO Consulta(fecha, sintoma_observado, id_paciente, id_unidad)
+			INSERT INTO Consulta(fecha_consulta, sintoma_observado, id_paciente, id_unidad)
 			VALUES (CONVERT(date, @FechaConsulta), @SintomaObservado, CONVERT(int, @IdPaciente), CONVERT(int, @IdUnidad))
 			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
@@ -325,7 +325,7 @@ AS
 		END
 	ELSE
 		BEGIN
-			INSERT INTO Presenta(id_consulta, id_sintoma, descripcion)
+			INSERT INTO Presenta(id_consulta, id_sintoma, descripcion_presenta)
 			VALUES (CONVERT(int, @IdConsulta), CONVERT(int, @IdSintoma), @Descripcion)
 			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
@@ -340,13 +340,13 @@ AS
 		BEGIN
 			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
 		END
-	ELSE IF (EXISTS(SELECT nombre FROM Enfermedad WHERE nombre = @Nombre))
+	ELSE IF (EXISTS(SELECT nombre_enfermedad FROM Enfermedad WHERE nombre_enfermedad = @Nombre))
 		BEGIN
 			PRINT 'LA ENFERMEDAD YA EXISTE'
 		END
 	ELSE
 		BEGIN
-			INSERT INTO Enfermedad(nombre)
+			INSERT INTO Enfermedad(nombre_enfermedad)
 			VALUES (@Nombre)
 			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
@@ -391,13 +391,13 @@ AS
 		BEGIN
 			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
 		END
-	ELSE IF (EXISTS(SELECT nombre FROM TipoIntervencion WHERE nombre = @Nombre))
+	ELSE IF (EXISTS(SELECT nombre_tipo_intervencion FROM TipoIntervencion WHERE nombre_tipo_intervencion = @Nombre))
 		BEGIN
 			PRINT 'EL TIPO DE INTERVENCION YA EXISTE'
 		END
 	ELSE
 		BEGIN
-			INSERT INTO TipoIntervencion(nombre)
+			INSERT INTO TipoIntervencion(nombre_tipo_intervencion)
 			VALUES (@Nombre)
 			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
