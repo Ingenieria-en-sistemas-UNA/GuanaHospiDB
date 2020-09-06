@@ -1,6 +1,6 @@
 USE GUANA_HOSPI
 GO
-CREATE PROC SP_CrearPersona
+CREATE PROC SP_Crear_Persona
 	@Dni VARCHAR(12),
 	@Nombre VARCHAR(30),
 	@Apellido1 VARCHAR(40),
@@ -29,7 +29,7 @@ GO
 --------------------------------------------------------------------------------------------------------------
 USE GUANA_HOSPI
 GO
-CREATE PROC SP_CrearUsuario
+CREATE PROC SP_Crear_Usuario
 	@Nombre VARCHAR(30),
 	@Contrasenna VARCHAR(30)
 AS
@@ -47,7 +47,7 @@ GO
 ----------------------------------------------------------------------------------------------------------------
 USE GUANA_HOSPI
 GO
-CREATE PROC SP_CrearEspecialidad
+CREATE PROC SP_Crear_Especialidad
 	@NombreEspecialidad VARCHAR(30)
 AS
 	IF(@NombreEspecialidad = '')
@@ -64,7 +64,7 @@ GO
 -----------------------------------------------------------------------------------------------------------
 USE GUANA_HOSPI
 GO
-CREATE PROC SP_CrearMedico
+CREATE PROC SP_Crear_Medico
 	@CodigoMedico varchar(5),
 	@IdUsuario varchar(5),
 	@DniPersona varchar(12)
@@ -107,7 +107,7 @@ GO
 -------------------------------------------------------------------------------------------------------------------------
 USE GUANA_HOSPI
 GO
-CREATE PROC SP_CrearMedicoEspecialidad
+CREATE PROC SP_Crear_Medico_Especialidad
 	@IdMedico varchar(5),
 	@IdEspecialidad varchar(5)
 AS
@@ -141,7 +141,7 @@ GO
 --------------------------------------------------------------------------------------------------------------------------
 USE GUANA_HOSPI
 GO
-CREATE PROC SP_CrearUnidad
+CREATE PROC SP_Crear_Unidad
 	@Nombre varchar(50),
 	@Numero_planta varchar(5)
 AS
@@ -167,7 +167,7 @@ GO
 -------------------------------------------------------------------------------------------------------------------------------------------------
 USE GUANA_HOSPI
 GO
-CREATE PROC SP_CrearUnidadMedico
+CREATE PROC SP_Crear_Unidad_Medico
 	@IdUnidad varchar(5),
 	@IdMedico varchar(5)
 AS
@@ -205,7 +205,7 @@ GO
 -------------------------------------------------------------------------------------------------------------------------------------------------
 USE GUANA_HOSPI
 GO
-CREATE PROC SP_CrearSintoma
+CREATE PROC SP_Crear_Sintoma
 	@Nombre varchar(50)
 AS
 	IF(@Nombre = '')
@@ -226,7 +226,7 @@ GO
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 USE GUANA_HOSPI
 GO
-CREATE PROC SP_CrearPaciente
+CREATE PROC SP_Crear_Paciente
 	@Numero_seguro_social VARCHAR(8),
 	@FechaIngreso VARCHAR(12),
 	@DniPersona VARCHAR(12)
@@ -265,7 +265,7 @@ GO
 -----------------------------------------------------------------------------------------------------------------------------------------
 USE GUANA_HOSPI
 GO
-CREATE PROC SP_CrearConsulta
+CREATE PROC SP_Crear_Consulta
 	@FechaConsulta VARCHAR(12),
 	@SintomaObservado VARCHAR(150),
 	@IdPaciente VARCHAR(5),
@@ -301,7 +301,7 @@ GO
 -----------------------------------------------------------------------------------------------------------------------------------------
 USE GUANA_HOSPI
 GO
-CREATE PROC SP_CrearPresenta
+CREATE PROC SP_Crear_Presenta
 	@IdConsulta VARCHAR(5),
 	@IdSintoma VARCHAR(5),
 	@Descripcion VARCHAR(50)
@@ -332,7 +332,7 @@ GO
 -----------------------------------------------------------------------------------------------------------------------------------------
 USE GUANA_HOSPI
 GO
-CREATE PROC SP_CrearEnfermedad
+CREATE PROC SP_Crear_Enfermedad
 	@Nombre varchar(50)
 AS
 	IF(@Nombre = '')
@@ -353,7 +353,7 @@ GO
 --------------------------------------------------------------------------------------------------------------------------------------------
 USE GUANA_HOSPI
 GO
-CREATE PROC SP_CrearPadece
+CREATE PROC SP_Crear_Padece
 	@IdPaciente varchar(5),
 	@IdEnfermedad varchar(5)
 AS
@@ -383,7 +383,7 @@ GO
 --------------------------------------------------------------------------------------------------------------------------------------------------
 USE GUANA_HOSPI
 GO
-CREATE PROC SP_CrearTipoIntervencion
+CREATE PROC SP_Crear_Tipo_Intervencion
 	@Nombre varchar(50)
 AS
 	IF(@Nombre = '')
@@ -404,7 +404,7 @@ GO
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 USE GUANA_HOSPI
 GO
-CREATE PROC SP_CrearIntervencion
+CREATE PROC SP_Crear_Intervencion
 	@Tratamiento VARCHAR(150),
 	@IdTipoIntervencion VARCHAR(5),
 	@IdConsulta VARCHAR(5)
@@ -435,7 +435,7 @@ GO
 --------------------------------------------------------------------------------------------------------------------------------
 USE GUANA_HOSPI
 GO
-CREATE PROC SP_CrearPacienteUnidad
+CREATE PROC SP_Crear_Paciente_Unidad
 	@IdPaciente VARCHAR(5),
 	@IdUnidad VARCHAR(5)
 AS
