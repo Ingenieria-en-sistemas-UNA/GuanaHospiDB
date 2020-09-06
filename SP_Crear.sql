@@ -113,7 +113,7 @@ GO
 USE GUANA_HOSPI
 GO
 CREATE PROC SP_CrearUnidad
-	@Nombre varchar(5),
+	@Nombre varchar(50),
 	@NumeroPlanta varchar(5)
 AS
 	IF (@Nombre = '' OR @NumeroPlanta = '')
@@ -124,7 +124,7 @@ AS
 	    BEGIN
             PRINT 'NO SE PERMITEN CARACTERES'
         END
-	ELSE IF (EXISTS(SELECT nombre, numeroPlanta FROM Unidad WHERE nombre= @Nombre AND numeroPlanta = @NumeroPlanta))
+	ELSE IF (EXISTS(SELECT nombre, numeroPlanta FROM Unidad WHERE nombre = @Nombre AND numeroPlanta = CONVERT(int, @NumeroPlanta)))
 		BEGIN
 			PRINT 'ESTA UNIDA YA HA SIDO REGISTRADA'
 		END
@@ -150,6 +150,22 @@ AS
 		BEGIN
 			PRINT 'NO SE PERMITEN CARACTERES'
 		END
+	ELSE IF(NOT EXISTS(SELECT id_unidad FROM Unidad WHERE id_unidad = @IdUnidad))
+		BEGIN
+			PRINT 'EL ID DE LA UNIDAD NO EXISTE'
+		END
+	ELSE IF(NOT EXISTS(SELECT id_medico FROM Medico WHERE id_medico = @IdMedico))
+		BEGIN
+			PRINT 'EL ID DEL MEDICO NO EXISTE'
+		END
+	ELSE IF(EXISTS(SELECT id_medico FROM Unidad_medico WHERE id_medico = @IdMedico))
+		BEGIN
+			PRINT 'EL MEDICO YA TIENE UNA UNIDAD'
+		END
+	ELSE IF(EXISTS(SELECT id_unidad FROM Unidad_medico WHERE id_unidad = @IdUnidad))
+		BEGIN
+			PRINT 'LA UNIDAD SE ENCUENTRA OCUPADA'
+		END
 	ELSE
 		BEGIN
 			INSERT INTO Unidad_medico(id_unidad, id_medico)
@@ -161,16 +177,11 @@ GO
 USE GUANA_HOSPI
 GO
 CREATE PROC SP_CrearSintoma
-	@IdSintoma varchar(5),
-	@Nombre varchar(5)
+	@Nombre varchar(50)
 AS
-	IF(@IdSintoma = '' OR @Nombre = '')
+	IF(@Nombre = '')
 		BEGIN
 			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
-		END
-	ELSE IF(ISNUMERIC(@IdSintoma) = 0)
-		BEGIN
-			PRINT 'NO SE PERMITEN CARACTERES'
 		END
 	ELSE IF (EXISTS(SELECT nombre FROM Sintoma WHERE nombre = @Nombre))
 		BEGIN
@@ -178,8 +189,8 @@ AS
 		END
 	ELSE
 		BEGIN
-			INSERT INTO Sintoma(id_sintoma, nombre)
-			VALUES (CONVERT(int, @IdSintoma), @Nombre)
+			INSERT INTO Sintoma(nombre)
+			VALUES (@Nombre)
 			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
 GO
@@ -188,15 +199,14 @@ USE GUANA_HOSPI
 GO
 CREATE PROC SP_CrearPaciente
 	@NumeroSeguroSocial VARCHAR(8),
-	@Edad VARCHAR(3),
-	@FechaIngreso VARCHAR(5),
+	@FechaIngreso VARCHAR(12),
 	@DniPersona VARCHAR(12)
 AS
-	IF(@NumeroSeguroSocial = '' OR @Edad = '' OR @FechaIngreso = '' OR @DniPersona = '')
+	IF(@NumeroSeguroSocial = '' OR @FechaIngreso = '' OR @DniPersona = '')
 		BEGIN
 			PRINT 'NO SE PERMITEN DATOS VACIOS'
 		END
-	ELSE IF(ISNUMERIC(@NumeroSeguroSocial) = 0 OR ISNUMERIC(@Edad) = 0)
+	ELSE IF(ISNUMERIC(@NumeroSeguroSocial) = 0)
 		BEGIN	
 			PRINT 'NO SE PERMITEN CARACTERES'
 		END
@@ -212,14 +222,214 @@ AS
 		BEGIN
 			PRINT 'LA PERSONA NO EXISTE'
 		END
-	ELSE IF NOT EXISTS(SELECT dni_persona FROM Paciente WHERE dni_persona = @DniPersona)
+	ELSE IF EXISTS(SELECT dni_persona FROM Paciente WHERE dni_persona = @DniPersona)
 		BEGIN
 			PRINT 'EL PACIENTE YA HABIA SIDO REGISTRADO'
 		END
-		ELSE
-	BEGIN
-			INSERT INTO Paciente(numeroSeguroSocial, edad, fecha_ingreso, dni_persona)
-			VALUES (CONVERT(int, @NumeroSeguroSocial), CONVERT(int, @Edad), CONVERT(date, @FechaIngreso), @DniPersona)
+	ELSE
+		BEGIN
+			INSERT INTO Paciente(numeroSeguroSocial, fecha_ingreso, dni_persona)
+			VALUES (CONVERT(int, @NumeroSeguroSocial), CONVERT(date, @FechaIngreso), @DniPersona)
+			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
+		END
+GO
+-----------------------------------------------------------------------------------------------------------------------------------------
+USE GUANA_HOSPI
+GO
+CREATE PROC SP_CrearConsulta
+	@FechaConsulta VARCHAR(12),
+	@SintomaObservado VARCHAR(150),
+	@IdPaciente VARCHAR(5),
+	@IdUnidad VARCHAR(5)
+AS
+	IF(@FechaConsulta = '' OR @SintomaObservado = '' OR @IdPaciente = '' OR @IdUnidad = '')
+		BEGIN
+			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+		END
+	ELSE IF(ISDATE(@FechaConsulta) = 0)
+		BEGIN
+			PRINT 'DEBE SER UN FORMATO FECHA'
+		END
+	ELSE IF(ISNUMERIC(@IdPaciente) = 0 OR ISNUMERIC(@IdUnidad) = 0)
+		BEGIN
+			PRINT 'NO SE PERMITEN CARACTERES'
+		END
+	ELSE IF(NOT EXISTS(SELECT id_paciente FROM Paciente WHERE id_paciente = @IdPaciente))
+		BEGIN
+			PRINT 'EL PACIENTE NO EXISTE'
+		END
+	ELSE IF(NOT EXISTS(SELECT id_unidad FROM Unidad WHERE id_unidad = @IdUnidad))
+		BEGIN
+			PRINT 'LA UNIDAD NO EXISTE'
+		END
+	ELSE
+		BEGIN
+			INSERT INTO Consulta(fecha, sintoma_observado, id_paciente, id_unidad)
+			VALUES (CONVERT(date, @FechaConsulta), @SintomaObservado, CONVERT(int, @IdPaciente), CONVERT(int, @IdUnidad))
+			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
+		END
+GO
+-----------------------------------------------------------------------------------------------------------------------------------------
+USE GUANA_HOSPI
+GO
+CREATE PROC SP_CrearPresenta
+	@IdConsulta VARCHAR(5),
+	@IdSintoma VARCHAR(5),
+	@Descripcion VARCHAR(50)
+AS
+	IF(@IdConsulta = '' OR @IdSintoma = '' OR @Descripcion = '')
+		BEGIN
+			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+		END  
+	ELSE IF(ISNUMERIC(@IdConsulta) = 0 OR ISNUMERIC(@IdSintoma) = 0)
+		BEGIN	
+			PRINT 'NO SE PERMITEN CARACTERES'
+		END
+	ELSE IF(NOT EXISTS(SELECT id_consulta FROM Consulta WHERE id_consulta = @IdConsulta))
+		BEGIN
+			PRINT 'EL ID DE LA CONSULTA NO EXISTE'
+		END
+	ELSE IF(NOT EXISTS(SELECT id_sintoma FROM Sintoma WHERE id_sintoma = @IdSintoma))
+		BEGIN
+			PRINT 'EL ID DEL SINTOMA NO EXISTE'
+		END
+	ELSE
+		BEGIN
+			INSERT INTO Presenta(id_consulta, id_sintoma, descripcion)
+			VALUES (CONVERT(int, @IdConsulta), CONVERT(int, @IdSintoma), @Descripcion)
+			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
+		END
+GO
+-----------------------------------------------------------------------------------------------------------------------------------------
+USE GUANA_HOSPI
+GO
+CREATE PROC SP_CrearEnfermedad
+	@Nombre varchar(50)
+AS
+	IF(@Nombre = '')
+		BEGIN
+			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+		END
+	ELSE IF (EXISTS(SELECT nombre FROM Enfermedad WHERE nombre = @Nombre))
+		BEGIN
+			PRINT 'LA ENFERMEDAD YA EXISTE'
+		END
+	ELSE
+		BEGIN
+			INSERT INTO Enfermedad(nombre)
+			VALUES (@Nombre)
+			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
+		END
+GO
+--------------------------------------------------------------------------------------------------------------------------------------------
+USE GUANA_HOSPI
+GO
+CREATE PROC SP_CrearPadece
+	@IdPaciente varchar(5),
+	@IdEnfermedad varchar(5)
+AS
+	IF(@IdPaciente = '' OR @IdEnfermedad = '')
+		BEGIN
+			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+		END
+	ELSE IF(ISNUMERIC(@IdPaciente) = 0 OR ISNUMERIC(@IdEnfermedad) = 0)
+		BEGIN
+			PRINT 'NO SE PERMITEN CARACTERES'
+		END
+	ELSE IF(NOT EXISTS(SELECT id_paciente FROM Paciente WHERE id_paciente = @IdPaciente))
+		BEGIN
+			PRINT 'EL ID DEL PACIENTE NO EXISTE'
+		END
+	ELSE IF(NOT EXISTS(SELECT id_enfermedad FROM Enfermedad WHERE id_enfermedad = @IdEnfermedad))
+		BEGIN
+			PRINT 'EL ID DE LA ENFERMEDAD NO EXISTE'
+		END
+	ELSE
+		BEGIN
+			INSERT INTO Padece(id_paciente, id_enfermedad)
+			VALUES (CONVERT(int, @IdPaciente), CONVERT(int, @IdEnfermedad))
+			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
+		END
+GO
+--------------------------------------------------------------------------------------------------------------------------------------------------
+USE GUANA_HOSPI
+GO
+CREATE PROC SP_CrearTipoIntervencion
+	@Nombre varchar(50)
+AS
+	IF(@Nombre = '')
+		BEGIN
+			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+		END
+	ELSE IF (EXISTS(SELECT nombre FROM TipoIntervencion WHERE nombre = @Nombre))
+		BEGIN
+			PRINT 'EL TIPO DE INTERVENCION YA EXISTE'
+		END
+	ELSE
+		BEGIN
+			INSERT INTO TipoIntervencion(nombre)
+			VALUES (@Nombre)
+			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
+		END
+GO
+---------------------------------------------------------------------------------------------------------------------------------------------------
+USE GUANA_HOSPI
+GO
+CREATE PROC SP_CrearIntervencion
+	@Tratamiento VARCHAR(150),
+	@IdTipoIntervencion VARCHAR(5),
+	@IdConsulta VARCHAR(5)
+AS
+	IF(@Tratamiento = '' OR @IdTipoIntervencion = '' OR @IdConsulta = '')
+		BEGIN
+			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+		END
+	ELSE IF(ISNUMERIC(@IdTipoIntervencion) = 0 OR ISNUMERIC(@IdConsulta) = 0)
+		BEGIN
+			PRINT 'NO SE PERMITEN CARACTERES'
+		END
+	ELSE IF(NOT EXISTS(SELECT id_tipo_intervencion FROM TipoIntervencion WHERE id_tipo_intervencion = @IdTipoIntervencion))
+		BEGIN
+			PRINT 'EL ID DE TIPO DE INTERVENCION NO EXISTE'
+		END
+	ELSE IF(NOT EXISTS(SELECT id_consulta FROM Consulta WHERE id_consulta = @IdConsulta))
+		BEGIN
+			PRINT 'EL ID DE LA CONSULTA NO EXISTE'
+		END
+	ELSE
+		BEGIN
+			INSERT INTO Intervenciones(tratamiento, id_tipo_intervencion, id_consulta)
+			VALUES (@Tratamiento, CONVERT(int, @IdTipoIntervencion), CONVERT(int, @IdConsulta))
+			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
+		END
+GO
+--------------------------------------------------------------------------------------------------------------------------------
+USE GUANA_HOSPI
+GO
+CREATE PROC SP_CrearPacienteUnidad
+	@IdPaciente VARCHAR(5),
+	@IdUnidad VARCHAR(5)
+AS
+	IF(@IdPaciente = '' OR @IdUnidad = '')
+		BEGIN
+			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+		END
+	ELSE IF(ISNUMERIC(@IdPaciente) = 0 OR ISNUMERIC(@IdUnidad) = 0)
+		BEGIN
+			PRINT 'NO SE PERMITEN CARACTERES'
+		END
+	ELSE IF(NOT EXISTS(SELECT id_paciente FROM Paciente WHERE id_paciente = @IdPaciente))
+		BEGIN
+			PRINT 'EL ID DEL PACIENTE NO EXISTE'
+		END
+	ELSE IF(NOT EXISTS(SELECT id_unidad FROM Unidad WHERE id_unidad = @IdUnidad))
+		BEGIN
+			PRINT 'EL ID DE LA UNIDAD NO EXISTE'
+		END
+	ELSE
+		BEGIN
+			INSERT INTO Paciente_unidad(id_paciente, id_unidad)
+			VALUES (CONVERT(int, @IdPaciente), CONVERT(int, @IdUnidad))
 			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
 GO
