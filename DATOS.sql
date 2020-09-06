@@ -13,6 +13,7 @@ EXEC SP_Crear_Persona '8', 'Daniel', 'Sequeira', 'Parra', 38
 EXEC SP_Crear_Persona '9', 'Carlos', 'Salgado', 'Arias', 31
 EXEC SP_Crear_Persona '10','Jafet', 'Morataya', 'Galvez', 51
 
+
 ----------------------USUARIO------------------------------
 EXEC SP_Crear_Usuario 'tamo', '12345'
 EXEC SP_Crear_Usuario 'luis1', 'password'

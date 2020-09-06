@@ -263,9 +263,9 @@ AS
 		BEGIN
 			PRINT 'EL ID DE LA INTERVENSION NO PUEDE SER VACIO'
 		END
-	ELSE IF EXISTS (SELECT id_intervencion FROM Intervenciones WHERE Intervenciones.id_intervencion = @id_tipo_intervencion)
+	ELSE IF EXISTS (SELECT id_intervencion FROM Intervencion WHERE Intervencion.id_intervencion = @id_tipo_intervencion)
 		BEGIN
-			DELETE FROM Intervenciones WHERE Intervenciones.id_intervencion = @id_tipo_intervencion
+			DELETE FROM Intervencion WHERE Intervencion.id_intervencion = @id_tipo_intervencion
 			PRINT 'SE HA ELIMINADO LA INTERVENSION'
 		END
 	ELSE

@@ -17,7 +17,7 @@ AS
         END
 	ELSE IF (EXISTS(SELECT dni_persona FROM Persona WHERE dni_persona= @Dni))
 		BEGIN
-			PRINT 'ESTA PERSONA YA EXISTE'
+			PRINT 'ESTE ID YA FUE REGISTRADO'
 		END
 	ELSE
 		BEGIN
@@ -30,12 +30,16 @@ GO
 USE GUANA_HOSPI
 GO
 CREATE PROC SP_Crear_Usuario
-	@Nombre VARCHAR(30),
+	@Nombre VARCHAR(40),
 	@Contrasenna VARCHAR(30)
 AS
 	IF(@Nombre = '' OR @Contrasenna = '')
 		BEGIN
 			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+		END
+	ELSE IF(EXISTS(SELECT nombre_usuario FROM Usuario WHERE nombre_usuario = @Nombre))
+		BEGIN
+			PRINT 'NOMBRE DE USUARIO YA EXISTE'
 		END
 	ELSE
 		BEGIN
@@ -427,7 +431,7 @@ AS
 		END
 	ELSE
 		BEGIN
-			INSERT INTO Intervenciones(tratamiento, id_tipo_intervencion, id_consulta)
+			INSERT INTO Intervencion(tratamiento, id_tipo_intervencion, id_consulta)
 			VALUES (@Tratamiento, CONVERT(int, @IdTipoIntervencion), CONVERT(int, @IdConsulta))
 			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
