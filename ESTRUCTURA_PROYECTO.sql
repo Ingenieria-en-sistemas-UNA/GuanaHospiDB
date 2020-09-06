@@ -77,8 +77,8 @@ CREATE TABLE Unidad_medico(
    id_unidad INT NOT NULL,
    id_medico INT NOT NULL,
    CONSTRAINT PK_id_unidad_medico PRIMARY KEY (id_unidad_medico),
-   CONSTRAINT FK_id_unidad_unidad FOREIGN KEY (id_unidad) REFERENCES Unidad (id_unidad),
-   CONSTRAINT FK_id_medico_medico FOREIGN KEY (id_medico) REFERENCES Medico (id_medico) ON DELETE CASCADE
+   CONSTRAINT FK_id_unidad_unidad_medico FOREIGN KEY (id_unidad) REFERENCES Unidad (id_unidad),
+   CONSTRAINT FK_id_medico_unidad_medico FOREIGN KEY (id_medico) REFERENCES Medico (id_medico) ON DELETE CASCADE
  )
 GO
 
@@ -191,8 +191,8 @@ CREATE TABLE Medico_especialidad(
 	id_medico INT,
 	id_especialidad INT,
 	CONSTRAINT PK_id_medico_especialidad PRIMARY KEY (id_medico_especialidad),
-	CONSTRAINT FK_id_medico_medico FOREIGN KEY (id_medico) REFERENCES Medico (id_medico),
-	CONSTRAINT  FK_id_especialidad_especialidad FOREIGN KEY (id_especialidad) REFERENCES Especialidad(id_especialidad)
+	CONSTRAINT FK_id_medico_medico_especialidad FOREIGN KEY (id_medico) REFERENCES Medico (id_medico),
+	CONSTRAINT  FK_id_especialidad_medico_especialidad FOREIGN KEY (id_especialidad) REFERENCES Especialidad(id_especialidad)
 )
 GO
 

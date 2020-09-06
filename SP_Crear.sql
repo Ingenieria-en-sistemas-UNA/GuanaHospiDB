@@ -112,6 +112,36 @@ GO
 -------------------------------------------------------------------------------------------------------------------------
 USE GUANA_HOSPI
 GO
+CREATE PROC SP_CrearMedicoEspecialidad
+	@IdMedico varchar(5),
+	@IdEspecialidad varchar(5)
+AS
+	IF(@IdMedico = '' OR @IdEspecialidad = '')
+		BEGIN
+			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+		END
+	ELSE IF(ISNUMERIC(@IdMedico) = 0 OR ISNUMERIC(@IdEspecialidad) = 0)
+		BEGIN
+			PRINT 'NO SE PERMITEN CARACTERES'
+		END
+	ELSE IF(NOT EXISTS(SELECT id_medico FROM Medico WHERE id_medico = @IdMedico))
+		BEGIN
+			PRINT 'EL ID MEDICO NO EXISTE'
+		END
+	ELSE IF(NOT EXISTS(SELECT id_especialidad FROM Especialidad WHERE id_especialidad = @IdMedico))
+		BEGIN
+			PRINT 'EL ID DE LA ESPECIALIDAD NO EXISTE'
+		END
+	ELSE 
+		BEGIN
+			INSERT INTO Medico_especialidad(id_medico, id_especialidad)
+			VALUES (CONVERT(int, @IdMedico), CONVERT(int, @IdEspecialidad))
+			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
+		END
+GO
+--------------------------------------------------------------------------------------------------------------------------
+USE GUANA_HOSPI
+GO
 CREATE PROC SP_CrearUnidad
 	@Nombre varchar(50),
 	@NumeroPlanta varchar(5)
