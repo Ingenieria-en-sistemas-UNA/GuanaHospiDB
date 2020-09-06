@@ -121,7 +121,7 @@ CREATE TABLE Presenta (
 	id_sintoma INT NOT NULL,
 	descripcion_presenta VARCHAR(50) NOT NULL,
 	CONSTRAINT PK_id_presenta PRIMARY KEY (id_presenta) ,
-	CONSTRAINT FK_id_sintoma_presenta FOREIGN KEY (id_sintoma) REFERENCES  Sintoma(id_sintoma), 
+	CONSTRAINT FK_id_sintoma_presenta FOREIGN KEY (id_sintoma) REFERENCES  Sintoma(id_sintoma)ONE DELETE CASCADE, 
 	CONSTRAINT FK_id_consulta_presenta FOREIGN KEY (id_consulta) REFERENCES Consulta(id_consulta) ON DELETE CASCADE,
 )
 GO
