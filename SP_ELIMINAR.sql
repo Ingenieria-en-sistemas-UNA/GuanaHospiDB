@@ -161,12 +161,8 @@ AS
 		END
 	ELSE IF EXISTS (SELECT id_sintoma FROM Sintoma WHERE id_sintoma = @id_sintoma)
 		BEGIN
-					DECLARE @idSintomaPresenta INT
-					SET @idSintomaPresenta = (SELECT  id_padecimiento FROM Presenta WHERE id_sintoma = @id_sintoma)
 					DELETE FROM Sintoma WHERE id_sintoma = @id_sintoma
 					PRINT 'SE HA ELIMINADO EL SINTOMA'
-					DELETE FROM Presenta  WHERE Presenta.id_padecimiento = @idSintomaPresenta
-					PRINT 'SE HA ELIMINADO EL PADECIMINETO'
 			END
 	ELSE
 		BEGIN
