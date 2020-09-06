@@ -140,18 +140,10 @@ AS
 		BEGIN
 			PRINT 'EL ID DE UNIDAD MEDICO NO PUEDE SER VACIO'
 		END
-	ELSE IF EXISTS (SELECT id_unidad_medico FROM Unidad_medico WHERE id_unidad_medico  = @id_unidad_medico )
+	ELSE IF EXISTS (SELECT id_unidad_medico FROM Unidad_medico WHERE Unidad_medico.id_unidad_medico = @id_unidad_medico)
 		BEGIN
-		    DECLARE @idUnidadMedicoMedico INT
-			DECLARE @idUnidaMedicoUnidad INT
-			SET @idUnidadMedicoMedico = (SELECT id_medico FROM Unidad_medico WHERE id_medico = @id_unidad_medico)
-			SET v@idUnidadPacientePaciente = (SELECT id_unidad FROM Unidad_medico WHERE id_unidad = @id_unidad_medico)
 			DELETE FROM Unidad_medico WHERE Unidad_medico.id_unidad_medico = @id_unidad_medico
 			PRINT 'SE HA ELIMINADO LA UNIDAD MEDICO'
-			DELETE FROM Medico WHERE Medico.id_medico = @idUnidadMedicoMedico
-			PRINT 'SE HA ELIMINADO EL USUARIO'
-		    DELETE FROM Unidad WHERE Unidad.id_unidad = @idUnidaMedicoUnidad
-			PRINT 'SE HA ELIMINADO EL PERSONA'
 		END
 	ELSE
 		BEGIN
@@ -370,7 +362,15 @@ AS
 		BEGIN
 			PRINT 'EL ID DE UNIDAD PACIENTE NO PUEDE SER VACIO'
 		END
-	
+			ELSE IF EXISTS (SELECT id_paciente_unidad FROM Paciente_unidad WHERE Paciente_unidad.id_paciente_unidad = @id_paciente_unidad)
+		BEGIN
+			DELETE FROM Paciente_unidad WHERE Paciente_unidad.id_paciente_unidad = @id_paciente_unidad
+			PRINT 'SE HA ELIMINADO LA UNIDAD PACENTE'
+		END
+	ELSE
+		BEGIN
+			PRINT 'LA UNIDAD PACIENTE NO EXISTE'
+		END
 GO
 
 ------------------------------------------ELIMINAR MEDICO ESPECIALIDAD----------------------------
@@ -382,6 +382,17 @@ AS
 		BEGIN
 			PRINT 'EL ID DE MEDIICO ESPECIALIDAD NO PUEDE SER VACIO'
 		END
+					ELSE IF EXISTS (SELECT id_medico_especialidad FROM Medico_especialidad WHERE Medico_especialidad.id_medico_especialidad = @id_medico_especialidad)
+		BEGIN
+			DELETE FROM Medico_especialidad WHERE Medico_especialidad.id_medico_especialidad = @id_medico_especialidad
+			PRINT 'SE HA ELIMINADO MEDICO ESPECIALIDAD'
+		END
+	ELSE
+		BEGIN
+			PRINT 'LA ESPECIALIDAD MEDICO NO EXISTE'
+		END
+GO
+		
 	
 GO
 
