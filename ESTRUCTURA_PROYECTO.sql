@@ -27,11 +27,24 @@ CREATE TABLE Persona(
 )
 GO
 
+USE	GUANA_HOSPI
+GO
+CREATE TABLE Medico(
+    id_medico INT IDENTITY(1,1),
+	codigo_medico INT NOT NULL,
+	dni_persona VARCHAR(12) NOT NULL,
+	CONSTRAINT PK_id_medico PRIMARY KEY (id_medico),
+	CONSTRAINT FK_dni_persona_medico FOREIGN KEY (dni_persona) REFERENCES Persona(dni_persona) ON DELETE CASCADE,
+)
+GO
+
 CREATE TABLE Usuario(
     id_usuario INT IDENTITY (1,1),
 	nombre_usuario VARCHAR(40) NOT NULL,
 	contrasenna VARCHAR(30) NOT NULL,
+	id_medico INT NOT NULL,
 	CONSTRAINT PK_id_usuario PRIMARY KEY (id_usuario),
+	CONSTRAINT FK_id_medico_usuario FOREIGN KEY (id_medico ) REFERENCES Medico (id_medico) ON DELETE CASCADE
 )
 GO
 
@@ -46,20 +59,6 @@ GO
 
 USE	GUANA_HOSPI
 GO
-CREATE TABLE Medico(
-    id_medico INT IDENTITY(1,1),
-	codigo_medico INT NOT NULL,
-	id_usuario INT NOT NULL,
-	dni_persona VARCHAR(12) NOT NULL,
-	CONSTRAINT PK_id_medico PRIMARY KEY (id_medico),
-	CONSTRAINT FK_dni_persona_medico FOREIGN KEY (dni_persona) REFERENCES Persona(dni_persona) ON DELETE CASCADE,
-	CONSTRAINT FK_id_usuario_medico FOREIGN KEY (id_usuario ) REFERENCES Usuario (id_usuario)
-)
-GO
-
-
-USE	GUANA_HOSPI
-GO
 CREATE TABLE Unidad(
 	id_unidad INT IDENTITY (1,1),
 	nombre_unidad VARCHAR(50) NOT NULL,
@@ -70,7 +69,7 @@ GO
 
 USE	GUANA_HOSPI
 GO
-CREATE TABLE Unidad_medico(
+CREATE TABLE Unidad_Medico(
    id_unidad_medico INT IDENTITY (1,1),
    id_unidad INT NOT NULL,
    id_medico INT NOT NULL,
@@ -106,7 +105,6 @@ GO
 CREATE TABLE Consulta(
 	id_consulta INT IDENTITY (1,1),
 	fecha_consulta DATE NOT NULL,
-	sintoma_observado VARCHAR(150) NOT NULL,
 	id_paciente INT NOT NULL,
 	id_unidad INT NOT NULL,
 	CONSTRAINT PK_id_consulta PRIMARY KEY (id_consulta),
@@ -150,7 +148,7 @@ GO
 
 USE	GUANA_HOSPI
 GO	
-CREATE TABLE TipoIntervencion(
+CREATE TABLE Tipo_Intervencion(
 	id_tipo_intervencion INT IDENTITY (1,1),
 	nombre_tipo_intervencion VARCHAR(50) NOT NULL,
 	CONSTRAINT PK_id_tipo_intervension PRIMARY KEY (id_tipo_intervencion),
@@ -172,7 +170,7 @@ GO
 
 USE	GUANA_HOSPI
 GO
-CREATE TABLE Paciente_unidad(
+CREATE TABLE Paciente_Unidad(
 	id_paciente_unidad INT IDENTITY(1,1),
 	id_paciente INT  NOT NULL,
 	id_unidad INT NOT NULL,
@@ -184,7 +182,7 @@ GO
 
 USE	GUANA_HOSPI
 GO
-CREATE TABLE Medico_especialidad(
+CREATE TABLE Medico_Especialidad(
 	id_medico_especialidad	INT IDENTITY(1,1),
 	id_medico INT,
 	id_especialidad INT,

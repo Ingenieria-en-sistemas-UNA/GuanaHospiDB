@@ -31,9 +31,10 @@ USE GUANA_HOSPI
 GO
 CREATE PROC SP_Crear_Usuario
 	@Nombre VARCHAR(40),
-	@Contrasenna VARCHAR(30)
+	@Contrasenna VARCHAR(30),
+	@IdMedico
 AS
-	IF(@Nombre = '' OR @Contrasenna = '')
+	IF(@Nombre = '' OR @Contrasenna = '' OR @IdMedico = '')
 		BEGIN
 			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
 		END
@@ -41,10 +42,18 @@ AS
 		BEGIN
 			PRINT 'NOMBRE DE USUARIO YA EXISTE'
 		END
+	ELSE IF(NOT EXISTS(SELECT id_medico FROM Medico WHERE id_medico = @IdMedico))
+		BEGIN
+			PRINT 'EL ID MEDICO NO EXISTE'
+		END
+	ELSE IF(EXISTS(SELECT id_medico FROM Usuario WHERE id_medico = @IdMedico))
+		BEGIN
+			PRINT 'EL MEDICO YA CUENTA CON UN USUARIO'
+		END
 	ELSE
 		BEGIN
-			INSERT INTO Usuario(nombre_usuario, contrasenna)
-			VALUES (@Nombre, @Contrasenna)
+			INSERT INTO Usuario(nombre_usuario, contrasenna, id_medico)
+			VALUES (@Nombre, @Contrasenna, CONVERT(int, @IdMedico))
 			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
 GO
@@ -74,28 +83,19 @@ USE GUANA_HOSPI
 GO
 CREATE PROC SP_Crear_Medico
 	@CodigoMedico varchar(5),
-	@IdUsuario varchar(5),
 	@DniPersona varchar(12)
 AS
-	IF(@CodigoMedico = '' OR @IdUsuario = '' OR @DniPersona = '')
+	IF(@CodigoMedico = '' OR @DniPersona = '')
 		BEGIN
 			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
 		END
-	ELSE IF(ISNUMERIC(@CodigoMedico) = 0 OR ISNUMERIC(@IdUsuario) = 0)
+	ELSE IF(ISNUMERIC(@CodigoMedico) = 0)
 		BEGIN
 			PRINT 'LOS DATOS DEBEN SER DE TIPO NUMERICO'
-		END
-	ELSE IF (NOT EXISTS(SELECT id_usuario FROM Usuario WHERE id_usuario=@IdUsuario))
-		BEGIN
-			PRINT 'EL ID DEL USUARIO NO EXISTE'
 		END
 	ELSE IF (NOT EXISTS(SELECT dni_persona FROM Persona WHERE dni_persona=@DniPersona))
 		BEGIN
 			PRINT 'EL ID DE LA PERSONA NO EXISTE'
-		END
-	ELSE IF (EXISTS(SELECT id_usuario FROM Medico WHERE id_usuario=@IdUsuario))
-		BEGIN
-			PRINT 'ESTE USUARIO YA PERTENECE A UN MEDICO'
 		END
 	ELSE IF (EXISTS(SELECT dni_persona FROM Medico WHERE dni_persona=@DniPersona))
 		BEGIN
@@ -107,8 +107,8 @@ AS
 		END
 	ELSE 
 		BEGIN
-			INSERT INTO Medico(codigo_medico, id_usuario, dni_persona)
-			VALUES (CONVERT(int, @CodigoMedico), CONVERT(int, @IdUsuario), @DniPersona)
+			INSERT INTO Medico(codigo_medico, dni_persona)
+			VALUES (CONVERT(int, @CodigoMedico), @DniPersona)
 			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
 GO
