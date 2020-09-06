@@ -135,13 +135,13 @@ AS
 		BEGIN
 			PRINT 'EL ID DE LA ESPECIALIDAD NO EXISTE'
 		END
-	ELSE IF(EXISTS(SELECT id_medico, id_especialidad FROM Medico_especialidad WHERE id_especialidad = @IdEspecialidad AND id_medico = @IdMedico))
+	ELSE IF(EXISTS(SELECT id_medico, id_especialidad FROM Medico_Especialidad WHERE id_especialidad = @IdEspecialidad AND id_medico = @IdMedico))
 		BEGIN
 			PRINT 'EL MEDICO YA TIENE LA ESPECIALIDAD'
 		END
 	ELSE 
 		BEGIN
-			INSERT INTO Medico_especialidad(id_medico, id_especialidad)
+			INSERT INTO Medico_Especialidad(id_medico, id_especialidad)
 			VALUES (CONVERT(int, @IdMedico), CONVERT(int, @IdEspecialidad))
 			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
@@ -195,17 +195,17 @@ AS
 		BEGIN
 			PRINT 'EL ID DEL MEDICO NO EXISTE'
 		END
-	ELSE IF(EXISTS(SELECT id_medico FROM Unidad_medico WHERE id_medico = @IdMedico))
+	ELSE IF(EXISTS(SELECT id_medico FROM Unidad_Medico WHERE id_medico = @IdMedico))
 		BEGIN
 			PRINT 'EL MEDICO YA TIENE UNA UNIDAD'
 		END
-	ELSE IF(EXISTS(SELECT id_unidad FROM Unidad_medico WHERE id_unidad = @IdUnidad))
+	ELSE IF(EXISTS(SELECT id_unidad FROM Unidad_Medico WHERE id_unidad = @IdUnidad))
 		BEGIN
 			PRINT 'LA UNIDAD SE ENCUENTRA OCUPADA'
 		END
 	ELSE
 		BEGIN
-			INSERT INTO Unidad_medico(id_unidad, id_medico)
+			INSERT INTO Unidad_Medico(id_unidad, id_medico)
 			VALUES (CONVERT(int, @IdUnidad), CONVERT(int, @IdMedico))
 			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
@@ -398,13 +398,13 @@ AS
 		BEGIN
 			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
 		END
-	ELSE IF (EXISTS(SELECT nombre_tipo_intervencion FROM TipoIntervencion WHERE nombre_tipo_intervencion = @Nombre))
+	ELSE IF (EXISTS(SELECT nombre_tipo_intervencion FROM Tipo_Intervencion WHERE nombre_tipo_intervencion = @Nombre))
 		BEGIN
 			PRINT 'EL TIPO DE INTERVENCION YA EXISTE'
 		END
 	ELSE
 		BEGIN
-			INSERT INTO TipoIntervencion(nombre_tipo_intervencion)
+			INSERT INTO Tipo_Intervencion(nombre_tipo_intervencion)
 			VALUES (@Nombre)
 			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
@@ -425,7 +425,7 @@ AS
 		BEGIN
 			PRINT 'NO SE PERMITEN CARACTERES'
 		END
-	ELSE IF(NOT EXISTS(SELECT id_tipo_intervencion FROM TipoIntervencion WHERE id_tipo_intervencion = @IdTipoIntervencion))
+	ELSE IF(NOT EXISTS(SELECT id_tipo_intervencion FROM Tipo_Intervencion WHERE id_tipo_intervencion = @IdTipoIntervencion))
 		BEGIN
 			PRINT 'EL ID DE TIPO DE INTERVENCION NO EXISTE'
 		END
@@ -465,7 +465,7 @@ AS
 		END
 	ELSE
 		BEGIN
-			INSERT INTO Paciente_unidad(id_paciente, id_unidad)
+			INSERT INTO Paciente_Unidad(id_paciente, id_unidad)
 			VALUES (CONVERT(int, @IdPaciente), CONVERT(int, @IdUnidad))
 			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
