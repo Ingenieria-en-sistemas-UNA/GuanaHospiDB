@@ -182,6 +182,19 @@ CREATE TABLE Paciente_unidad(
 	CONSTRAINT FK_id_paciente_paciente_unidad FOREIGN KEY (id_paciente) REFERENCES Paciente (id_paciente) ON DELETE CASCADE,
 	CONSTRAINT FK_id_unidad_paciente_unidad FOREIGN KEY (id_unidad) REFERENCES Unidad(id_unidad),
 )
+GO
+
+USE	GUANA_HOSPI
+GO
+CREATE TABLE Medico_especialidad(
+	id_medico_especialidad	INT IDENTITY(1,1),
+	id_medico INT,
+	id_especialidad INT,
+	CONSTRAINT PK_id_medico_especialidad PRIMARY KEY (id_medico_especialidad),
+	CONSTRAINT FK_id_medico_medico FOREIGN KEY (id_medico) REFERENCES Medico (id_medico),
+	CONSTRAINT  FK_id_especialidad_especialidad FOREIGN KEY (id_especialidad) REFERENCES Especialidad(id_especialidad)
+)
+GO
 
 
 
