@@ -58,6 +58,10 @@ AS
 		BEGIN
 			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
 		END
+			ELSE IF(EXISTS(SELECT nombre_especialdad FROM Especialidad WHERE nombre_especialdad = @NombreEspecialidad))
+		BEGIN
+			PRINT 'NOMBRE DE  ESPECILIDAD YA EXISTE'
+		END
 	ELSE
 		BEGIN
 			INSERT INTO Especialidad(nombre_especialdad)
@@ -99,7 +103,7 @@ AS
 		END
 	ELSE IF (EXISTS(SELECT codigo_medico FROM Medico WHERE codigo_medico = @CodigoMedico))
 		BEGIN
-			PRINT 'ESTA PERSONA YA ES UN MEDICO'
+			PRINT 'EL CODIGO MEDICO YA HA SIDO REGISTRADO'
 		END
 	ELSE 
 		BEGIN
