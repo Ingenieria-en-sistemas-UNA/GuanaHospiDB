@@ -1,5 +1,5 @@
 ------------------------ELIMINAR DATOS DE PERSONA--------------------------------
-EXEC SP_EliminarPersona
+EXEC SP_EliminarPersona '1'
 
 
 ------------------------ELIMINAR DATOS DE USUARIO--------------------------------
