@@ -29,7 +29,7 @@ GO
 
 CREATE PROC SP_Obtener_Medicos
 AS
-	SELECT 'Id_Medico' = id_medico, 'Codigo_Medico' = codigo_medico , 'Id_Usuario' = id_usuario, 'Id_Especialidad' = id_especialidad, 'Cedula_Persona' = dni_persona
+	SELECT 'Id_Medico' = id_medico, 'Codigo_Medico' = codigo_medico , 'Id_Usuario' = id_usuario, 'Cedula_Persona' = dni_persona
 	FROM Medico
 GO
 
@@ -54,7 +54,7 @@ GO
 CREATE PROC SP_Obtener_Intervenciones
 AS
 	SELECT 'Id_Intervencion' = id_intervencion, 'Tratamiento' = tratamiento, 'Id_Tipo_Intervencion' = id_tipo_intervencion, 'Id_Consulta' = id_consulta
-	FROM Intervenciones
+	FROM Intervencion
 GO
 
 CREATE PROC SP_Obtener_Especialidades

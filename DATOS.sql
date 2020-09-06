@@ -2,7 +2,7 @@ USE GUANA_HOSPI
 GO
 -----------------PERSONA--------------------------------
 EXEC SP_Crear_Persona '1', 'Tatiana', 'Morales', 'Mendez', 19
-EXEC SP_Crear_Persona '2', 'Luis', 'Rodriguez', 'Baltodano', 21
+EXEC SP_Crear_Persona '2', 'Luis', 'Rodriguez', 'Baltodano', 22
 EXEC SP_Crear_Persona '3', 'Arlen', 'Vargas', 'Galvez', 19
 EXEC SP_Crear_Persona '4', 'Ricardo', 'Morataya', 'Morataya', 20
 EXEC SP_Crear_Persona '5', 'Enrique', 'Arias', 'Salgado', 20
@@ -30,7 +30,7 @@ EXEC SP_Crear_Especialidad 'Oftalmología'
 
 -----------------------MEDICO-------------------------------
 EXEC SP_Crear_Medico 1234, 1, '1'
-EXEC SP_Crear_Medico 2323, 2, '2'
+EXEC SP_Crear_Medico 5466, 2, '2'
 EXEC SP_Crear_Medico 5344, 3, '3'
 EXEC SP_Crear_Medico 6453, 4, '4'
 EXEC SP_Crear_Medico 4656, 5, '5'
