@@ -28,11 +28,19 @@ EXEC SP_CrearEspecialidad 'Otorrinolaringología'
 EXEC SP_CrearEspecialidad 'Oftalmología'
 
 -----------------------MEDICO-------------------------------
-EXEC SP_CrearMedico 1234, 1, 1, '1'
-EXEC SP_CrearMedico 2323, 2, 2, '2'
-EXEC SP_CrearMedico 5344, 3, 3, '3'
-EXEC SP_CrearMedico 6453, 4, 4, '4'
-EXEC SP_CrearMedico 4656, 5, 5, '5'
+EXEC SP_CrearMedico 1234, 1, '1'
+EXEC SP_CrearMedico 2323, 2, '2'
+EXEC SP_CrearMedico 5344, 3, '3'
+EXEC SP_CrearMedico 6453, 4, '4'
+EXEC SP_CrearMedico 4656, 5, '5'
+
+------------------------MEDICO ESPECIALIDAD-------------------
+EXEC SP_CrearMedicoEspecialidad 1,1
+EXEC SP_CrearMedicoEspecialidad 2,2
+EXEC SP_CrearMedicoEspecialidad 3,3
+EXEC SP_CrearMedicoEspecialidad 4,4
+EXEC SP_CrearMedicoEspecialidad 5,5
+SELECT * FROM Medico_especialidad;
 
 -----------------------UNIDAD-------------------------------
 EXEC SP_CrearUnidad 'Sala A1', 1

@@ -67,24 +67,19 @@ GO
 CREATE PROC SP_CrearMedico
 	@CodigoMedico varchar(5),
 	@IdUsuario varchar(5),
-	@IdEspecialidad varchar(5),
 	@DniPersona varchar(12)
 AS
-	IF(@CodigoMedico = '' OR @IdUsuario = '' OR @IdEspecialidad = '' OR @DniPersona = '')
+	IF(@CodigoMedico = '' OR @IdUsuario = '' OR @DniPersona = '')
 		BEGIN
 			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
 		END
-	ELSE IF(ISNUMERIC(@CodigoMedico) = 0 OR ISNUMERIC(@IdUsuario) = 0 OR ISNUMERIC(@IdEspecialidad) = 0)
+	ELSE IF(ISNUMERIC(@CodigoMedico) = 0 OR ISNUMERIC(@IdUsuario) = 0)
 		BEGIN
 			PRINT 'LOS DATOS DEBEN SER DE TIPO NUMERICO'
 		END
 	ELSE IF (NOT EXISTS(SELECT id_usuario FROM Usuario WHERE id_usuario=@IdUsuario))
 		BEGIN
 			PRINT 'EL ID DEL USUARIO NO EXISTE'
-		END
-	ELSE IF (NOT EXISTS(SELECT id_especialidad FROM Especialidad WHERE id_especialidad=@IdEspecialidad))
-		BEGIN
-			PRINT 'EL ID DE LA ESPECIALIDAD NO EXISTE'
 		END
 	ELSE IF (NOT EXISTS(SELECT dni_persona FROM Persona WHERE dni_persona=@DniPersona))
 		BEGIN
@@ -104,8 +99,8 @@ AS
 		END
 	ELSE 
 		BEGIN
-			INSERT INTO Medico(codigo_medico, id_usuario, id_especialidad, dni_persona)
-			VALUES (CONVERT(int, @CodigoMedico), CONVERT(int, @IdUsuario), CONVERT(int, @IdEspecialidad), @DniPersona)
+			INSERT INTO Medico(codigo_medico, id_usuario, dni_persona)
+			VALUES (CONVERT(int, @CodigoMedico), CONVERT(int, @IdUsuario), @DniPersona)
 			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
 GO
@@ -131,6 +126,10 @@ AS
 	ELSE IF(NOT EXISTS(SELECT id_especialidad FROM Especialidad WHERE id_especialidad = @IdMedico))
 		BEGIN
 			PRINT 'EL ID DE LA ESPECIALIDAD NO EXISTE'
+		END
+	ELSE IF(EXISTS(SELECT id_medico, id_especialidad FROM Medico_especialidad WHERE id_especialidad = @IdEspecialidad AND id_medico = @IdMedico))
+		BEGIN
+			PRINT 'EL MEDICO YA TIENE LA ESPECIALIDAD'
 		END
 	ELSE 
 		BEGIN
