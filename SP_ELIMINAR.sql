@@ -280,7 +280,7 @@ GO
 ---------------------------------------------ELIMINAR TIPO INTERVENcION-----------------------------------------
 USE	GUANA_HOSPI
 GO
-CREATE PROC SP_EliminarIntervension(@id_tipo_intervencion INT)
+CREATE PROC SP_EliminarTipoIntervension(@id_tipo_intervencion INT)
 AS
 	IF (@id_tipo_intervencion = '') 
 		BEGIN
