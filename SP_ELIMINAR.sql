@@ -2,7 +2,7 @@
 
 USE	GUANA_HOSPI
 GO
-CREATE PROC SP_EliminarPersona (@dni_persona VARCHAR(12))
+CREATE PROC SP_Eliminar_Persona (@dni_persona VARCHAR(12))
 AS
 	IF (@dni_persona = '') 
 		BEGIN
@@ -10,21 +10,8 @@ AS
 		END
 	ELSE IF EXISTS (SELECT dni_persona FROM Persona WHERE dni_persona = @dni_persona)
 		BEGIN
-	        IF EXISTS (SELECT dni_persona  FROM Medico where dni_persona = @dni_persona)
-				BEGIN
-					DECLARE @idUsuarioMedico INT
-					SET @idUsuarioMedico = (SELECT  id_usuario FROM Medico WHERE dni_persona = @dni_persona)
-					DELETE FROM Persona WHERE Persona.dni_persona = @dni_persona
-					PRINT 'SE HA ELIMINADO LA MEDICO'
-					DELETE FROM Usuario  WHERE Usuario.id_usuario = @idUsuarioMedico
-					PRINT 'SE HA ELIMINADO EL USUARIO DE LA PERSONA'
-				END
-			ELSE IF EXISTS (SELECT @dni_persona FROM Paciente WHERE dni_persona = @dni_persona)
-				BEGIN
-					DELETE FROM Persona WHERE Persona.dni_persona = @dni_persona
-					PRINT 'SE HA ELIMINADO PERSONA'
-					PRINT 'SE HA ELIMINADO PACIENTE'
-				END
+			DELETE FROM Persona WHERE Persona.dni_persona = @dni_persona
+			PRINT 'SE HA ELIMINADO LA PERSONA'
 		END
 	ELSE
 		BEGIN
@@ -34,7 +21,7 @@ GO
 -------------------------------------------------Eliminar Usuario------------------------------------------------------------------
 USE	GUANA_HOSPI
 GO
-CREATE PROC SP_EliminarUsuario (@id_usuario INT)
+CREATE PROC SP_Eliminar_Usuario (@id_usuario INT)
 AS
 	IF (@id_usuario = '') 
 		BEGIN
@@ -42,11 +29,7 @@ AS
 		END
 	ELSE IF EXISTS (SELECT id_usuario FROM Usuario WHERE id_usuario  = @id_usuario)
 		BEGIN
-		    DECLARE @idUsuarioMedico INT
-			SET @idUsuarioMedico = (SELECT id_usuario FROM Medico WHERE id_medico = @id_usuario)
-			DELETE FROM Medico WHERE Medico.id_medico = @id_usuario
-			PRINT 'SE HA ELIMINADO EL MEDICO'
-			DELETE FROM Usuario WHERE Usuario.id_usuario = @idUsuarioMedico
+			DELETE FROM Usuario WHERE Usuario.id_usuario = @id_usuario
 			PRINT 'SE HA ELIMINADO EL USUARIO'
 		END
 	ELSE
@@ -58,7 +41,7 @@ GO
 
 USE	GUANA_HOSPI
 GO
-CREATE PROC SP_EliminarEspecialidad (@id_especialidad INT)
+CREATE PROC SP_Eliminar_Especialidad (@id_especialidad INT)
 AS
 	IF (@id_especialidad = '') 
 		BEGIN
@@ -77,7 +60,7 @@ GO
 -------------------------------------------------Eliminar Medico------------------------------------------------------------------
 USE	GUANA_HOSPI
 GO
-CREATE PROC SP_EliminarMedico (@id_medico INT)
+CREATE PROC SP_Eliminar_Medico (@id_medico INT)
 AS
 	IF (@id_medico = '') 
 		BEGIN
@@ -85,14 +68,10 @@ AS
 		END
 	ELSE IF EXISTS (SELECT id_medico FROM Medico WHERE id_medico  = @id_medico )
 		BEGIN
-		    DECLARE @idUsuarioMedico INT
 			DECLARE @idPersonaMedico VARCHAR(12)
-			SET @idUsuarioMedico = (SELECT id_usuario FROM Medico WHERE id_medico = @id_medico)
 			SET @idPersonaMedico = (SELECT dni_persona FROM Medico WHERE id_medico = @id_medico)
 			DELETE FROM Medico WHERE Medico.id_medico = @id_medico
 			PRINT 'SE HA ELIMINADO EL MEDICO'
-			DELETE FROM Usuario WHERE Usuario.id_usuario = @idUsuarioMedico
-			PRINT 'SE HA ELIMINADO EL USUARIO'
 		    DELETE FROM Persona WHERE Persona.dni_persona = @idPersonaMedico
 			PRINT 'SE HA ELIMINADO EL PERSONA'
 		END
@@ -104,7 +83,7 @@ GO
 ---------------------------------------------ELIMINAR UNIDAD-----------------------------------------------------
 USE	GUANA_HOSPI
 GO
-CREATE PROC SP_EliminarUnidad (@id_unidad INT)
+CREATE PROC SP_Eliminar_Unidad (@id_unidad INT)
 AS
 	IF (@id_unidad = '') 
 		BEGIN
@@ -134,7 +113,7 @@ GO
 ---------------------------------------------------UNIDAD MEDICO-----------------------------------------------------
 USE	GUANA_HOSPI
 GO
-CREATE PROC SP_EliminarUnidadMedico (@id_unidad_medico INT)
+CREATE PROC SP_Eliminar_Unidad_Medico (@id_unidad_medico INT)
 AS
 	IF (@id_unidad_medico = '') 
 		BEGIN
@@ -153,7 +132,7 @@ GO
 ------------------------------------------------------------ELIMINAR SINTOMA-------------------------------------
 USE	GUANA_HOSPI
 GO
-CREATE PROC SP_EliminarSintoma (@id_sintoma INT)
+CREATE PROC SP_Eliminar_Sintoma (@id_sintoma INT)
 AS
 	IF (@id_sintoma = '') 
 		BEGIN
@@ -172,7 +151,7 @@ GO
 -----------------------------ELIMINAR Paciente-----------------------------------------------------------------
 USE	GUANA_HOSPI
 GO
-CREATE PROC SP_EliminarPaciente (@id_paciente INT)
+CREATE PROC SP_Eliminar_Paciente (@id_paciente INT)
 AS
 	IF (@id_paciente = '') 
 		BEGIN
@@ -195,7 +174,7 @@ GO
 ------------------------------------------ELIMINAR CONSULTA------------------------------------------------------------
 USE	GUANA_HOSPI
 GO
-CREATE PROC SP_EliminaConsulta (@id_consulta INT)
+CREATE PROC SP_Elimina_Consulta (@id_consulta INT)
 AS
 	IF (@id_consulta = '') 
 		BEGIN
@@ -215,7 +194,7 @@ GO
 -------------------------------------------ELIMINAR PRESENTA--------------------------------------------------------
 USE	GUANA_HOSPI
 GO
-CREATE PROC SP_EliminarPresenta (@id_presenta INT)
+CREATE PROC SP_Eliminar_Presenta (@id_presenta INT)
 AS
 	IF (@id_presenta = '') 
 		BEGIN
@@ -234,7 +213,7 @@ GO
 -----------------------------------ELIMINAR ENFERMEDAD-----------------------------------
 USE	GUANA_HOSPI
 GO
-CREATE PROC SP_EliminarEnfermedad (@id_enfermedad INT)
+CREATE PROC SP_Eliminar_Enfermedad (@id_enfermedad INT)
 AS
 	IF (@id_enfermedad = '') 
 		BEGIN
@@ -253,7 +232,7 @@ GO
 ----------------------------------------ELIMINAR PADECIMIETNO------------------------------------------------
 USE	GUANA_HOSPI
 GO
-CREATE PROC SP_EliminarPadecimiento (@id_padece INT)
+CREATE PROC SP_Eliminar_Padecimiento (@id_padece INT)
 AS
 	IF (@id_padece = '') 
 		BEGIN
@@ -280,7 +259,7 @@ GO
 ---------------------------------------------ELIMINAR TIPO INTERVENcION-----------------------------------------
 USE	GUANA_HOSPI
 GO
-CREATE PROC SP_EliminarTipoIntervension(@id_tipo_intervencion INT)
+CREATE PROC SP_Eliminar_Tipo_Intervension(@id_tipo_intervencion INT)
 AS
 	IF (@id_tipo_intervencion = '') 
 		BEGIN
@@ -299,7 +278,7 @@ GO
 ------------------------------------ELIMINAR INTERVENCIONES------------------------------
 USE	GUANA_HOSPI
 GO
-CREATE PROC SP_EliminarIntervencion (@id_intervencion INT)
+CREATE PROC SP_Eliminar_Intervencion (@id_intervencion INT)
 AS
 	IF (@id_intervencion = '') 
 		BEGIN
@@ -327,7 +306,7 @@ GO
 ----------------------------------PACIENTE UNIDAD-------------------------------------------------------
 USE	GUANA_HOSPI
 GO
-CREATE PROC SP_EliminarUnidadPaciente (@id_paciente_unidad INT)
+CREATE PROC SP_Eliminar_Unidad_Paciente (@id_paciente_unidad INT)
 AS
 	IF (@id_paciente_unidad = '') 
 		BEGIN
@@ -347,7 +326,7 @@ GO
 ------------------------------------------ELIMINAR MEDICO ESPECIALIDAD----------------------------
 USE	GUANA_HOSPI
 GO
-CREATE PROC SP_EliminarMedicoEspecialidad (@id_medico_especialidad INT)
+CREATE PROC SP_Eliminar_Medico_Especialidad (@id_medico_especialidad INT)
 AS
 	IF (@id_medico_especialidad = '') 
 		BEGIN
