@@ -275,10 +275,9 @@ USE GUANA_HOSPI
 GO
 CREATE PROC SP_Crear_Consulta
 	@FechaConsulta VARCHAR(12),
-	@IdPaciente VARCHAR(5),
-	@IdUnidad VARCHAR(5)
+	@IdPaciente VARCHAR(5)
 AS
-	IF(@FechaConsulta = '' OR @IdPaciente = '' OR @IdUnidad = '')
+	IF(@FechaConsulta = '' OR @IdPaciente = '')
 		BEGIN
 			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
 		END
@@ -286,7 +285,7 @@ AS
 		BEGIN
 			PRINT 'DEBE SER UN FORMATO FECHA'
 		END
-	ELSE IF(ISNUMERIC(@IdPaciente) = 0 OR ISNUMERIC(@IdUnidad) = 0)
+	ELSE IF(ISNUMERIC(@IdPaciente) = 0)
 		BEGIN
 			PRINT 'NO SE PERMITEN CARACTERES'
 		END
@@ -294,14 +293,44 @@ AS
 		BEGIN
 			PRINT 'EL PACIENTE NO EXISTE'
 		END
-	ELSE IF(NOT EXISTS(SELECT id_unidad FROM Unidad WHERE id_unidad = @IdUnidad))
+	ELSE
 		BEGIN
-			PRINT 'LA UNIDAD NO EXISTE'
+			INSERT INTO Consulta(fecha_consulta, id_paciente)
+			VALUES (CONVERT(date, @FechaConsulta), CONVERT(int, @IdPaciente))
+			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
+		END
+GO
+-----------------------------------------------------------------------------------------------------------------------------------------
+USE GUANA_HOSPI
+GO
+CREATE PROC SP_Crear_Consulta_Unidad
+	@IdConsulta VARCHAR(5),
+	@IdUnidad VARCHAR(5)
+AS
+	IF(@IdConsulta = '' OR @IdUnidad = '')
+		BEGIN
+			PRINT 'NO SE PERMITEN DATOS VACIOS'
+		END
+	ELSE IF(ISNUMERIC(@IdConsulta) = 0 OR ISNUMERIC(@IdUnidad) = 0)
+		BEGIN
+			PRINT 'NO SE PERMITEN CARACTERES'
+		END
+	ELSE IF(NOT EXISTS(SELECT id_consulta FROM Consulta WHERE id_consulta = @IdConsulta))
+		BEGIN
+			PRINT 'EL ID DE LA CONSULTA NO EXISTE'
+		END
+	ELSE IF (NOT EXISTS(SELECT id_unidad FROM Unidad WHERE id_unidad = @IdUnidad))
+		BEGIN
+			PRINT 'EL ID DE LA UNIDAD NO EXISTE'
+		END
+	ELSE IF (EXISTS(SELECT id_consulta, id_unidad FROM Consulta_Unidad WHERE id_consulta = @IdConsulta AND id_unidad = @IdUnidad))
+		BEGIN
+			PRINT 'ESTE REGISTRO YA FUE INGRESADO'
 		END
 	ELSE
 		BEGIN
-			INSERT INTO Consulta(fecha_consulta, id_paciente, id_unidad)
-			VALUES (CONVERT(date, @FechaConsulta), CONVERT(int, @IdPaciente), CONVERT(int, @IdUnidad))
+			INSERT INTO Consulta_Unidad(id_consulta, id_unidad)
+			VALUES (CONVERT(int, @IdConsulta), CONVERT(int, @IdUnidad))
 			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
 GO

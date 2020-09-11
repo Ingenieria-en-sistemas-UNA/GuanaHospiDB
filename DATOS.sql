@@ -75,10 +75,16 @@ EXEC SP_Crear_Paciente 4039, '2020/07/3', '8'
 EXEC SP_Crear_Paciente 9284, '2020/06/16', '9'
 
 -----------------------CONSULTA-----------------------------------
-EXEC SP_Crear_Consulta '2020/09/5', 1, 1
-EXEC SP_Crear_Consulta '2020/09/5', 2, 2
-EXEC SP_Crear_Consulta '2020/09/5', 3, 3
-EXEC SP_Crear_Consulta '2020/09/5', 4, 4
+EXEC SP_Crear_Consulta '2020/09/5', 1
+EXEC SP_Crear_Consulta '2020/09/5', 2
+EXEC SP_Crear_Consulta '2020/09/5', 3
+EXEC SP_Crear_Consulta '2020/09/5', 4
+
+-----------------------CONSULTA UNIDAD----------------------------
+EXEC SP_Crear_Consulta_Unidad 1, 1
+EXEC SP_Crear_Consulta_Unidad 2, 2
+EXEC SP_Crear_Consulta_Unidad 3, 3
+EXEC SP_Crear_Consulta_Unidad 4, 4
 
 -----------------------PRESENTE----------------------------------
 EXEC SP_Crear_Presenta 1, 1, 'Tiene que consumir mas agua'
@@ -128,8 +134,9 @@ EXEC SP_Obtener_Unidades
 EXEC SP_Obtener_Usuarios
 EXEC SP_Obtener_Medicos
 EXEC SP_Obtener_Unidad_Medicos
-SELECT * FROM Medico_especialidad
+EXEC SP_Obtener_Medico_Especialidad
 EXEC SP_Obtener_Consultas
+EXEC SP_Obtener_Consultas_Unidad
 EXEC SP_Obtener_Enfermedades
 EXEC SP_Obtener_Intervenciones
 EXEC SP_Obtener_Especialidades

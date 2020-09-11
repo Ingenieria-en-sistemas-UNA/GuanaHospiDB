@@ -41,8 +41,14 @@ GO
 
 CREATE PROC SP_Obtener_Consultas
 AS
-	SELECT 'Id_Consulta' = id_consulta, 'Fehca_Consulta' = fecha_consulta , 'Id_Paciente' = id_paciente, 'Id_Unidad' = id_unidad
+	SELECT 'Id_Consulta' = id_consulta, 'Fehca_Consulta' = fecha_consulta , 'Id_Paciente' = id_paciente
 	FROM Consulta
+GO
+
+CREATE PROC SP_Obtener_Consultas_Unidad
+AS
+	SELECT 'Id_Consulta_Unidad' = id_consulta_unidad, 'Id_Consulta' = id_consulta , 'Id_Unidad' = id_unidad
+	FROM Consulta_Unidad
 GO
 
 CREATE PROC SP_Obtener_Enfermedades
@@ -91,4 +97,10 @@ CREATE PROC SP_Obtener_Presenta
 AS
 	SELECT 'Id_Presenta' = id_presenta, 'Id_Consulta' = id_consulta, 'Id_Sintoma' = id_sintoma, 'Descripcion_Presenta' = descripcion_presenta
 	FROM Presenta
+GO
+
+CREATE PROC SP_Obtener_Medico_Especialidad
+AS
+	SELECT 'Id_Medico_Especialidad' = id_medico_especialidad, 'Id_Medico' = id_medico, 'Id_Especialidad' = id_especialidad
+	FROM Medico_Especialidad
 GO
