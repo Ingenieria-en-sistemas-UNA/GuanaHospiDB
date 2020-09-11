@@ -56,11 +56,15 @@ GO
 
 USE	GUANA_HOSPI
 GO
-CREATE PROC SP_Eliminar_Especialidad (@id_especialidad INT)
+CREATE PROC SP_Eliminar_Especialidad (@id_especialidad VARCHAR(10))
 AS
 	IF (@id_especialidad = '') 
 		BEGIN
 			PRINT 'EL ID DE ESPECIALIDAD NO PUEDE SER VACIO'
+		END
+		ELSE IF(ISNUMERIC(@id_especialidad) = 0)
+		BEGIN
+			PRINT 'LOS DATOS DEBEN SER DE TIPO NUMERICO'
 		END
 	ELSE IF EXISTS (SELECT id_especialidad FROM Especialidad WHERE Especialidad.id_especialidad = @id_especialidad)
 		BEGIN
@@ -98,11 +102,15 @@ GO
 ---------------------------------------------ELIMINAR UNIDAD-----------------------------------------------------
 USE	GUANA_HOSPI
 GO
-CREATE PROC SP_Eliminar_Unidad (@id_unidad INT)
+CREATE PROC SP_Eliminar_Unidad (@id_unidad VARCHAR(10))
 AS
 	IF (@id_unidad = '') 
 		BEGIN
 			PRINT 'EL ID DE UNIDAD NO PUEDE SER VACIO'
+		END
+			ELSE IF(ISNUMERIC(@id_unidad) = 0)
+		BEGIN
+			PRINT 'LOS DATOS DEBEN SER DE TIPO NUMERICO'
 		END
 	ELSE IF EXISTS (SELECT id_unidad FROM Unidad WHERE id_unidad = @id_unidad)
 		BEGIN
@@ -173,7 +181,7 @@ AS
 			  DELETE FROM Persona WHERE Persona.dni_persona = @idPersonaPaciente
 			PRINT 'SE HA ELIMINADO LA PERSONA'
 			DELETE FROM Persona WHERE Persona.dni_persona = @idPersonaPaciente
-			PRINT 'SE HA ELIMINADO EL PERSONA'
+			PRINT 'SE HA ELIMINADO LA PERSONA'
 		END
 	ELSE
 		BEGIN

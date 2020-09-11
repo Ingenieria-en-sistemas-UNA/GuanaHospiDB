@@ -106,10 +106,20 @@ CREATE TABLE Consulta(
 	id_consulta INT IDENTITY (1,1),
 	fecha_consulta DATE NOT NULL,
 	id_paciente INT NOT NULL,
-	id_unidad INT NOT NULL,
 	CONSTRAINT PK_id_consulta PRIMARY KEY (id_consulta),
 	CONSTRAINT FK_id_paciente_consulta FOREIGN KEY(id_paciente) REFERENCES Paciente(id_paciente) ON DELETE CASCADE,
-	CONSTRAINT FK_id_unidad_consulta FOREIGN KEY(id_unidad) REFERENCES Unidad(id_unidad) ,
+)
+GO
+
+USE GUANA_HOSPI
+GO
+CREATE TABLE Consulta_Unidad(
+	id_consulta_unidad INT IDENTITY (1,1),
+	id_consulta INT NOT NULL,
+	id_unidad INT NOT NULL, 
+	CONSTRAINT PK_id_consulta_unidad PRIMARY KEY (id_consulta_unidad),
+	CONSTRAINT FK_id_consulta FOREIGN KEY(id_consulta) REFERENCES Consulta(id_consulta) ON DELETE CASCADE,
+	CONSTRAINT FK_id_unidad FOREIGN KEY(id_unidad) REFERENCES Unidad(id_unidad) ON DELETE CASCADE
 )
 GO
 
