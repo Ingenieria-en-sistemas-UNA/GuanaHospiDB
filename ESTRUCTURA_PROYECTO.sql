@@ -57,6 +57,19 @@ CREATE TABLE Especialidad(
 )
 GO
 
+
+USE	GUANA_HOSPI
+GO
+CREATE TABLE Medico_Especialidad(
+	id_medico_especialidad	INT IDENTITY(1,1),
+	id_medico INT,
+	id_especialidad INT,
+	CONSTRAINT PK_id_medico_especialidad PRIMARY KEY (id_medico_especialidad),
+	CONSTRAINT FK_id_medico_medico_especialidad FOREIGN KEY (id_medico) REFERENCES Medico (id_medico) ON DELETE CASCADE,
+	CONSTRAINT  FK_id_especialidad_medico_especialidad FOREIGN KEY (id_especialidad) REFERENCES Especialidad(id_especialidad) ON DELETE CASCADE
+)
+GO
+
 USE	GUANA_HOSPI
 GO
 CREATE TABLE Unidad(
@@ -189,22 +202,6 @@ CREATE TABLE Paciente_Unidad(
 	CONSTRAINT FK_id_unidad_paciente_unidad FOREIGN KEY (id_unidad) REFERENCES Unidad(id_unidad) ON DELETE CASCADE,
 )
 GO
-
-USE	GUANA_HOSPI
-GO
-CREATE TABLE Medico_Especialidad(
-	id_medico_especialidad	INT IDENTITY(1,1),
-	id_medico INT,
-	id_especialidad INT,
-	CONSTRAINT PK_id_medico_especialidad PRIMARY KEY (id_medico_especialidad),
-	CONSTRAINT FK_id_medico_medico_especialidad FOREIGN KEY (id_medico) REFERENCES Medico (id_medico) ON DELETE CASCADE,
-	CONSTRAINT  FK_id_especialidad_medico_especialidad FOREIGN KEY (id_especialidad) REFERENCES Especialidad(id_especialidad) ON DELETE CASCADE
-)
-GO
-
-
-
-
 
 
 

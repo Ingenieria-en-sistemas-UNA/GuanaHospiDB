@@ -37,6 +37,7 @@ AS
         BEGIN
 			PRINT 'EL ID DE LA PERSONA NO EXISTE'
 		END
+GO
 
 
 

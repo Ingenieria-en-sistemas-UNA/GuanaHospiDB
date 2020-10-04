@@ -12,11 +12,11 @@ AS
 		BEGIN
 	        IF EXISTS (SELECT dni_persona  FROM Medico where dni_persona = @dni_persona)
 				BEGIN
-					DECLARE @idUsuarioMedico INT
-					SET @idUsuarioMedico = (SELECT  id_usuario FROM Medico WHERE dni_persona = @dni_persona)
+					DECLARE @idUsuario INT
+					SET @idUsuario = (SELECT id_usuario FROM Usuario INNER JOIN Medico ON Usuario.id_medico = Medico.id_medico WHERE Medico.dni_persona = @dni_persona)
 					DELETE FROM Persona WHERE Persona.dni_persona = @dni_persona
 					PRINT 'SE HA ELIMINADO EL MEDICO'
-					DELETE FROM Usuario  WHERE Usuario.id_usuario = @idUsuarioMedico
+					DELETE FROM Usuario  WHERE Usuario.id_usuario = @idUsuario
 					PRINT 'SE HA ELIMINADO EL USUARIO DE LA PERSONA'
 				END
 			ELSE IF EXISTS (SELECT @dni_persona FROM Paciente WHERE dni_persona = @dni_persona)
@@ -275,11 +275,11 @@ AS
 		END
 	ELSE IF EXISTS (SELECT id_tipo_intervencion FROM Tipo_Intervencion WHERE id_tipo_intervencion = @id_tipo_intervencion)
 		BEGIN
-			DELETE FROM Intervencion WHERE Intervencion.id_intervencion = @id_tipo_intervencion
+			DELETE FROM Intervenciones WHERE Intervenciones.id_intervencion = @id_tipo_intervencion
 			PRINT 'SE HA ELIMINADO EL TIPO INTERVENSION'
 			DECLARE @IdIntervencion INT
-			SET @IdIntervencion = (SELECT id_intervencion FROM Intervencion WHERE id_tipo_intervencion = @IdIntervencion)
-			DELETE FROM Intervencion WHERE Intervencion.id_intervencion = @IdIntervencion
+			SET @IdIntervencion = (SELECT id_intervencion FROM Intervenciones WHERE id_tipo_intervencion = @IdIntervencion)
+			DELETE FROM Intervenciones WHERE Intervenciones.id_intervencion = @IdIntervencion
 			DELETE FROM Tipo_Intervencion WHERE Tipo_Intervencion.id_tipo_intervencion = @id_tipo_intervencion
 			PRINT 'SE HA ELIMINADO LA INTERVENSION'
 		END
@@ -297,9 +297,9 @@ AS
 		BEGIN
 			PRINT 'EL ID DE INTERVENCION NO PUEDE SER VACIO'
 		END
-	ELSE IF EXISTS(SELECT id_intervencion FROM Intervencion WHERE id_intervencion  = @id_intervencion )
+	ELSE IF EXISTS(SELECT id_intervencion FROM Intervenciones WHERE id_intervencion  = @id_intervencion )
 		BEGIN
-			DELETE FROM Intervencion WHERE Intervencion.id_tipo_intervencion = @id_intervencion
+			DELETE FROM Intervenciones WHERE Intervenciones.id_tipo_intervencion = @id_intervencion
 			PRINT 'SE HA ELIMINADO LA INTERVENCION'
 	    END
 	ELSE
