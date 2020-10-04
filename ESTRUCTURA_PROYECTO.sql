@@ -167,7 +167,7 @@ GO
 
 USE	GUANA_HOSPI
 GO
-CREATE TABLE Intervencion(
+CREATE TABLE Intervenciones(
 	id_intervencion INT IDENTITY (1,1),
 	tratamiento VARCHAR(150) NOT NULL,
 	id_tipo_intervencion INT NOT NULL,

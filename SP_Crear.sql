@@ -463,7 +463,7 @@ AS
 		END
 	ELSE
 		BEGIN
-			INSERT INTO Intervencion(tratamiento, id_tipo_intervencion, id_consulta)
+			INSERT INTO Intervenciones(tratamiento, id_tipo_intervencion, id_consulta)
 			VALUES (@Tratamiento, CONVERT(int, @IdTipoIntervencion), CONVERT(int, @IdConsulta))
 			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
