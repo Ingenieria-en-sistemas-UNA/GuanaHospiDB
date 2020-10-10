@@ -9,23 +9,24 @@ CREATE PROC SP_Crear_Persona
 AS
 	IF ((@Dni = '') OR (@Nombre = '') OR ( @Apellido1 = '') OR (@Apellido2 = '') OR (@Edad = ''))
 		BEGIN
-			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+			SELECT message = 'No se permiten campos vacios', ok = 0
 		END
 	ELSE IF(ISNUMERIC(@Edad) = 0)
 	    BEGIN
-            PRINT 'LA EDAD DEBE SER DATOS NUMERICOS'
+            SELECT message = 'LA EDAD DEBE SER DATOS NUMERICOS', ok = 0
         END
 	ELSE IF (EXISTS(SELECT dni_persona FROM Persona WHERE dni_persona= @Dni))
 		BEGIN
-			PRINT 'ESTE ID YA FUE REGISTRADO'
+			SELECT message = 'ESTE ID YA FUE REGISTRADO', ok = 0
 		END
 	ELSE
 		BEGIN
+			SELECT message = 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE', ok = 1
 			INSERT INTO Persona( dni_persona, nombre_persona, apellido_1, apellido_2, edad)
-			VALUES (@Dni, @Nombre, @Apellido1, @Apellido2, CONVERT(int, @Edad))
-			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
+			VALUES (@Dni, @Nombre, @Apellido1, @Apellido2, CONVERT(int, @Edad));
 		END
 GO
+
 --------------------------------------------------------------------------------------------------------------
 USE GUANA_HOSPI
 GO
