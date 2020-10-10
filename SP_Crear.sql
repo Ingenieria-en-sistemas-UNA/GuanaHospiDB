@@ -13,15 +13,15 @@ AS
 		END
 	ELSE IF(ISNUMERIC(@Edad) = 0)
 	    BEGIN
-            SELECT message = 'LA EDAD DEBE SER DATOS NUMERICOS', ok = 0
+            SELECT message = 'La edad debe ser de tipo numerico', ok = 0
         END
 	ELSE IF (EXISTS(SELECT dni_persona FROM Persona WHERE dni_persona= @Dni))
 		BEGIN
-			SELECT message = 'ESTE ID YA FUE REGISTRADO', ok = 0
+			SELECT message = 'Este id ya habia sido registrado anteriormente', ok = 0
 		END
 	ELSE
 		BEGIN
-			SELECT message = 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE', ok = 1
+			SELECT message = 'El registro se ha incresado correctamente', ok = 1
 			INSERT INTO Persona( dni_persona, nombre_persona, apellido_1, apellido_2, edad)
 			VALUES (@Dni, @Nombre, @Apellido1, @Apellido2, CONVERT(int, @Edad));
 		END
@@ -37,25 +37,25 @@ CREATE PROC SP_Crear_Usuario
 AS
 	IF(@Nombre = '' OR @Contrasenna = '' OR @IdMedico = '')
 		BEGIN
-			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+			SELECT message = 'No se permiten campos vacios', ok = 1
 		END
 	ELSE IF(EXISTS(SELECT nombre_usuario FROM Usuario WHERE nombre_usuario = @Nombre))
 		BEGIN
-			PRINT 'NOMBRE DE USUARIO YA EXISTE'
+			SELECT message = 'El nombre de usuario ya existe', ok = 1
 		END
 	ELSE IF(NOT EXISTS(SELECT id_medico FROM Medico WHERE id_medico = @IdMedico))
 		BEGIN
-			PRINT 'EL ID MEDICO NO EXISTE'
+			SELECT message = 'El id medico no existe', ok = 1
 		END
 	ELSE IF(EXISTS(SELECT id_medico FROM Usuario WHERE id_medico = @IdMedico))
 		BEGIN
-			PRINT 'EL MEDICO YA CUENTA CON UN USUARIO'
+			SELECT message = 'El medico ya cuenta con un usuario', ok = 1
 		END
 	ELSE
 		BEGIN
+			SELECT message = 'El registro se ha incresado correctamente', ok = 1
 			INSERT INTO Usuario(nombre_usuario, contrasenna, id_medico)
 			VALUES (@Nombre, @Contrasenna, CONVERT(int, @IdMedico))
-			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
 GO
 ----------------------------------------------------------------------------------------------------------------
@@ -66,17 +66,17 @@ CREATE PROC SP_Crear_Especialidad
 AS
 	IF(@NombreEspecialidad = '')
 		BEGIN
-			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+			SELECT message = 'No se permiten campos vacios', ok = 1
 		END
 	ELSE IF(EXISTS(SELECT nombre_especialdad FROM Especialidad WHERE nombre_especialdad = @NombreEspecialidad))
 		BEGIN
-			PRINT 'LA ESPECIALIDAD YA EXISTE'
+			SELECT message = 'La especialidad ya existe', ok = 1
 		END
 	ELSE
 		BEGIN
+			SELECT message = 'El registro se ha incresado correctamente', ok = 1
 			INSERT INTO Especialidad(nombre_especialdad)
 			VALUES (@NombreEspecialidad)
-			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
 GO
 -----------------------------------------------------------------------------------------------------------
@@ -88,29 +88,29 @@ CREATE PROC SP_Crear_Medico
 AS
 	IF(@CodigoMedico = '' OR @DniPersona = '')
 		BEGIN
-			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+			SELECT message = 'No se permiten campos vacios', ok = 1
 		END
 	ELSE IF(ISNUMERIC(@CodigoMedico) = 0)
 		BEGIN
-			PRINT 'LOS DATOS DEBEN SER DE TIPO NUMERICO'
+			SELECT message = 'El codigo medico debe ser de tipo numerico', ok = 1
 		END
 	ELSE IF (NOT EXISTS(SELECT dni_persona FROM Persona WHERE dni_persona=@DniPersona))
 		BEGIN
-			PRINT 'EL ID DE LA PERSONA NO EXISTE'
+			SELECT message = 'El id de la persona no existe', ok = 1
 		END
 	ELSE IF (EXISTS(SELECT dni_persona FROM Medico WHERE dni_persona=@DniPersona))
 		BEGIN
-			PRINT 'ESTA PERSONA YA ES UN MEDICO'
+			SELECT message = 'Esta persona ya es un medico', ok = 1
 		END
 	ELSE IF (EXISTS(SELECT codigo_medico FROM Medico WHERE codigo_medico = @CodigoMedico))
 		BEGIN
-			PRINT 'EL CODIGO MEDICO YA HA SIDO REGISTRADO'
+			SELECT message = 'El codigo medico ya ha sido registrado anteriormente', ok = 1
 		END
 	ELSE 
 		BEGIN
+			SELECT message = 'El registro se ha incresado correctamente', ok = 1
 			INSERT INTO Medico(codigo_medico, dni_persona)
 			VALUES (CONVERT(int, @CodigoMedico), @DniPersona)
-			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
 GO
 -------------------------------------------------------------------------------------------------------------------------
@@ -122,29 +122,29 @@ CREATE PROC SP_Crear_Medico_Especialidad
 AS
 	IF(@IdMedico = '' OR @IdEspecialidad = '')
 		BEGIN
-			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+			SELECT message = 'No se permiten campos vacios', ok = 1
 		END
 	ELSE IF(ISNUMERIC(@IdMedico) = 0 OR ISNUMERIC(@IdEspecialidad) = 0)
 		BEGIN
-			PRINT 'NO SE PERMITEN CARACTERES'
+			SELECT message = 'No se permiten caracteres', ok = 1
 		END
 	ELSE IF(NOT EXISTS(SELECT id_medico FROM Medico WHERE id_medico = @IdMedico))
 		BEGIN
-			PRINT 'EL ID MEDICO NO EXISTE'
+			SELECT message = 'El id medico no existe', ok = 1
 		END
 	ELSE IF(NOT EXISTS(SELECT id_especialidad FROM Especialidad WHERE id_especialidad = @IdMedico))
 		BEGIN
-			PRINT 'EL ID DE LA ESPECIALIDAD NO EXISTE'
+			SELECT message = 'El id de la especialidad no existe', ok = 1
 		END
 	ELSE IF(EXISTS(SELECT id_medico, id_especialidad FROM Medico_Especialidad WHERE id_especialidad = @IdEspecialidad AND id_medico = @IdMedico))
 		BEGIN
-			PRINT 'EL MEDICO YA TIENE LA ESPECIALIDAD'
+			SELECT message = 'El medico ya tiene la especialidad', ok = 1
 		END
 	ELSE 
 		BEGIN
+			SELECT message = 'El registro se ha incresado correctamente', ok = 1
 			INSERT INTO Medico_Especialidad(id_medico, id_especialidad)
 			VALUES (CONVERT(int, @IdMedico), CONVERT(int, @IdEspecialidad))
-			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
 GO
 --------------------------------------------------------------------------------------------------------------------------
@@ -156,21 +156,21 @@ CREATE PROC SP_Crear_Unidad
 AS
 	IF (@Nombre = '' OR @Numero_planta = '')
 		BEGIN
-			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+			SELECT message = 'No se permiten campos vacios', ok = 1
 		END
 	ELSE IF(ISNUMERIC(@Numero_planta) = 0)
 	    BEGIN
-            PRINT 'NO SE PERMITEN CARACTERES'
+			SELECT message = 'No se permiten caracteres', ok = 1
         END
 	ELSE IF (EXISTS(SELECT nombre_unidad, numero_planta FROM Unidad WHERE nombre_unidad = @Nombre AND numero_planta = CONVERT(int, @Numero_planta)))
 		BEGIN
-			PRINT 'ESTA UNIDA YA HA SIDO REGISTRADA'
+			SELECT message = 'Esta unidad ya habia sido reistrada anteriormente', ok = 1
 		END
 	ELSE
 		BEGIN
+			SELECT message = 'El registro se ha incresado correctamente', ok = 1
 			INSERT INTO Unidad(nombre_unidad, numero_planta)
 			VALUES (@Nombre, CONVERT(int, @numero_planta))
-			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
 GO
 -------------------------------------------------------------------------------------------------------------------------------------------------
@@ -182,33 +182,33 @@ CREATE PROC SP_Crear_Unidad_Medico
 AS
 	IF(@IdUnidad = '' OR @IdMedico = '')
 		BEGIN 
-			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+			SELECT message = 'No se permiten campos vacios', ok = 1
 		END
 	ELSE IF(ISNUMERIC(@IdUnidad) = 0 OR ISNUMERIC(@IdMedico) = 0)
 		BEGIN
-			PRINT 'NO SE PERMITEN CARACTERES'
+			SELECT message = 'No se permiten caracteres', ok = 1
 		END
 	ELSE IF(NOT EXISTS(SELECT id_unidad FROM Unidad WHERE id_unidad = @IdUnidad))
 		BEGIN
-			PRINT 'EL ID DE LA UNIDAD NO EXISTE'
+			SELECT message = 'El id de la unidad no existe', ok = 1
 		END
 	ELSE IF(NOT EXISTS(SELECT id_medico FROM Medico WHERE id_medico = @IdMedico))
 		BEGIN
-			PRINT 'EL ID DEL MEDICO NO EXISTE'
+			SELECT message = 'El id del medico no existe', ok = 1
 		END
 	ELSE IF(EXISTS(SELECT id_medico FROM Unidad_Medico WHERE id_medico = @IdMedico))
 		BEGIN
-			PRINT 'EL MEDICO YA TIENE UNA UNIDAD'
+			SELECT message = 'El medico ya cuenta con una unidad', ok = 1
 		END
 	ELSE IF(EXISTS(SELECT id_unidad FROM Unidad_Medico WHERE id_unidad = @IdUnidad))
-		BEGIN
-			PRINT 'LA UNIDAD SE ENCUENTRA OCUPADA'
+		BEGIN 
+			SELECT message = 'La unidad se encuentra ocupada', ok = 1
 		END
 	ELSE
 		BEGIN
+			SELECT message = 'El registro se ha incresado correctamente', ok = 1
 			INSERT INTO Unidad_Medico(id_unidad, id_medico)
 			VALUES (CONVERT(int, @IdUnidad), CONVERT(int, @IdMedico))
-			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
 GO
 -------------------------------------------------------------------------------------------------------------------------------------------------
@@ -219,17 +219,17 @@ CREATE PROC SP_Crear_Sintoma
 AS
 	IF(@Nombre = '')
 		BEGIN
-			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+			SELECT message = 'No se permiten campos vacios', ok = 1
 		END
 	ELSE IF (EXISTS(SELECT nombre_sintoma FROM Sintoma WHERE nombre_sintoma = @Nombre))
 		BEGIN
-			PRINT 'ESTE SINTOMA YA EXISTE'
+			SELECT message = 'El sintoma ya habia sido registrado anteriormente', ok = 1
 		END
 	ELSE
 		BEGIN
+			SELECT message = 'El registro se ha incresado correctamente', ok = 1
 			INSERT INTO Sintoma(nombre_sintoma)
 			VALUES (@Nombre)
-			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
 GO
 ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -242,33 +242,33 @@ CREATE PROC SP_Crear_Paciente
 AS
 	IF(@Numero_seguro_social = '' OR @FechaIngreso = '' OR @DniPersona = '')
 		BEGIN
-			PRINT 'NO SE PERMITEN DATOS VACIOS'
+			SELECT message = 'No se permiten campos vacios', ok = 1
 		END
 	ELSE IF(ISNUMERIC(@Numero_seguro_social) = 0)
-		BEGIN	
-			PRINT 'NO SE PERMITEN CARACTERES'
+		BEGIN
+			SELECT message = 'El numero de seguro social debe ser formato numero', ok = 1
 		END
 	ELSE IF(ISDATE(@FechaIngreso) = 0)
 		BEGIN
-			PRINT 'DEBE SER UN FORMATO FECHA VALIDO'
+			SELECT message = 'La fecha de ingreso debe ser un formato fecha valido', ok = 1
 		END
 	ELSE IF EXISTS(SELECT numero_seguro_social FROM Paciente WHERE numero_seguro_social = @Numero_seguro_social)
 		BEGIN
-			PRINT 'EL NUMERO DE SEGURO SOCIAL YA HA SIDO REGISTRADO'
+			SELECT message = 'El numero de seguro social ya habia registrado anteriormente', ok = 1
 		END
 	ELSE IF NOT EXISTS(SELECT dni_persona FROM Persona WHERE dni_persona = @DniPersona)
 		BEGIN
-			PRINT 'LA PERSONA NO EXISTE'
+			SELECT message = 'La persona no existe', ok = 1
 		END
 	ELSE IF EXISTS(SELECT dni_persona FROM Paciente WHERE dni_persona = @DniPersona)
 		BEGIN
-			PRINT 'EL PACIENTE YA HABIA SIDO REGISTRADO'
+			SELECT message = 'El paciente ya habia sido registrado anteriormente', ok = 1
 		END
 	ELSE
 		BEGIN
+			SELECT message = 'El registro se ha incresado correctamente', ok = 1
 			INSERT INTO Paciente(numero_seguro_social, fecha_ingreso, dni_persona)
 			VALUES (CONVERT(int, @Numero_seguro_social), CONVERT(date, @FechaIngreso), @DniPersona)
-			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
 GO
 -----------------------------------------------------------------------------------------------------------------------------------------
@@ -280,25 +280,25 @@ CREATE PROC SP_Crear_Consulta
 AS
 	IF(@FechaConsulta = '' OR @IdPaciente = '')
 		BEGIN
-			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+			SELECT message = 'No se permiten campos vacios', ok = 1
 		END
 	ELSE IF(ISDATE(@FechaConsulta) = 0)
 		BEGIN
-			PRINT 'DEBE SER UN FORMATO FECHA'
+			SELECT message = 'La fecha de consulta debe ser un formato fecha valido', ok = 1
 		END
 	ELSE IF(ISNUMERIC(@IdPaciente) = 0)
 		BEGIN
-			PRINT 'NO SE PERMITEN CARACTERES'
+			SELECT message = 'No se permiten caracteres', ok = 1
 		END
 	ELSE IF(NOT EXISTS(SELECT id_paciente FROM Paciente WHERE id_paciente = @IdPaciente))
 		BEGIN
-			PRINT 'EL PACIENTE NO EXISTE'
+			SELECT message = 'El paciente no existe', ok = 1
 		END
 	ELSE
 		BEGIN
+			SELECT message = 'El registro se ha incresado correctamente', ok = 1
 			INSERT INTO Consulta(fecha_consulta, id_paciente)
 			VALUES (CONVERT(date, @FechaConsulta), CONVERT(int, @IdPaciente))
-			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
 GO
 -----------------------------------------------------------------------------------------------------------------------------------------
@@ -310,29 +310,29 @@ CREATE PROC SP_Crear_Consulta_Unidad
 AS
 	IF(@IdConsulta = '' OR @IdUnidad = '')
 		BEGIN
-			PRINT 'NO SE PERMITEN DATOS VACIOS'
+			SELECT message = 'No se permiten campos vacios', ok = 1
 		END
 	ELSE IF(ISNUMERIC(@IdConsulta) = 0 OR ISNUMERIC(@IdUnidad) = 0)
 		BEGIN
-			PRINT 'NO SE PERMITEN CARACTERES'
+			SELECT message = 'No se permiten caracteres', ok = 1
 		END
 	ELSE IF(NOT EXISTS(SELECT id_consulta FROM Consulta WHERE id_consulta = @IdConsulta))
 		BEGIN
-			PRINT 'EL ID DE LA CONSULTA NO EXISTE'
+			SELECT message = 'El id de la consulta no existe', ok = 1
 		END
 	ELSE IF (NOT EXISTS(SELECT id_unidad FROM Unidad WHERE id_unidad = @IdUnidad))
 		BEGIN
-			PRINT 'EL ID DE LA UNIDAD NO EXISTE'
+			SELECT message = 'El id de la unidad no existe', ok = 1
 		END
 	ELSE IF (EXISTS(SELECT id_consulta, id_unidad FROM Consulta_Unidad WHERE id_consulta = @IdConsulta AND id_unidad = @IdUnidad))
 		BEGIN
-			PRINT 'ESTE REGISTRO YA FUE INGRESADO'
+			SELECT message = 'El registro ya habia sido ingresado anteriormente', ok = 1
 		END
 	ELSE
 		BEGIN
+			SELECT message = 'El registro se ha incresado correctamente', ok = 1
 			INSERT INTO Consulta_Unidad(id_consulta, id_unidad)
 			VALUES (CONVERT(int, @IdConsulta), CONVERT(int, @IdUnidad))
-			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
 GO
 -----------------------------------------------------------------------------------------------------------------------------------------
@@ -345,25 +345,25 @@ CREATE PROC SP_Crear_Presenta
 AS
 	IF(@IdConsulta = '' OR @IdSintoma = '' OR @Descripcion = '')
 		BEGIN
-			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+			SELECT message = 'No se permiten campos vacios', ok = 1
 		END  
 	ELSE IF(ISNUMERIC(@IdConsulta) = 0 OR ISNUMERIC(@IdSintoma) = 0)
-		BEGIN	
-			PRINT 'NO SE PERMITEN CARACTERES'
+		BEGIN
+			SELECT message = 'No se permiten caracteres', ok = 1
 		END
 	ELSE IF(NOT EXISTS(SELECT id_consulta FROM Consulta WHERE id_consulta = @IdConsulta))
 		BEGIN
-			PRINT 'EL ID DE LA CONSULTA NO EXISTE'
+			SELECT message = 'El id de la consulta no existe', ok = 1
 		END
 	ELSE IF(NOT EXISTS(SELECT id_sintoma FROM Sintoma WHERE id_sintoma = @IdSintoma))
 		BEGIN
-			PRINT 'EL ID DEL SINTOMA NO EXISTE'
+			SELECT message = 'El id del sintoma no existe', ok = 1
 		END
 	ELSE
 		BEGIN
+			SELECT message = 'El registro se ha incresado correctamente', ok = 1
 			INSERT INTO Presenta(id_consulta, id_sintoma, descripcion_presenta)
 			VALUES (CONVERT(int, @IdConsulta), CONVERT(int, @IdSintoma), @Descripcion)
-			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
 GO
 -----------------------------------------------------------------------------------------------------------------------------------------
@@ -374,17 +374,17 @@ CREATE PROC SP_Crear_Enfermedad
 AS
 	IF(@Nombre = '')
 		BEGIN
-			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+			SELECT message = 'No se permiten campos vacios', ok = 1
 		END
 	ELSE IF (EXISTS(SELECT nombre_enfermedad FROM Enfermedad WHERE nombre_enfermedad = @Nombre))
 		BEGIN
-			PRINT 'LA ENFERMEDAD YA EXISTE'
+			SELECT message = 'La enfermedad ya existe', ok = 1
 		END
 	ELSE
 		BEGIN
+			SELECT message = 'El registro se ha incresado correctamente', ok = 1
 			INSERT INTO Enfermedad(nombre_enfermedad)
 			VALUES (@Nombre)
-			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
 GO
 --------------------------------------------------------------------------------------------------------------------------------------------
@@ -396,25 +396,25 @@ CREATE PROC SP_Crear_Padece
 AS
 	IF(@IdPaciente = '' OR @IdEnfermedad = '')
 		BEGIN
-			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+			SELECT message = 'No se permiten campos vacios', ok = 1
 		END
 	ELSE IF(ISNUMERIC(@IdPaciente) = 0 OR ISNUMERIC(@IdEnfermedad) = 0)
 		BEGIN
-			PRINT 'NO SE PERMITEN CARACTERES'
+			SELECT message = 'No se permiten caracteres', ok = 1
 		END
 	ELSE IF(NOT EXISTS(SELECT id_paciente FROM Paciente WHERE id_paciente = @IdPaciente))
 		BEGIN
-			PRINT 'EL ID DEL PACIENTE NO EXISTE'
+			SELECT message = 'El id del paciente no existe', ok = 1
 		END
 	ELSE IF(NOT EXISTS(SELECT id_enfermedad FROM Enfermedad WHERE id_enfermedad = @IdEnfermedad))
 		BEGIN
-			PRINT 'EL ID DE LA ENFERMEDAD NO EXISTE'
+			SELECT message = 'El id de la enfermedad no existe', ok = 1
 		END
 	ELSE
 		BEGIN
+			SELECT message = 'El registro se ha incresado correctamente', ok = 1
 			INSERT INTO Padece(id_paciente, id_enfermedad)
 			VALUES (CONVERT(int, @IdPaciente), CONVERT(int, @IdEnfermedad))
-			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
 GO
 --------------------------------------------------------------------------------------------------------------------------------------------------
@@ -425,17 +425,17 @@ CREATE PROC SP_Crear_Tipo_Intervencion
 AS
 	IF(@Nombre = '')
 		BEGIN
-			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+			SELECT message = 'No se permiten campos vacios', ok = 1
 		END
 	ELSE IF (EXISTS(SELECT nombre_tipo_intervencion FROM Tipo_Intervencion WHERE nombre_tipo_intervencion = @Nombre))
 		BEGIN
-			PRINT 'EL TIPO DE INTERVENCION YA EXISTE'
+			SELECT message = 'El tipo de intervencion ya existe', ok = 1
 		END
 	ELSE
 		BEGIN
+			SELECT message = 'El registro se ha incresado correctamente', ok = 1
 			INSERT INTO Tipo_Intervencion(nombre_tipo_intervencion)
 			VALUES (@Nombre)
-			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
 GO
 ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -448,25 +448,25 @@ CREATE PROC SP_Crear_Intervencion
 AS
 	IF(@Tratamiento = '' OR @IdTipoIntervencion = '' OR @IdConsulta = '')
 		BEGIN
-			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+			SELECT message = 'No se permiten campos vacios', ok = 1
 		END
 	ELSE IF(ISNUMERIC(@IdTipoIntervencion) = 0 OR ISNUMERIC(@IdConsulta) = 0)
 		BEGIN
-			PRINT 'NO SE PERMITEN CARACTERES'
+			SELECT message = 'No se permiten caracteres', ok = 1
 		END
 	ELSE IF(NOT EXISTS(SELECT id_tipo_intervencion FROM Tipo_Intervencion WHERE id_tipo_intervencion = @IdTipoIntervencion))
 		BEGIN
-			PRINT 'EL ID DE TIPO DE INTERVENCION NO EXISTE'
+			SELECT message = 'El id del tipo de intervencion no existe', ok = 1
 		END
 	ELSE IF(NOT EXISTS(SELECT id_consulta FROM Consulta WHERE id_consulta = @IdConsulta))
 		BEGIN
-			PRINT 'EL ID DE LA CONSULTA NO EXISTE'
+			SELECT message = 'El id de la consulta no existe', ok = 1
 		END
 	ELSE
 		BEGIN
+			SELECT message = 'El registro se ha incresado correctamente', ok = 1
 			INSERT INTO Intervenciones(tratamiento, id_tipo_intervencion, id_consulta)
 			VALUES (@Tratamiento, CONVERT(int, @IdTipoIntervencion), CONVERT(int, @IdConsulta))
-			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
 GO
 --------------------------------------------------------------------------------------------------------------------------------
@@ -478,24 +478,24 @@ CREATE PROC SP_Crear_Paciente_Unidad
 AS
 	IF(@IdPaciente = '' OR @IdUnidad = '')
 		BEGIN
-			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+			SELECT message = 'No se permiten campos vacios', ok = 1
 		END
 	ELSE IF(ISNUMERIC(@IdPaciente) = 0 OR ISNUMERIC(@IdUnidad) = 0)
 		BEGIN
-			PRINT 'NO SE PERMITEN CARACTERES'
+			SELECT message = 'No se permiten caracteres', ok = 1
 		END
 	ELSE IF(NOT EXISTS(SELECT id_paciente FROM Paciente WHERE id_paciente = @IdPaciente))
 		BEGIN
-			PRINT 'EL ID DEL PACIENTE NO EXISTE'
+			SELECT message = 'El id del paciente no existe', ok = 1
 		END
 	ELSE IF(NOT EXISTS(SELECT id_unidad FROM Unidad WHERE id_unidad = @IdUnidad))
 		BEGIN
-			PRINT 'EL ID DE LA UNIDAD NO EXISTE'
+			SELECT message = 'El id de la unidad no existe', ok = 1
 		END
 	ELSE
 		BEGIN
+			SELECT message = 'El registro se ha incresado correctamente', ok = 1
 			INSERT INTO Paciente_Unidad(id_paciente, id_unidad)
 			VALUES (CONVERT(int, @IdPaciente), CONVERT(int, @IdUnidad))
-			PRINT 'EL REGISTRO SE HA INGRESADO CORRECTAMENTE'
 		END
 GO
