@@ -17,12 +17,11 @@ AS
 					DELETE FROM Persona WHERE Persona.dni_persona = @dni_persona
 					PRINT 'SE HA ELIMINADO EL MEDICO'
 					DELETE FROM Usuario  WHERE Usuario.id_usuario = @idUsuario
-					PRINT 'SE HA ELIMINADO EL USUARIO DE LA PERSONA'
+					PRINT 'SE HA ELIMINADO EL USUARIO DEL MEDICO'
 				END
 			ELSE IF EXISTS (SELECT @dni_persona FROM Paciente WHERE dni_persona = @dni_persona)
 				BEGIN
 					DELETE FROM Persona WHERE Persona.dni_persona = @dni_persona
-					PRINT 'SE HA ELIMINADO LA PERSONA'
 					PRINT 'SE HA ELIMINADO EL PACIENTE'
 				END
 			DELETE FROM Persona WHERE Persona.dni_persona = @dni_persona
@@ -178,8 +177,6 @@ AS
 			SET @idPersonaPaciente = (SELECT dni_persona FROM Paciente WHERE id_paciente = @id_paciente)
 			DELETE FROM Paciente WHERE Paciente.id_paciente = @id_paciente
 			PRINT 'SE HA ELIMINADO EL PACIENTE'
-			  DELETE FROM Persona WHERE Persona.dni_persona = @idPersonaPaciente
-			PRINT 'SE HA ELIMINADO LA PERSONA'
 			DELETE FROM Persona WHERE Persona.dni_persona = @idPersonaPaciente
 			PRINT 'SE HA ELIMINADO LA PERSONA'
 		END
@@ -188,6 +185,7 @@ AS
 			PRINT 'EL PACIENTE NO EXISTE'
 		END
 GO
+
 ------------------------------------------ELIMINAR CONSULTA------------------------------------------------------------
 USE	GUANA_HOSPI
 GO
