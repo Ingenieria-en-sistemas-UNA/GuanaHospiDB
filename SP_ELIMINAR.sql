@@ -6,7 +6,7 @@ CREATE PROC SP_Eliminar_Persona (@dni_persona VARCHAR(12))
 AS
 	IF (@dni_persona = '') 
 		BEGIN
-			PRINT 'EL ID DE DE PERSONA NO PUEDE SER VACIO'
+			SELECT message ='El id de persona de la perosna no puede ser vacio', ok = 0
 		END
 	ELSE IF EXISTS (SELECT dni_persona FROM Persona WHERE dni_persona = @dni_persona)
 		BEGIN
@@ -15,21 +15,21 @@ AS
 					DECLARE @idUsuario INT
 					SET @idUsuario = (SELECT id_usuario FROM Usuario INNER JOIN Medico ON Usuario.id_medico = Medico.id_medico WHERE Medico.dni_persona = @dni_persona)
 					DELETE FROM Persona WHERE Persona.dni_persona = @dni_persona
-					PRINT 'SE HA ELIMINADO EL MEDICO'
+					SELECT message ='Se ha eliminado el médico', ok = 0
 					DELETE FROM Usuario  WHERE Usuario.id_usuario = @idUsuario
-					PRINT 'SE HA ELIMINADO EL USUARIO DEL MEDICO'
+				    SELECT message = 'Se ha eliminado el usuario de médico', ok = 0
 				END
 			ELSE IF EXISTS (SELECT @dni_persona FROM Paciente WHERE dni_persona = @dni_persona)
 				BEGIN
 					DELETE FROM Persona WHERE Persona.dni_persona = @dni_persona
-					PRINT 'SE HA ELIMINADO EL PACIENTE'
+					SELECT message ='Se ha eliminado el paciente', ok = 0
 				END
 			DELETE FROM Persona WHERE Persona.dni_persona = @dni_persona
-			PRINT 'SE HA ELIMINADO LA PERSONA'
+			SELECT message ='Se ha eliminado la persona', ok = 0
 		END
 	ELSE
 		BEGIN
-			PRINT 'EL ID DE PERSONA NO EXISTE'
+			SELECT message = 'El id de persona no existe', ok = 0
 		END
 GO
 -------------------------------------------------Eliminar Usuario------------------------------------------------------------------
@@ -39,16 +39,16 @@ CREATE PROC SP_Eliminar_Usuario (@id_usuario INT)
 AS
 	IF (@id_usuario = '') 
 		BEGIN
-			PRINT 'EL ID DE DE USUARIO NO PUEDE SER VACIO'
+			SELECT message ='El is de uduario no puede ser vacio', ok = 0
 		END
 	ELSE IF EXISTS (SELECT id_usuario FROM Usuario WHERE id_usuario  = @id_usuario)
 		BEGIN
 			DELETE FROM Usuario WHERE Usuario.id_usuario = @id_usuario
-			PRINT 'SE HA ELIMINADO EL USUARIO'
+			SELECT message = 'Se ha eliminado el usuario', ok = 0
 		END
 	ELSE
 		BEGIN
-			PRINT 'EL ID DE USUARIO NO EXISTE'
+			SELECT message = 'El id de usuario no existe', ok = 0
 		END
 GO
 ---------------------------------SP_ELIMINAR_ESPECIALIDAD-------------------------------
@@ -59,20 +59,20 @@ CREATE PROC SP_Eliminar_Especialidad (@id_especialidad VARCHAR(10))
 AS
 	IF (@id_especialidad = '') 
 		BEGIN
-			PRINT 'EL ID DE ESPECIALIDAD NO PUEDE SER VACIO'
+			SELECT message ='EL ID DE ESPECIALIDAD NO PUEDE SER VACIO', ok = 0
 		END
 		ELSE IF(ISNUMERIC(@id_especialidad) = 0)
 		BEGIN
-			PRINT 'LOS DATOS DEBEN SER DE TIPO NUMERICO'
+			SELECT message = 'Los datos deben de ser de tipo númerico', ok = 0
 		END
 	ELSE IF EXISTS (SELECT id_especialidad FROM Especialidad WHERE Especialidad.id_especialidad = @id_especialidad)
 		BEGIN
 			DELETE FROM Especialidad WHERE Especialidad.id_especialidad = @id_especialidad
-			PRINT 'SE HA ELIMINADO LA ESPECIALIDAD'
+			SELECT message = 'Se ha eliminado la especalidad', ok = 0
 		END
 	ELSE
 		BEGIN
-			PRINT 'EL ID DE ESPECIALIDAD NO EXISTE'
+			SELECT message = 'El id de especialidad no existe', ok = 0
 		END
 GO
 -------------------------------------------------Eliminar Medico------------------------------------------------------------------
@@ -82,20 +82,20 @@ CREATE PROC SP_Eliminar_Medico (@id_medico INT)
 AS
 	IF (@id_medico = '') 
 		BEGIN
-			PRINT 'EL ID DE MEDICO NO PUEDE SER VACIO'
+			SELECT message = 'El id de m[edico no puede ser vacio', ok = 0
 		END
 	ELSE IF EXISTS (SELECT id_medico FROM Medico WHERE id_medico  = @id_medico )
 		BEGIN
 			DECLARE @idPersonaMedico VARCHAR(12)
 			SET @idPersonaMedico = (SELECT dni_persona FROM Medico WHERE id_medico = @id_medico)
 			DELETE FROM Medico WHERE Medico.id_medico = @id_medico
-			PRINT 'SE HA ELIMINADO EL MEDICO'
+			SELECT message = 'Se ha eliminado el médico', ok = 0
 		    DELETE FROM Persona WHERE Persona.dni_persona = @idPersonaMedico
-			PRINT 'SE HA ELIMINADO EL PERSONA'
+			SELECT message = 'Se ha eliminado la persona', ok = 0
 		END
 	ELSE
 		BEGIN
-			PRINT 'EL MEDICO NO EXISTE'
+			SELECT message = 'El médico no existe', ok = 0
 		END
 GO
 ---------------------------------------------ELIMINAR UNIDAD-----------------------------------------------------
@@ -105,23 +105,23 @@ CREATE PROC SP_Eliminar_Unidad (@id_unidad VARCHAR(10))
 AS
 	IF (@id_unidad = '') 
 		BEGIN
-			PRINT 'EL ID DE UNIDAD NO PUEDE SER VACIO'
+			SELECT message = 'El id de unidad no puede ser vacio'
 		END
 			ELSE IF(ISNUMERIC(@id_unidad) = 0)
 		BEGIN
-			PRINT 'LOS DATOS DEBEN SER DE TIPO NUMERICO'
+			SELECT message = 'Los datos deben de ser tipo númerico', ok = 0
 		END
 	ELSE IF EXISTS (SELECT id_unidad FROM Unidad WHERE id_unidad = @id_unidad)
 		BEGIN
 	        IF EXISTS (SELECT id_paciente_unidad  FROM Paciente_unidad where id_unidad = @id_unidad)
 				BEGIN
 					DELETE FROM Unidad WHERE Unidad.id_unidad = @id_unidad
-					PRINT 'SE HA ELIMINADO UNIDAD'
+					SELECT message = 'Se ha eliminado unidad', ok = 0
 				END
 		END
 	ELSE
 		BEGIN
-			PRINT 'LA UNIDAD NO EXISTE'
+			SELECT message = 'La unidad no existe', ok = 0
 		END
 GO
 ---------------------------------------------------UNIDAD MEDICO-----------------------------------------------------
@@ -131,16 +131,16 @@ CREATE PROC SP_Eliminar_Unidad_Medico (@id_unidad_medico INT)
 AS
 	IF (@id_unidad_medico = '') 
 		BEGIN
-			PRINT 'EL ID DE UNIDAD MEDICO NO PUEDE SER VACIO'
+			SELECT message = 'El id de unidad unidad médico no puede ser vacio', ok = 0
 		END
 	ELSE IF EXISTS (SELECT id_unidad_medico FROM Unidad_medico WHERE Unidad_medico.id_unidad_medico = @id_unidad_medico)
 		BEGIN
 			DELETE FROM Unidad_medico WHERE Unidad_medico.id_unidad_medico = @id_unidad_medico
-			PRINT 'SE HA ELIMINADO LA UNIDAD MEDICO'
+			SELECT message = 'Se ha eliminado unidad médico', ok = 0
 		END
 	ELSE
 		BEGIN
-			PRINT 'LA UNIDAD MEDICO NO EXISTE'
+			SELECT message = 'La unidad médico no existe', ok = 0
 		END
 GO
 ------------------------------------------------------------ELIMINAR SINTOMA-------------------------------------
@@ -150,16 +150,16 @@ CREATE PROC SP_Eliminar_Sintoma (@id_sintoma INT)
 AS
 	IF (@id_sintoma = '') 
 		BEGIN
-			PRINT 'EL ID DE SINTOMA NO PUEDE SER VACIO'
+			SELECT message = 'Eel id de síntoma no puede ser vacio', ok = 0
 		END
 	ELSE IF EXISTS (SELECT id_sintoma FROM Sintoma WHERE id_sintoma = @id_sintoma)
 		BEGIN
 			DELETE FROM Sintoma WHERE id_sintoma = @id_sintoma
-			PRINT 'SE HA ELIMINADO EL SINTOMA'
+			SELECT message = 'Se ha eliminado el síntoma', ok = 0
 		END
 	ELSE
 		BEGIN
-			PRINT 'EL ID DE SINTOMA NO EXISTE'
+			SELECT message = 'El id de síntoma no existe', ok = 0
 		END
 GO
 -----------------------------ELIMINAR Paciente-----------------------------------------------------------------
@@ -169,20 +169,20 @@ CREATE PROC SP_Eliminar_Paciente (@id_paciente INT)
 AS
 	IF (@id_paciente = '') 
 		BEGIN
-			PRINT 'EL ID DE PACIENTE NO PUEDE SER VACIO'
+			SELECT message = 'El id de paciente no puede ser vacio', ok = 0
 		END
 	ELSE IF EXISTS (SELECT id_paciente FROM Paciente WHERE id_paciente  = @id_paciente )
 		BEGIN
 			DECLARE @idPersonaPaciente VARCHAR(12)
 			SET @idPersonaPaciente = (SELECT dni_persona FROM Paciente WHERE id_paciente = @id_paciente)
 			DELETE FROM Paciente WHERE Paciente.id_paciente = @id_paciente
-			PRINT 'SE HA ELIMINADO EL PACIENTE'
+			SELECT message = 'Se ha eliminado el paciente', ok = 0
 			DELETE FROM Persona WHERE Persona.dni_persona = @idPersonaPaciente
-			PRINT 'SE HA ELIMINADO LA PERSONA'
+			SELECT message = 'Se ha eliminado el paciente', ok = 0
 		END
 	ELSE
 		BEGIN
-			PRINT 'EL PACIENTE NO EXISTE'
+			SELECT message = 'El paciente no existe', ok = 0
 		END
 GO
 
@@ -193,16 +193,16 @@ CREATE PROC SP_Elimina_Consulta (@id_consulta INT)
 AS
 	IF (@id_consulta = '') 
 		BEGIN
-			PRINT 'EL ID DE LA CONSULTA NO PUEDE SER VACIO'
+			SELECT message = 'El id de consulata no puede ser vacio', ok = 0
 		END
 	ELSE IF EXISTS (SELECT id_consulta FROM Consulta WHERE Consulta.id_consulta = @id_consulta)
 		BEGIN
 			DELETE FROM Consulta WHERE Consulta.id_consulta = @id_consulta
-			PRINT 'SE HA ELIMINADO LA CONSULTA'
+			SELECT message = 'Se ha eliminado la consulata', ok = 0
 		END
 	ELSE
 		BEGIN
-			PRINT 'LA CONSULTA NO EXISTE'
+			SELECT message = 'La consulta no existe', ok = 0
 		END
 GO
 
@@ -213,15 +213,15 @@ CREATE PROC SP_Eliminar_Presenta (@id_presenta INT)
 AS
 	IF (@id_presenta = '') 
 		BEGIN
-			PRINT 'EL ID DEL PRESENTAA SINTOMA NO PUEDE SER VACIO'
+			SELECT message = 'El id de presenta no puede ser vacio', ok = 0
 		END
 	ELSE IF EXISTS (SELECT id_presenta FROM Presenta WHERE Presenta.id_presenta = @id_presenta)
 		BEGIN
 			DELETE FROM Presenta WHERE Presenta.id_presenta = @id_presenta
-			PRINT 'SE HA ELIMINADO EL PRESENTA '
+			SELECT message = 'Se ha eliminado presenta', ok = 0
 		END
 		 BEGIN
-			PRINT 'EL ID DE DEL PRESENTA  NO EXISTE'
+			SELECT message = 'El id de presenta no existe', ok = 0
 		END
 GO
 
@@ -232,16 +232,16 @@ CREATE PROC SP_Eliminar_Enfermedad (@id_enfermedad INT)
 AS
 	IF (@id_enfermedad = '') 
 		BEGIN
-			PRINT 'EL ID DE LA ENFERMEDAD NO PUEDE SER VACIO'
+			SELECT message = 'El id de enfermedad no puede ser vacio', ok = 0
 		END
 	ELSE IF EXISTS (SELECT id_enfermedad FROM Enfermedad WHERE id_enfermedad = @id_enfermedad)
 		BEGIN
 			DELETE FROM Enfermedad WHERE Enfermedad.id_enfermedad = @id_enfermedad
-			PRINT 'SE HA ELIMINADO LA ENFERMEDAD'
+			SELECT message = 'Se ha eliminado la enfermedad', ok = 0
 		END
 	ELSE
 		BEGIN
-			PRINT 'EL ID ENFERMEDAD NO EXISTE'
+			SELECT message = 'El id de enfermedad no existe', ok = 0
 		END
 GO
 ----------------------------------------ELIMINAR PADECIMIETNO------------------------------------------------
@@ -251,7 +251,7 @@ CREATE PROC SP_Eliminar_Padecimiento (@id_padece INT)
 AS
 	IF (@id_padece = '') 
 		BEGIN
-			PRINT 'EL ID DEL PADECIMIENTO NO PUEDE SER VACIO'
+			SELECT message = 'El id de padecimiento no uede ser vacio', ok = 0
 		END
 	ELSE IF EXISTS (SELECT id_padece FROM Padece WHERE id_padece  = @id_padece )
 		BEGIN
@@ -259,7 +259,7 @@ AS
 	    END    
 	ELSE
 		BEGIN
-			PRINT 'EL ID DE PADECIMINTO NO EXISTE'
+			SELECT message = 'El id de padecimiento no existe', ok = 0
 		END
 GO
 ---------------------------------------------ELIMINAR TIPO INTERVENcION-----------------------------------------
@@ -269,21 +269,21 @@ CREATE PROC SP_Eliminar_Tipo_Intervension(@id_tipo_intervencion INT)
 AS
 	IF (@id_tipo_intervencion = '') 
 		BEGIN
-			PRINT 'EL ID DEL TIPO INTERVENSION NO PUEDE SER VACIO'
+			SELECT message = 'El id del tipo de intervención no puede ser vacio', ok = 0
 		END
 	ELSE IF EXISTS (SELECT id_tipo_intervencion FROM Tipo_Intervencion WHERE id_tipo_intervencion = @id_tipo_intervencion)
 		BEGIN
 			DELETE FROM Intervenciones WHERE Intervenciones.id_intervencion = @id_tipo_intervencion
-			PRINT 'SE HA ELIMINADO EL TIPO INTERVENSION'
+			SELECT message = 'Se ha eliminado el tipo de intervención', ok = 0
 			DECLARE @IdIntervencion INT
 			SET @IdIntervencion = (SELECT id_intervencion FROM Intervenciones WHERE id_tipo_intervencion = @IdIntervencion)
 			DELETE FROM Intervenciones WHERE Intervenciones.id_intervencion = @IdIntervencion
 			DELETE FROM Tipo_Intervencion WHERE Tipo_Intervencion.id_tipo_intervencion = @id_tipo_intervencion
-			PRINT 'SE HA ELIMINADO LA INTERVENSION'
+			SELECT message = 'Se ha eliminado el tipo intervanción', ok = 0
 		END
 	ELSE
 		BEGIN
-			PRINT 'EL ID DEL TIPO DE INTERVENSION NO EXISTE'
+			SELECT message =  'El id de tipo intervención no existe', ok = 0
 		END
 GO
 ------------------------------------ELIMINAR INTERVENCIONES------------------------------
@@ -293,16 +293,16 @@ CREATE PROC SP_Eliminar_Intervencion (@id_intervencion INT)
 AS
 	IF (@id_intervencion = '') 
 		BEGIN
-			PRINT 'EL ID DE INTERVENCION NO PUEDE SER VACIO'
+			SELECT message = 'El id de intervención no existe', ok = 0
 		END
 	ELSE IF EXISTS(SELECT id_intervencion FROM Intervenciones WHERE id_intervencion  = @id_intervencion )
 		BEGIN
 			DELETE FROM Intervenciones WHERE Intervenciones.id_tipo_intervencion = @id_intervencion
-			PRINT 'SE HA ELIMINADO LA INTERVENCION'
+			SELECT message = 'Se ha eliminado la intervención', ok = 0
 	    END
 	ELSE
 		 BEGIN
-			PRINT 'EL ID DE LA INTERVENCION NO EXISTE'
+			SELECT message = 'El id de la intervención no existe', ok = 0
 		END
 GO
 
@@ -313,16 +313,16 @@ CREATE PROC SP_Eliminar_Unidad_Paciente (@id_paciente_unidad INT)
 AS
 	IF (@id_paciente_unidad = '') 
 		BEGIN
-			PRINT 'EL ID DE UNIDAD PACIENTE NO PUEDE SER VACIO'
+			SELECT message = 'El id de unidad paciente no puede ser vacio', ok = 0
 		END
 	ELSE IF EXISTS (SELECT id_paciente_unidad FROM Paciente_unidad WHERE id_paciente_unidad = @id_paciente_unidad)
 		BEGIN
 			DELETE FROM Paciente_unidad WHERE Paciente_unidad.id_paciente_unidad = @id_paciente_unidad
-			PRINT 'SE HA ELIMINADO LA UNIDAD PACENTE'
+			SELECT message = 'Se ha eliminado unidad paciente', ok = 0
 		END
 	ELSE
 		BEGIN
-			PRINT 'LA UNIDAD PACIENTE NO EXISTE'
+			SELECT message = 'La unidad paciente no existe', ok = 0
 		END
 GO
 
@@ -333,16 +333,16 @@ CREATE PROC SP_Eliminar_Medico_Especialidad (@id_medico_especialidad INT)
 AS
 	IF (@id_medico_especialidad = '') 
 		BEGIN
-			PRINT 'EL ID DE MEDIICO ESPECIALIDAD NO PUEDE SER VACIO'
+			SELECT message = 'El id médico especialidad no puede ser vacio', ok = 0
 		END
 	ELSE IF EXISTS (SELECT id_medico_especialidad FROM Medico_especialidad WHERE id_medico_especialidad = @id_medico_especialidad)
 		BEGIN
 			DELETE FROM Medico_especialidad WHERE Medico_especialidad.id_medico_especialidad = @id_medico_especialidad
-			PRINT 'SE HA ELIMINADO MEDICO ESPECIALIDAD'
+			SELECT message = 'Se ha elimimnado médico especialidad', ok = 0
 		END
 	ELSE
 		BEGIN
-			PRINT 'LA ESPECIALIDAD MEDICO NO EXISTE'
+			SELECT message = 'La médico especialidad no existe', ok = 0
 		END
 GO
 
