@@ -10,27 +10,23 @@ CREATE PROCEDURE SP_ActualizarPersona
 AS
 	IF (@Dni = '')
 		BEGIN
-			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+			SELECT message = 'El DNI no puede ser nulo', ok = 0;
 		END
 	ELSE IF ( EXISTS(SELECT dni_persona FROM Persona WHERE dni_persona = @Dni))
 		BEGIN
 			IF ((@Nombre = '') OR ( @Apellido1 = '') OR (@Apellido2 = '') OR (@Edad = ''))
 				BEGIN
-					PRINT 'NO SE PERMITEN CAMPOS VACIOS'
-				END
-			ELSE IF((ISNUMERIC(@Dni) = 0) OR (CONVERT(int, @Dni) < 0))
-				BEGIN
-					PRINT  'EL DNI DEBE SER DATOS NUMERICOS Y DEBE SER POSITIVO' 
+					SELECT message = 'No se permiten campos vacios', ok = 0;
 				END
 			ELSE
 				BEGIN
+				SELECT message = 'La persona se a editado exitosamente!', ok = 1
 					UPDATE Persona
 						Set	nombre_persona = @Nombre,
 							apellido_1 = @Apellido1,
 							apellido_2 = @Apellido2,
 							edad = CONVERT(int, @Edad)
 						WHERE dni_persona = @Dni
-						PRINT 'SE HA ACTUALIZADO CORRECTAMENTE'
 				END
 		END
 	ELSE
@@ -38,7 +34,6 @@ AS
 			PRINT 'EL ID DE LA PERSONA NO EXISTE'
 		END
 GO
-
 
 
 USE GUANA_HOSPI
@@ -50,30 +45,30 @@ CREATE PROCEDURE SP_ActualizarMedico
 	AS
 	IF (@id_medico = '')
 		BEGIN
-			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+			SELECT message = 'El id del medico no puede ser nulo', ok = 0;
 		END
 	ELSE IF ( EXISTS(SELECT id_medico FROM Medico WHERE id_medico = @id_medico))
 		BEGIN
 			IF ((@codigo_medico = '') OR (@dni_persona = ''))
 				BEGIN
-					PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+					SELECT message = 'No se permiten campos vacios', ok = 0;
 				END
 			ELSE IF((ISNUMERIC(@id_medico) = 0) OR (CONVERT(int, @id_medico) < 0))
 				BEGIN
-					PRINT  'EL ID DEBE SER DATOS NUMERICOS Y DEBE SER POSITIVO' 
+					SELECT message = 'El id debe ser numerico y no puede ser negativo', ok = 0;
 				END
 			ELSE
 				BEGIN
+				SELECT message = 'El medico se ha actualizado exitosamente', ok = 0;
 					UPDATE Medico
 						Set	codigo_medico = @codigo_medico,
 							dni_persona = @dni_persona
 						WHERE id_medico = @id_medico
-						PRINT 'SE HA ACTUALIZADO CORRECTAMENTE'
 				END
 		END
 	ELSE
         BEGIN
-			PRINT 'EL ID DEl MEDICO NO EXISTE'
+			SELECT message = 'El id del medico no existe', ok = 0;
 		END
 GO
 
@@ -88,31 +83,31 @@ CREATE PROCEDURE SP_ActualizarUsuario
 	AS
 	IF (@id_usuario = '')
 		BEGIN
-			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+			SELECT message = 'El id de usuario no puede ser vacio', ok = 0;
 		END
 	ELSE IF ( EXISTS(SELECT id_usuario FROM Usuario WHERE id_usuario = @id_usuario))
 		BEGIN
 			IF ((@nombre_usuario = '') OR (@contrasenna = '') OR (@id_medico = ''))
 				BEGIN
-					PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+						SELECT message = 'No se permiten campos vacios', ok = 0;
 				END
 			ELSE IF((ISNUMERIC(@id_usuario) = 0) OR (CONVERT(int, @id_usuario) < 0))
 				BEGIN
-					PRINT  'EL ID DEBE SER DATOS NUMERICOS Y DEBE SER POSITIVO' 
+						SELECT message = 'El id debe ser numerico y no puede ser negativo', ok = 0;
 				END
 			ELSE
 				BEGIN
+				SELECT message = 'El usuario ha sido editado exitosamente', ok = 0;
 					UPDATE Usuario
 						Set	nombre_usuario = @nombre_usuario,
 							contrasenna = @contrasenna,
 							id_medico = @id_medico
-						WHERE id_usuario = @id_usuario
-						PRINT 'SE HA ACTUALIZADO CORRECTAMENTE'
+			 		WHERE id_usuario = @id_usuario			
 				END
 		END
 	ELSE
         BEGIN
-			PRINT 'EL ID DEl MEDICO NO EXISTE'
+			SELECT message = 'El id del usuario no existe', ok = 0;
 		END
 GO
 
@@ -127,36 +122,31 @@ CREATE PROCEDURE SP_ActualizarEspecialidad
 AS
 	IF (@id_especialidad = '')
 		BEGIN
-			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+			SELECT message = 'El id de la especialidad no puede ser vacio', ok = 0;
 		END
 	ELSE IF ( EXISTS(SELECT id_especialidad FROM Especialidad WHERE id_especialidad = @id_especialidad))
 		BEGIN
 			IF (@nombreEspecialdad = '')
 				BEGIN
-					PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+					SELECT message = 'No se permiten campos vacios', ok = 0;
 				END
 			ELSE IF((ISNUMERIC(@id_especialidad) = 0) OR (CONVERT(int, @id_especialidad) < 0))
 				BEGIN
-					PRINT  'EL ID DEBE SER DATOS NUMERICOS Y DEBE SER POSITIVO' 
+					SELECT message = 'El id debe ser un dato numerico y debe ser positivo', ok = 0;
 				END
 			ELSE
 				BEGIN
+				SELECT message = 'La especialidad ha sido editada exitosamente', ok = 0;
 					UPDATE Especialidad
 						Set	nombre_especialdad = @nombreEspecialdad
 						WHERE id_especialidad = @id_especialidad
-						PRINT 'SE HA ACTUALIZADO CORRECTAMENTE'
 				END
 		END
 	ELSE
         BEGIN
-			PRINT 'EL ID DE LA ESPECIALIDAD NO EXISTE'
+		SELECT message = 'El id de la especialidad no existe', ok = 0;
 		END
 GO
-
-
-
-
-
 
 
 USE GUANA_HOSPI
@@ -168,30 +158,30 @@ CREATE PROCEDURE SP_ActualizarUnidad
 	AS
 	IF (@id_unidad = '')
 		BEGIN
-			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+			SELECT message = 'El id de la Unidad no puede ser vacio', ok = 0;
 		END
 	ELSE IF ( EXISTS(SELECT id_unidad FROM Unidad WHERE id_unidad = @id_unidad))
 		BEGIN
 			IF ((@nombre = '') OR (@numeroPlanta = ''))
 				BEGIN
-					PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+					SELECT message = 'No se permiten campos vacios', ok = 0;
 				END
 			ELSE IF((ISNUMERIC(@id_unidad) = 0) OR (CONVERT(int, @id_unidad) < 0))
 				BEGIN
-					PRINT  'EL ID DEBE SER DATOS NUMERICOS Y DEBE SER POSITIVO' 
+					SELECT message = 'El id debe ser un dato numerico y positivo', ok = 0; 
 				END
 			ELSE
 				BEGIN
+				SELECT message = 'La unidad ha sido editada con exito', ok = 0;
 					UPDATE Unidad
 						Set	nombre_unidad = @nombre,
 						    numero_planta = @numeroPlanta
 						WHERE id_unidad = @id_unidad
-						PRINT 'SE HA ACTUALIZADO CORRECTAMENTE'
 				END
 		END
 	ELSE
         BEGIN
-			PRINT 'EL ID DE LA UNIDAD NO EXISTE'
+			SELECT message = 'El id de la Unidad no existe', ok = 0;
 		END
 GO
 
@@ -205,30 +195,30 @@ CREATE PROCEDURE SP_ActualizarUnidadMedico
 	AS
 	IF (@id_unidad_medico = '')
 		BEGIN
-			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+			SELECT message = 'El id de la Unidad-medico no puede ser vacio', ok = 0;
 		END
 	ELSE IF ( EXISTS(SELECT id_unidad_medico FROM Unidad_medico WHERE id_unidad_medico = @id_unidad_medico))
 		BEGIN
 			IF ((@id_unidad = '') OR (@id_medico = ''))
 				BEGIN
-					PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+					SELECT message = 'No se permiten campos vacios', ok = 0;
 				END
 			ELSE IF((ISNUMERIC(@id_unidad_medico) = 0) OR (CONVERT(int, @id_unidad_medico) < 0))
 				BEGIN
-					PRINT  'EL ID DEBE SER DATOS NUMERICOS Y DEBE SER POSITIVO' 
+					SELECT message = 'El debe ser numerico y debe ser positivo', ok = 0;
 				END
 			ELSE
 				BEGIN
+				SELECT message = 'La unidad-medico ha sido editada exitosamente', ok = 0;
 					UPDATE Unidad_medico
 						Set	id_unidad = @id_unidad,
 						    id_medico = @id_medico
 						WHERE id_unidad_medico = @id_unidad_medico
-						PRINT 'SE HA ACTUALIZADO CORRECTAMENTE'
 				END
 		END
 	ELSE
         BEGIN
-			PRINT 'EL ID DE LA UNIDAD-MEDICO NO EXISTE'
+			SELECT message = 'El id de la Unidad-medico no existe', ok = 0;
 		END
 GO
 
@@ -241,29 +231,29 @@ CREATE PROCEDURE SP_ActualizarSintoma
 	AS
 	IF (@id_sintoma = '')
 		BEGIN
-			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+			SELECT message = 'El id del sintoma no puede ser vacio', ok = 0;
 		END
 	ELSE IF ( EXISTS(SELECT id_sintoma FROM Sintoma WHERE id_sintoma = @id_sintoma))
 		BEGIN
 			IF (@nombre = '')
 				BEGIN
-					PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+					SELECT message = 'No se permiten campos vacios', ok = 0;
 				END
 			ELSE IF((ISNUMERIC(@id_sintoma) = 0) OR (CONVERT(int, @id_sintoma) < 0))
 				BEGIN
-					PRINT  'EL ID DEBE SER DATOS NUMERICOS Y DEBE SER POSITIVO' 
+					SELECT message = 'El id debe ser numerico y positivo', ok = 0;
 				END
 			ELSE
 				BEGIN
+				SELECT message = 'EL sintoma ha sido editado exitosamente', ok = 0;
 					UPDATE Sintoma
 						Set	nombre_sintoma = @nombre
 						WHERE id_sintoma = @id_sintoma
-						PRINT 'SE HA ACTUALIZADO CORRECTAMENTE'
 				END
 		END
 	ELSE
         BEGIN
-			PRINT 'EL ID DEL SINTOMA NO EXISTE'
+		SELECT message = 'El id del sintoma no existe', ok = 0;
 		END
 GO
 
@@ -279,31 +269,31 @@ CREATE PROCEDURE SP_ActualizarPaciente
 	AS
 	IF (@id_paciente = '')
 		BEGIN
-			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+			SELECT message = 'El id del paciente no puede ser vacio', ok = 0;
 		END
 	ELSE IF ( EXISTS(SELECT id_paciente FROM Paciente WHERE id_paciente = @id_paciente))
 		BEGIN
 			IF ((@numeroSeguroSocial = '') OR (@fecha_ingreso='')OR (@dni_persona ='')) 
 				BEGIN
-					PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+					SELECT message = 'No se permiten campos vacios', ok = 0;
 				END
 			ELSE IF((ISNUMERIC(@id_paciente) = 0) OR (CONVERT(int, @id_paciente) < 0))
 				BEGIN
-					PRINT  'EL ID DEBE SER DATOS NUMERICOS Y DEBE SER POSITIVO' 
+					SELECT message = 'El id debe ser numerico y positivo', ok = 0; 
 				END
 			ELSE
 				BEGIN
+				SELECT message = 'El Paciente ha sido editado correctamente', ok = 0;
 					UPDATE Paciente
 						Set	numero_seguro_social = @numeroSeguroSocial,
 						fecha_ingreso = @fecha_ingreso,
 						dni_persona = @dni_persona
 						WHERE id_paciente = @id_paciente
-						PRINT 'SE HA ACTUALIZADO CORRECTAMENTE'
 				END
 		END
 	ELSE
         BEGIN	
-			PRINT 'EL ID DEL DEL PACIENTE NO EXISTE'
+			SELECT message = 'El id del Paciente no existe', ok = 0;
 		END
 GO
 
@@ -318,20 +308,21 @@ CREATE PROCEDURE SP_ActualizarConsulta
 	AS
 	IF (@id_consulta = '')
 		BEGIN
-			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+			SELECT message = 'El id de la consulta no puede ser vacio', ok = 0;
 		END
 	ELSE IF ( EXISTS(SELECT id_consulta FROM Consulta WHERE id_consulta = @id_consulta))
 		BEGIN
 			IF ((@fecha = '') OR (@id_paciente='')) 
 				BEGIN
-					PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+					SELECT message = 'No se permiten campos vacios', ok = 0;
 				END
 			ELSE IF((ISNUMERIC(@id_consulta) = 0) OR (CONVERT(int, @id_consulta) < 0))
 				BEGIN
-					PRINT  'EL ID DEBE SER DATOS NUMERICOS Y DEBE SER POSITIVO' 
+					SELECT message = 'El id debe ser numerico y positivo', ok = 0; 
 				END
 			ELSE
 				BEGIN
+				SELECT message = 'La consulta ha sido editada correctamente', ok = 0;
 					UPDATE Consulta
 						Set	fecha_consulta = @fecha,
 						id_paciente = @id_paciente
@@ -341,7 +332,7 @@ CREATE PROCEDURE SP_ActualizarConsulta
 		END
 	ELSE
         BEGIN	
-			PRINT 'EL ID DEL DE LA CONSULTA NO EXISTE'
+			SELECT message = 'El id de la consulta no existe', ok = 0;
 		END
 GO
 
@@ -356,30 +347,30 @@ CREATE PROCEDURE SP_ActualizarConsultaUnidad
 	AS
 	IF (@id_consulta_unidad = '')
 		BEGIN
-			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+			SELECT message = 'El id de consulta-unidad no puede ser vacio', ok = 0;
 		END
 	ELSE IF ( EXISTS(SELECT id_consulta_unidad FROM Consulta_Unidad WHERE id_consulta_unidad = @id_consulta_unidad))
 		BEGIN
 			IF ((@id_consulta = '') OR (@id_unidad='')) 
 				BEGIN
-					PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+					SELECT message = 'No se permiten campos vacios', ok = 0;
 				END
 			ELSE IF((ISNUMERIC(@id_consulta_unidad) = 0) OR (CONVERT(int, @id_consulta_unidad) < 0))
 				BEGIN
-					PRINT  'EL ID DEBE SER DATOS NUMERICOS Y DEBE SER POSITIVO' 
+					SELECT message = 'El id debe ser numerico y positivo', ok = 0; 
 				END
 			ELSE
 				BEGIN
+				SELECT message = 'La consulta-unidad ha sido editada correctamente', ok = 0;
 					UPDATE Consulta_Unidad
 						Set	id_consulta = @id_consulta,
 						id_unidad = @id_unidad
 						WHERE id_consulta_unidad = @id_consulta_unidad
-						PRINT 'SE HA ACTUALIZADO CORRECTAMENTE'
 				END
 		END
 	ELSE
         BEGIN	
-			PRINT 'EL ID DEL PADECIMIENTO NO EXISTE'
+			SELECT message = 'El id de la consulta-unidad no existe', ok = 0;
 		END
 GO
 
@@ -396,31 +387,31 @@ CREATE PROCEDURE SP_ActualizarPresenta
 	AS
 	IF (@id_presenta = '')
 		BEGIN
-			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+			SELECT message = 'El id de Presenta no puede ser vacio', ok = 0;
 		END
 	ELSE IF ( EXISTS(SELECT id_presenta FROM Presenta WHERE id_presenta = @id_presenta))
 		BEGIN
 			IF ((@id_consulta = '') OR (@id_sintoma='')OR (@descripcion_presenta ='')) 
 				BEGIN
-					PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+					SELECT message = 'No se permiten campos vacios', ok = 0;
 				END
 			ELSE IF((ISNUMERIC(@id_presenta) = 0) OR (CONVERT(int, @id_presenta) < 0))
 				BEGIN
-					PRINT  'EL ID DEBE SER DATOS NUMERICOS Y DEBE SER POSITIVO' 
+					SELECT message = 'El id debe ser numerico y positivo', ok = 0;
 				END
 			ELSE
 				BEGIN
+				SELECT message = 'Presenta ha sido editada correctamente', ok = 0;
 					UPDATE Presenta
 						Set	id_consulta = @id_consulta,
 						id_sintoma = @id_sintoma,
 						descripcion_presenta = @descripcion_presenta
 						WHERE id_consulta = @id_presenta
-						PRINT 'SE HA ACTUALIZADO CORRECTAMENTE'
 				END
 		END
 	ELSE
         BEGIN	
-			PRINT 'EL ID DEL PADECIMIENTO NO EXISTE'
+			SELECT message = 'El id de Presenta no existe', ok = 0;
 		END
 GO
 
@@ -435,29 +426,29 @@ CREATE PROCEDURE SP_ActualizarEnfermedad
 	AS
 	IF (@id_enfermedad = '')
 		BEGIN
-			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+			SELECT message = 'El id de la enfermedad no puede ser vacio', ok = 0;
 		END
 	ELSE IF ( EXISTS(SELECT id_enfermedad FROM Enfermedad WHERE id_enfermedad = @id_enfermedad))
 		BEGIN
 			IF (@nombre = '') 
 				BEGIN
-					PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+					SELECT message = 'No se permiten campos vacios', ok = 0;
 				END
 			ELSE IF((ISNUMERIC(@id_enfermedad) = 0) OR (CONVERT(int, @id_enfermedad) < 0))
 				BEGIN
-					PRINT  'EL ID DEBE SER DATOS NUMERICOS Y DEBE SER POSITIVO' 
+					SELECT message = 'El id debe ser numerico y positivo', ok = 0; 
 				END
 			ELSE
 				BEGIN
+				SELECT message = 'La enfermedad ha sido editada correctamente', ok = 0;
 					UPDATE Enfermedad
 						Set	nombre_enfermedad = @nombre
 						WHERE id_enfermedad = @id_enfermedad
-						PRINT 'SE HA ACTUALIZADO CORRECTAMENTE'
 				END
 		END
 	ELSE
         BEGIN	
-			PRINT 'EL ID DE LA ENFERMEDAD NO EXISTE'
+			SELECT message = 'El id de la enfermedad no existe', ok = 0;
 		END
 GO
 
@@ -471,30 +462,30 @@ CREATE PROCEDURE SP_ActualizarPadece
 	AS
 	IF (@id_padece = '')
 		BEGIN
-			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+			SELECT message = 'El id del padecimiento no puede ser vacio', ok = 0;
 		END
 	ELSE IF ( EXISTS(SELECT id_padece FROM Padece WHERE id_padece = @id_padece))
 		BEGIN
 			IF ((@id_paciente = '') OR (@id_enfermedad='')) 
 				BEGIN
-					PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+					SELECT message = 'No se permiten campos vacios', ok = 0;
 				END
 			ELSE IF((ISNUMERIC(@id_padece) = 0) OR (CONVERT(int, @id_padece) < 0))
 				BEGIN
-					PRINT  'EL ID DEBE SER DATOS NUMERICOS Y DEBE SER POSITIVO' 
+					SELECT message = 'El id debe ser numerico y positivo', ok = 0;
 				END
 			ELSE
 				BEGIN
+				SELECT message = 'El padecimiento ha sido editado correctamente', ok = 0;
 					UPDATE Padece
 						Set	id_paciente = @id_paciente,
 						id_enfermedad = @id_enfermedad
 						WHERE id_padece = @id_padece
-						PRINT 'SE HA ACTUALIZADO CORRECTAMENTE'
 				END
 		END
 	ELSE
         BEGIN	
-			PRINT 'EL ID DE PADECE NO EXISTE'
+			SELECT message = 'El id del Padecimiento no existe', ok = 0;
 		END
 GO
 
@@ -509,29 +500,29 @@ CREATE PROCEDURE SP_ActualizarTipoIntervension
 	AS
 	IF (@id_tipo_Intervencion = '')
 		BEGIN
-			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+			SELECT message = 'El id del tipo de intervención no puede ser vacio', ok = 0;
 		END
 	ELSE IF ( EXISTS(SELECT id_tipo_intervencion FROM Tipo_Intervencion WHERE id_tipo_intervencion = @id_tipo_Intervencion))
 		BEGIN
 			IF (@nombre = '') 
 				BEGIN
-					PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+					SELECT message = 'No se permiten campos vacios', ok = 0;
 				END
 			ELSE IF((ISNUMERIC(@id_tipo_Intervencion) = 0) OR (CONVERT(int, @id_tipo_Intervencion) < 0))
 				BEGIN
-					PRINT  'EL ID DEBE SER DATOS NUMERICOS Y DEBE SER POSITIVO' 
+					SELECT message = 'El id debe ser numerico y positivo', ok = 0; 
 				END
 			ELSE
 				BEGIN
+				SELECT message = 'El tipo de intervencion ha sido editado correctamente', ok = 0;
 					UPDATE Tipo_Intervencion
 						Set	nombre_tipo_intervencion = @nombre
 						WHERE id_tipo_intervencion = @id_tipo_Intervencion
-						PRINT 'SE HA ACTUALIZADO CORRECTAMENTE'
 				END
 		END
 	ELSE
         BEGIN	
-			PRINT 'EL ID DE TIPO INTERVENCION NO EXISTE'
+			SELECT message = 'El id del tipo-intervencion no existe', ok = 0;
 		END
 GO
 
@@ -550,20 +541,21 @@ CREATE PROCEDURE SP_ActualizarIntervencion
 	AS
 	IF (@id_intervencion = '')
 		BEGIN
-			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+			SELECT message = 'El id de la intervención no puede ser vacio', ok = 0;
 		END
 	ELSE IF ( EXISTS(SELECT id_intervencion FROM Intervencion WHERE id_intervencion = @id_intervencion))
 		BEGIN
 			IF ((@tratamiento = '')OR(@id_tipo_intervencion ='')OR(@id_consulta ='')) 
 				BEGIN
-					PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+					SELECT message = 'No se permiten campos vacios', ok = 0;
 				END
 			ELSE IF((ISNUMERIC(@id_intervencion) = 0) OR (CONVERT(int, @id_intervencion) < 0))
 				BEGIN
-					PRINT  'EL ID DEBE SER DATOS NUMERICOS Y DEBE SER POSITIVO' 
+					SELECT message = 'El id debe ser numerico y positivo', ok = 0;
 				END
 			ELSE
 				BEGIN
+				SELECT message = 'La intevencion ha sido editada correctamente', ok = 0;
 					UPDATE Intervencion
 						Set	tratamiento = @tratamiento,
 						id_tipo_intervencion = @id_tipo_intervencion,
@@ -574,7 +566,7 @@ CREATE PROCEDURE SP_ActualizarIntervencion
 		END
 	ELSE
         BEGIN	
-			PRINT 'EL ID DE INTERVENCION NO EXISTE'
+			SELECT message = 'El id de la intervencion no existe', ok = 0;
 		END
 GO
 
@@ -592,30 +584,30 @@ CREATE PROCEDURE SP_ActualizarPaciente_unidad
 	AS
 	IF (@id_paciente_unidad = '')
 		BEGIN
-			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+			SELECT message = 'El id del paciente-unidad no puede ser vacio', ok = 0;
 		END
 	ELSE IF ( EXISTS(SELECT id_paciente_unidad FROM Paciente_unidad WHERE id_paciente_unidad = @id_paciente_unidad))
 		BEGIN
 			IF ((@id_paciente = '')OR(@id_unidad ='')) 
 				BEGIN
-					PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+					SELECT message = 'No se permiten campos vacios', ok = 0;
 				END
 			ELSE IF((ISNUMERIC(@id_paciente_unidad) = 0) OR (CONVERT(int, @id_paciente_unidad) < 0))
 				BEGIN
-					PRINT  'EL ID DEBE SER DATOS NUMERICOS Y DEBE SER POSITIVO' 
+					SELECT message = 'El id debe ser numerico y positivo', ok = 0; 
 				END
 			ELSE
 				BEGIN
+				SELECT message = 'El Paciente-unidad ha sido editado correctamente', ok = 0;
 					UPDATE Paciente_unidad
 						Set	id_paciente = @id_paciente,
 						id_unidad = @id_unidad
 						WHERE id_paciente_unidad = @id_paciente_unidad
-						PRINT 'SE HA ACTUALIZADO CORRECTAMENTE'
 				END
 		END
 	ELSE
         BEGIN	
-			PRINT 'EL ID DE PACIENTE UNIDAD NO EXISTE'
+			SELECT message = 'El id del Paciente-Unidad no existe', ok = 0;
 		END
 GO
 
@@ -629,30 +621,30 @@ CREATE PROCEDURE SP_ActualizarMedicoEspecialidad
 	AS
 	IF (@id_medico_especialidad = '')
 		BEGIN
-			PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+			SELECT message = 'El id del Medico-especialidad no puede ser vacio', ok = 0;
 		END
 	ELSE IF ( EXISTS(SELECT id_medico_especialidad FROM Medico_Especialidad WHERE id_medico_especialidad = @id_medico_especialidad))
 		BEGIN
 			IF ((@id_medico = '')OR(@id_especialidad ='')) 
 				BEGIN
-					PRINT 'NO SE PERMITEN CAMPOS VACIOS'
+					SELECT message = 'No se permiten campos vacios', ok = 0;
 				END
 			ELSE IF((ISNUMERIC(@id_medico_especialidad) = 0) OR (CONVERT(int, @id_medico_especialidad) < 0))
 				BEGIN
-					PRINT  'EL ID DEBE SER DATOS NUMERICOS Y DEBE SER POSITIVO' 
+					SELECT message = 'El id debe ser numerico y positivo', ok = 0;
 				END
 			ELSE
 				BEGIN
+				SELECT message = 'El medico-especialidad ha sido editada correctamente', ok = 0;
 					UPDATE Medico_Especialidad
 						Set	id_medico = @id_medico,
 						id_especialidad = @id_especialidad
 						WHERE id_medico_especialidad = @id_medico_especialidad
-						PRINT 'SE HA ACTUALIZADO CORRECTAMENTE'
 				END
 		END
 	ELSE
         BEGIN	
-			PRINT 'EL ID DE PACIENTE UNIDAD NO EXISTE'
+			SELECT message = 'El id de medico-especialidad no existe', ok = 0;
 		END
 GO
 
