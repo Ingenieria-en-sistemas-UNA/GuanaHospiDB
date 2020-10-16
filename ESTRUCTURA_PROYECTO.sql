@@ -38,6 +38,8 @@ CREATE TABLE Medico(
 )
 GO
 
+USE	GUANA_HOSPI
+GO
 CREATE TABLE Usuario(
     id_usuario INT IDENTITY (1,1),
 	nombre_usuario VARCHAR(40) NOT NULL,
@@ -136,6 +138,8 @@ CREATE TABLE Consulta_Unidad(
 )
 GO
 
+USE GUANA_HOSPI
+GO
 CREATE TABLE Presenta (
 	id_presenta INT IDENTITY (1,1),
 	id_consulta INT NOT NULL,
