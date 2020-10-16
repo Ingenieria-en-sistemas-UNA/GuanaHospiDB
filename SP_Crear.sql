@@ -37,19 +37,19 @@ CREATE PROC SP_Crear_Usuario
 AS
 	IF(@Nombre = '' OR @Contrasenna = '' OR @IdMedico = '')
 		BEGIN
-			SELECT message = 'No se permiten campos vacios', ok = 1
+			SELECT message = 'No se permiten campos vacios', ok = 0
 		END
 	ELSE IF(EXISTS(SELECT nombre_usuario FROM Usuario WHERE nombre_usuario = @Nombre))
 		BEGIN
-			SELECT message = 'El nombre de usuario ya existe', ok = 1
+			SELECT message = 'El nombre de usuario ya existe', ok = 0
 		END
 	ELSE IF(NOT EXISTS(SELECT id_medico FROM Medico WHERE id_medico = @IdMedico))
 		BEGIN
-			SELECT message = 'El id medico no existe', ok = 1
+			SELECT message = 'El id medico no existe', ok = 0
 		END
 	ELSE IF(EXISTS(SELECT id_medico FROM Usuario WHERE id_medico = @IdMedico))
 		BEGIN
-			SELECT message = 'El medico ya cuenta con un usuario', ok = 1
+			SELECT message = 'El medico ya cuenta con un usuario', ok = 0
 		END
 	ELSE
 		BEGIN
@@ -66,11 +66,11 @@ CREATE PROC SP_Crear_Especialidad
 AS
 	IF(@NombreEspecialidad = '')
 		BEGIN
-			SELECT message = 'No se permiten campos vacios', ok = 1
+			SELECT message = 'No se permiten campos vacios', ok = 0
 		END
 	ELSE IF(EXISTS(SELECT nombre_especialdad FROM Especialidad WHERE nombre_especialdad = @NombreEspecialidad))
 		BEGIN
-			SELECT message = 'La especialidad ya existe', ok = 1
+			SELECT message = 'La especialidad ya existe', ok = 0
 		END
 	ELSE
 		BEGIN
@@ -88,23 +88,23 @@ CREATE PROC SP_Crear_Medico
 AS
 	IF(@CodigoMedico = '' OR @DniPersona = '')
 		BEGIN
-			SELECT message = 'No se permiten campos vacios', ok = 1
+			SELECT message = 'No se permiten campos vacios', ok = 0
 		END
 	ELSE IF(ISNUMERIC(@CodigoMedico) = 0)
 		BEGIN
-			SELECT message = 'El codigo medico debe ser de tipo numerico', ok = 1
+			SELECT message = 'El codigo medico debe ser de tipo numerico', ok = 0
 		END
 	ELSE IF (NOT EXISTS(SELECT dni_persona FROM Persona WHERE dni_persona=@DniPersona))
 		BEGIN
-			SELECT message = 'El id de la persona no existe', ok = 1
+			SELECT message = 'El id de la persona no existe', ok = 0
 		END
 	ELSE IF (EXISTS(SELECT dni_persona FROM Medico WHERE dni_persona=@DniPersona))
 		BEGIN
-			SELECT message = 'Esta persona ya es un medico', ok = 1
+			SELECT message = 'Esta persona ya es un medico', ok = 0
 		END
 	ELSE IF (EXISTS(SELECT codigo_medico FROM Medico WHERE codigo_medico = @CodigoMedico))
 		BEGIN
-			SELECT message = 'El codigo medico ya ha sido registrado anteriormente', ok = 1
+			SELECT message = 'El codigo medico ya ha sido registrado anteriormente', ok = 0
 		END
 	ELSE 
 		BEGIN
@@ -122,23 +122,23 @@ CREATE PROC SP_Crear_Medico_Especialidad
 AS
 	IF(@IdMedico = '' OR @IdEspecialidad = '')
 		BEGIN
-			SELECT message = 'No se permiten campos vacios', ok = 1
+			SELECT message = 'No se permiten campos vacios', ok = 0
 		END
 	ELSE IF(ISNUMERIC(@IdMedico) = 0 OR ISNUMERIC(@IdEspecialidad) = 0)
 		BEGIN
-			SELECT message = 'No se permiten caracteres', ok = 1
+			SELECT message = 'No se permiten caracteres', ok = 0
 		END
 	ELSE IF(NOT EXISTS(SELECT id_medico FROM Medico WHERE id_medico = @IdMedico))
 		BEGIN
-			SELECT message = 'El id medico no existe', ok = 1
+			SELECT message = 'El id medico no existe', ok = 0
 		END
 	ELSE IF(NOT EXISTS(SELECT id_especialidad FROM Especialidad WHERE id_especialidad = @IdMedico))
 		BEGIN
-			SELECT message = 'El id de la especialidad no existe', ok = 1
+			SELECT message = 'El id de la especialidad no existe', ok = 0
 		END
 	ELSE IF(EXISTS(SELECT id_medico, id_especialidad FROM Medico_Especialidad WHERE id_especialidad = @IdEspecialidad AND id_medico = @IdMedico))
 		BEGIN
-			SELECT message = 'El medico ya tiene la especialidad', ok = 1
+			SELECT message = 'El medico ya tiene la especialidad', ok = 0
 		END
 	ELSE 
 		BEGIN
@@ -156,15 +156,15 @@ CREATE PROC SP_Crear_Unidad
 AS
 	IF (@Nombre = '' OR @Numero_planta = '')
 		BEGIN
-			SELECT message = 'No se permiten campos vacios', ok = 1
+			SELECT message = 'No se permiten campos vacios', ok = 0
 		END
 	ELSE IF(ISNUMERIC(@Numero_planta) = 0)
 	    BEGIN
-			SELECT message = 'No se permiten caracteres', ok = 1
+			SELECT message = 'No se permiten caracteres', ok = 0
         END
 	ELSE IF (EXISTS(SELECT nombre_unidad, numero_planta FROM Unidad WHERE nombre_unidad = @Nombre AND numero_planta = CONVERT(int, @Numero_planta)))
 		BEGIN
-			SELECT message = 'Esta unidad ya habia sido reistrada anteriormente', ok = 1
+			SELECT message = 'Esta unidad ya habia sido reistrada anteriormente', ok = 0
 		END
 	ELSE
 		BEGIN
@@ -182,27 +182,27 @@ CREATE PROC SP_Crear_Unidad_Medico
 AS
 	IF(@IdUnidad = '' OR @IdMedico = '')
 		BEGIN 
-			SELECT message = 'No se permiten campos vacios', ok = 1
+			SELECT message = 'No se permiten campos vacios', ok = 0
 		END
 	ELSE IF(ISNUMERIC(@IdUnidad) = 0 OR ISNUMERIC(@IdMedico) = 0)
 		BEGIN
-			SELECT message = 'No se permiten caracteres', ok = 1
+			SELECT message = 'No se permiten caracteres', ok = 0
 		END
 	ELSE IF(NOT EXISTS(SELECT id_unidad FROM Unidad WHERE id_unidad = @IdUnidad))
 		BEGIN
-			SELECT message = 'El id de la unidad no existe', ok = 1
+			SELECT message = 'El id de la unidad no existe', ok = 0
 		END
 	ELSE IF(NOT EXISTS(SELECT id_medico FROM Medico WHERE id_medico = @IdMedico))
 		BEGIN
-			SELECT message = 'El id del medico no existe', ok = 1
+			SELECT message = 'El id del medico no existe', ok = 0
 		END
 	ELSE IF(EXISTS(SELECT id_medico FROM Unidad_Medico WHERE id_medico = @IdMedico))
 		BEGIN
-			SELECT message = 'El medico ya cuenta con una unidad', ok = 1
+			SELECT message = 'El medico ya cuenta con una unidad', ok = 0
 		END
 	ELSE IF(EXISTS(SELECT id_unidad FROM Unidad_Medico WHERE id_unidad = @IdUnidad))
 		BEGIN 
-			SELECT message = 'La unidad se encuentra ocupada', ok = 1
+			SELECT message = 'La unidad se encuentra ocupada', ok = 0
 		END
 	ELSE
 		BEGIN
@@ -219,11 +219,11 @@ CREATE PROC SP_Crear_Sintoma
 AS
 	IF(@Nombre = '')
 		BEGIN
-			SELECT message = 'No se permiten campos vacios', ok = 1
+			SELECT message = 'No se permiten campos vacios', ok = 0
 		END
 	ELSE IF (EXISTS(SELECT nombre_sintoma FROM Sintoma WHERE nombre_sintoma = @Nombre))
 		BEGIN
-			SELECT message = 'El sintoma ya habia sido registrado anteriormente', ok = 1
+			SELECT message = 'El sintoma ya habia sido registrado anteriormente', ok = 0
 		END
 	ELSE
 		BEGIN
@@ -242,27 +242,27 @@ CREATE PROC SP_Crear_Paciente
 AS
 	IF(@Numero_seguro_social = '' OR @FechaIngreso = '' OR @DniPersona = '')
 		BEGIN
-			SELECT message = 'No se permiten campos vacios', ok = 1
+			SELECT message = 'No se permiten campos vacios', ok = 0
 		END
 	ELSE IF(ISNUMERIC(@Numero_seguro_social) = 0)
 		BEGIN
-			SELECT message = 'El numero de seguro social debe ser formato numero', ok = 1
+			SELECT message = 'El numero de seguro social debe ser formato numero', ok = 0
 		END
 	ELSE IF(ISDATE(@FechaIngreso) = 0)
 		BEGIN
-			SELECT message = 'La fecha de ingreso debe ser un formato fecha valido', ok = 1
+			SELECT message = 'La fecha de ingreso debe ser un formato fecha valido', ok = 0
 		END
 	ELSE IF EXISTS(SELECT numero_seguro_social FROM Paciente WHERE numero_seguro_social = @Numero_seguro_social)
 		BEGIN
-			SELECT message = 'El numero de seguro social ya habia registrado anteriormente', ok = 1
+			SELECT message = 'El numero de seguro social ya habia registrado anteriormente', ok = 0
 		END
 	ELSE IF NOT EXISTS(SELECT dni_persona FROM Persona WHERE dni_persona = @DniPersona)
 		BEGIN
-			SELECT message = 'La persona no existe', ok = 1
+			SELECT message = 'La persona no existe', ok = 0
 		END
 	ELSE IF EXISTS(SELECT dni_persona FROM Paciente WHERE dni_persona = @DniPersona)
 		BEGIN
-			SELECT message = 'El paciente ya habia sido registrado anteriormente', ok = 1
+			SELECT message = 'El paciente ya habia sido registrado anteriormente', ok = 0
 		END
 	ELSE
 		BEGIN
@@ -280,19 +280,19 @@ CREATE PROC SP_Crear_Consulta
 AS
 	IF(@FechaConsulta = '' OR @IdPaciente = '')
 		BEGIN
-			SELECT message = 'No se permiten campos vacios', ok = 1
+			SELECT message = 'No se permiten campos vacios', ok = 0
 		END
 	ELSE IF(ISDATE(@FechaConsulta) = 0)
 		BEGIN
-			SELECT message = 'La fecha de consulta debe ser un formato fecha valido', ok = 1
+			SELECT message = 'La fecha de consulta debe ser un formato fecha valido', ok = 0
 		END
 	ELSE IF(ISNUMERIC(@IdPaciente) = 0)
 		BEGIN
-			SELECT message = 'No se permiten caracteres', ok = 1
+			SELECT message = 'No se permiten caracteres', ok = 0
 		END
 	ELSE IF(NOT EXISTS(SELECT id_paciente FROM Paciente WHERE id_paciente = @IdPaciente))
 		BEGIN
-			SELECT message = 'El paciente no existe', ok = 1
+			SELECT message = 'El paciente no existe', ok = 0
 		END
 	ELSE
 		BEGIN
@@ -310,23 +310,23 @@ CREATE PROC SP_Crear_Consulta_Unidad
 AS
 	IF(@IdConsulta = '' OR @IdUnidad = '')
 		BEGIN
-			SELECT message = 'No se permiten campos vacios', ok = 1
+			SELECT message = 'No se permiten campos vacios', ok = 0
 		END
 	ELSE IF(ISNUMERIC(@IdConsulta) = 0 OR ISNUMERIC(@IdUnidad) = 0)
 		BEGIN
-			SELECT message = 'No se permiten caracteres', ok = 1
+			SELECT message = 'No se permiten caracteres', ok = 0
 		END
 	ELSE IF(NOT EXISTS(SELECT id_consulta FROM Consulta WHERE id_consulta = @IdConsulta))
 		BEGIN
-			SELECT message = 'El id de la consulta no existe', ok = 1
+			SELECT message = 'El id de la consulta no existe', ok = 0
 		END
 	ELSE IF (NOT EXISTS(SELECT id_unidad FROM Unidad WHERE id_unidad = @IdUnidad))
 		BEGIN
-			SELECT message = 'El id de la unidad no existe', ok = 1
+			SELECT message = 'El id de la unidad no existe', ok = 0
 		END
 	ELSE IF (EXISTS(SELECT id_consulta, id_unidad FROM Consulta_Unidad WHERE id_consulta = @IdConsulta AND id_unidad = @IdUnidad))
 		BEGIN
-			SELECT message = 'El registro ya habia sido ingresado anteriormente', ok = 1
+			SELECT message = 'El registro ya habia sido ingresado anteriormente', ok = 0
 		END
 	ELSE
 		BEGIN
@@ -345,19 +345,19 @@ CREATE PROC SP_Crear_Presenta
 AS
 	IF(@IdConsulta = '' OR @IdSintoma = '' OR @Descripcion = '')
 		BEGIN
-			SELECT message = 'No se permiten campos vacios', ok = 1
+			SELECT message = 'No se permiten campos vacios', ok = 0
 		END  
 	ELSE IF(ISNUMERIC(@IdConsulta) = 0 OR ISNUMERIC(@IdSintoma) = 0)
 		BEGIN
-			SELECT message = 'No se permiten caracteres', ok = 1
+			SELECT message = 'No se permiten caracteres', ok = 0
 		END
 	ELSE IF(NOT EXISTS(SELECT id_consulta FROM Consulta WHERE id_consulta = @IdConsulta))
 		BEGIN
-			SELECT message = 'El id de la consulta no existe', ok = 1
+			SELECT message = 'El id de la consulta no existe', ok = 0
 		END
 	ELSE IF(NOT EXISTS(SELECT id_sintoma FROM Sintoma WHERE id_sintoma = @IdSintoma))
 		BEGIN
-			SELECT message = 'El id del sintoma no existe', ok = 1
+			SELECT message = 'El id del sintoma no existe', ok = 0
 		END
 	ELSE
 		BEGIN
@@ -374,11 +374,11 @@ CREATE PROC SP_Crear_Enfermedad
 AS
 	IF(@Nombre = '')
 		BEGIN
-			SELECT message = 'No se permiten campos vacios', ok = 1
+			SELECT message = 'No se permiten campos vacios', ok = 0
 		END
 	ELSE IF (EXISTS(SELECT nombre_enfermedad FROM Enfermedad WHERE nombre_enfermedad = @Nombre))
 		BEGIN
-			SELECT message = 'La enfermedad ya existe', ok = 1
+			SELECT message = 'La enfermedad ya existe', ok = 0
 		END
 	ELSE
 		BEGIN
@@ -396,19 +396,19 @@ CREATE PROC SP_Crear_Padece
 AS
 	IF(@IdPaciente = '' OR @IdEnfermedad = '')
 		BEGIN
-			SELECT message = 'No se permiten campos vacios', ok = 1
+			SELECT message = 'No se permiten campos vacios', ok = 0
 		END
 	ELSE IF(ISNUMERIC(@IdPaciente) = 0 OR ISNUMERIC(@IdEnfermedad) = 0)
 		BEGIN
-			SELECT message = 'No se permiten caracteres', ok = 1
+			SELECT message = 'No se permiten caracteres', ok = 0
 		END
 	ELSE IF(NOT EXISTS(SELECT id_paciente FROM Paciente WHERE id_paciente = @IdPaciente))
 		BEGIN
-			SELECT message = 'El id del paciente no existe', ok = 1
+			SELECT message = 'El id del paciente no existe', ok = 0
 		END
 	ELSE IF(NOT EXISTS(SELECT id_enfermedad FROM Enfermedad WHERE id_enfermedad = @IdEnfermedad))
 		BEGIN
-			SELECT message = 'El id de la enfermedad no existe', ok = 1
+			SELECT message = 'El id de la enfermedad no existe', ok = 0
 		END
 	ELSE
 		BEGIN
@@ -425,11 +425,11 @@ CREATE PROC SP_Crear_Tipo_Intervencion
 AS
 	IF(@Nombre = '')
 		BEGIN
-			SELECT message = 'No se permiten campos vacios', ok = 1
+			SELECT message = 'No se permiten campos vacios', ok = 0
 		END
 	ELSE IF (EXISTS(SELECT nombre_tipo_intervencion FROM Tipo_Intervencion WHERE nombre_tipo_intervencion = @Nombre))
 		BEGIN
-			SELECT message = 'El tipo de intervencion ya existe', ok = 1
+			SELECT message = 'El tipo de intervencion ya existe', ok = 0
 		END
 	ELSE
 		BEGIN
@@ -448,19 +448,19 @@ CREATE PROC SP_Crear_Intervencion
 AS
 	IF(@Tratamiento = '' OR @IdTipoIntervencion = '' OR @IdConsulta = '')
 		BEGIN
-			SELECT message = 'No se permiten campos vacios', ok = 1
+			SELECT message = 'No se permiten campos vacios', ok = 0
 		END
 	ELSE IF(ISNUMERIC(@IdTipoIntervencion) = 0 OR ISNUMERIC(@IdConsulta) = 0)
 		BEGIN
-			SELECT message = 'No se permiten caracteres', ok = 1
+			SELECT message = 'No se permiten caracteres', ok = 0
 		END
 	ELSE IF(NOT EXISTS(SELECT id_tipo_intervencion FROM Tipo_Intervencion WHERE id_tipo_intervencion = @IdTipoIntervencion))
 		BEGIN
-			SELECT message = 'El id del tipo de intervencion no existe', ok = 1
+			SELECT message = 'El id del tipo de intervencion no existe', ok = 0
 		END
 	ELSE IF(NOT EXISTS(SELECT id_consulta FROM Consulta WHERE id_consulta = @IdConsulta))
 		BEGIN
-			SELECT message = 'El id de la consulta no existe', ok = 1
+			SELECT message = 'El id de la consulta no existe', ok = 0
 		END
 	ELSE
 		BEGIN
@@ -478,19 +478,19 @@ CREATE PROC SP_Crear_Paciente_Unidad
 AS
 	IF(@IdPaciente = '' OR @IdUnidad = '')
 		BEGIN
-			SELECT message = 'No se permiten campos vacios', ok = 1
+			SELECT message = 'No se permiten campos vacios', ok = 0
 		END
 	ELSE IF(ISNUMERIC(@IdPaciente) = 0 OR ISNUMERIC(@IdUnidad) = 0)
 		BEGIN
-			SELECT message = 'No se permiten caracteres', ok = 1
+			SELECT message = 'No se permiten caracteres', ok = 0
 		END
 	ELSE IF(NOT EXISTS(SELECT id_paciente FROM Paciente WHERE id_paciente = @IdPaciente))
 		BEGIN
-			SELECT message = 'El id del paciente no existe', ok = 1
+			SELECT message = 'El id del paciente no existe', ok = 0
 		END
 	ELSE IF(NOT EXISTS(SELECT id_unidad FROM Unidad WHERE id_unidad = @IdUnidad))
 		BEGIN
-			SELECT message = 'El id de la unidad no existe', ok = 1
+			SELECT message = 'El id de la unidad no existe', ok = 0
 		END
 	ELSE
 		BEGIN
