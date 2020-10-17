@@ -32,7 +32,7 @@ GO
 USE	DW_GUANA_HOSPI
 GO
 CREATE TABLE Medico(
-    id_medico INT IDENTITY(1,1),
+    id_medico INT,
 	codigo_medico INT NOT NULL,
 	dni_persona VARCHAR(12) NOT NULL,
 	CONSTRAINT PK_id_medico PRIMARY KEY (id_medico)
@@ -44,7 +44,7 @@ GO
 USE	DW_GUANA_HOSPI
 GO
 CREATE TABLE Paciente (
-	id_paciente INT IDENTITY (1,1),
+	id_paciente INT,
 	numero_seguro_social INT NOT NULL,
 	fecha_ingreso DATE NOT NULL,
 	dni_persona VARCHAR(12),
@@ -56,7 +56,7 @@ GO
 USE	DW_GUANA_HOSPI
 GO
 CREATE TABLE Unidad(
-	id_unidad INT IDENTITY (1,1),
+	id_unidad INT,
 	nombre_unidad VARCHAR(50) NOT NULL,
 	numero_planta INT NOT NULL,
 	CONSTRAINT PK_id_unidad PRIMARY KEY (id_unidad),
@@ -66,7 +66,7 @@ GO
 USE	DW_GUANA_HOSPI
 GO
 CREATE TABLE Paciente_Unidad(
-	id_paciente_unidad INT IDENTITY(1,1),
+	id_paciente_unidad INT,
 	id_paciente INT  NOT NULL,
 	id_unidad INT NOT NULL,
 	CONSTRAINT PK_id_paciente_unidad PRIMARY KEY (id_paciente_unidad)
@@ -77,7 +77,7 @@ GO
 USE	DW_GUANA_HOSPI
 GO
 CREATE TABLE Consulta(
-	id_consulta INT IDENTITY (1,1),
+	id_consulta INT,
 	fecha_consulta DATE NOT NULL,
 	id_paciente INT NOT NULL,
 	CONSTRAINT PK_id_consulta PRIMARY KEY (id_consulta)
@@ -88,7 +88,7 @@ GO
 USE	DW_GUANA_HOSPI
 GO
 CREATE TABLE Enfermedad(
-	id_enfermedad INT IDENTITY (1,1),
+	id_enfermedad INT,
 	nombre_enfermedad VARCHAR(50) NOT NULL,
 	CONSTRAINT PK_id_enfermedad PRIMARY KEY (id_enfermedad),
 )
@@ -98,7 +98,7 @@ GO
 USE	DW_GUANA_HOSPI
 GO
 CREATE TABLE Padece(
-	id_padece INT IDENTITY (1,1),
+	id_padece INT,
 	id_paciente INT NOT NULL,
 	id_enfermedad INT NOT NULL,
 	CONSTRAINT PK_id_padece PRIMARY KEY (id_padece)
@@ -108,7 +108,7 @@ CREATE TABLE Padece(
 USE	DW_GUANA_HOSPI
 GO	
 CREATE TABLE Tipo_Intervencion(
-	id_tipo_intervencion INT IDENTITY (1,1),
+	id_tipo_intervencion INT,
 	nombre_tipo_intervencion VARCHAR(50) NOT NULL,
 	CONSTRAINT PK_id_tipo_intervension PRIMARY KEY (id_tipo_intervencion),
 )
@@ -117,7 +117,7 @@ GO
 USE	DW_GUANA_HOSPI
 GO
 CREATE TABLE Intervenciones(
-	id_intervencion INT IDENTITY (1,1),
+	id_intervencion INT,
 	tratamiento VARCHAR(150) NOT NULL,
 	id_tipo_intervencion INT NOT NULL,
 	id_consulta INT NOT NULL,
