@@ -1,84 +1,79 @@
 
-
-use datos
-go
-Select Top 5 PROVINCIA, COUNT(PROVINCIA) AS PROVINCIA
-from rutas
-Group by PROVINCIA
-Order by count(PROVINCIA) desc
-
-USE DW_GUANA_HOSPI
+USE GUANA_HOSPI
 GO
 CREATE PROCEDURE SP_Top_Enfermedades
-	As
-		Select Top 5 e.nombre_enfermedad, COUNT(p.id_enfermedad) AS Cantidad
-			from DW_GUANA_HOSPI.DBO.Enfermedad e inner join DW_GUANA_HOSPI.DBO.Padece p
+AS
+		SELECT TOP 5 e.nombre_enfermedad, COUNT(p.id_enfermedad) AS Cantidad
+			FROM DW_GUANA_HOSPI.DBO.Enfermedad e 
+			INNER JOIN DW_GUANA_HOSPI.DBO.Padece p
 			ON e.id_enfermedad = p.id_enfermedad
-			Group by e.nombre_enfermedad
-		Order by count(*) desc 	
-	Go
+		GROUP BY e.nombre_enfermedad
+		ORDER BY COUNT(p.id_enfermedad) DESC 	
+GO
 
-
-EXEC  SP_Top_Enfermedades
-
-
-
-
-USE DW_GUANA_HOSPI
+USE GUANA_HOSPI
 GO
 CREATE PROCEDURE SP_Top_Unidades
-	As
-		Select Top 5 u.nombre_unidad, u.numero_planta, COUNT(p.id_unidad) AS Cantidad
-			from DW_GUANA_HOSPI.DBO.Unidad u inner join DW_GUANA_HOSPI.DBO.Paciente_Unidad p
-			on u.id_unidad = p.id_unidad
-			Group by u.nombre_unidad
-		Order by count(*) desc 	
+AS
+		SELECT TOP 5 u.nombre_unidad, u.numero_planta, 'Cantidad' = COUNT(p.id_unidad)
+			FROM DW_GUANA_HOSPI.DBO.Unidad u 
+			INNER JOIN DW_GUANA_HOSPI.DBO.Paciente_Unidad p
+			ON u.id_unidad = p.id_unidad
+		GROUP BY u.nombre_unidad
+		ORDER BY COUNT(p.id_unidad) DESC 	
 GO
 
-
-EXEC SP_Top_Unidades
-
-
-
-
-
-USE DW_GUANA_HOSPI
-GO
-	SELECT * FROM Unidad
-	SELECT * FROM Paciente_Unidad
-GO
-
-
-
-USE DW_GUANA_HOSPI
+USE GUANA_HOSPI
 GO
 CREATE PROCEDURE SP_Top_Medico_Intervenciones
-	AS
-SELECT TOP 5 m.codigo_medico,p.dni_persona, p.nombre_persona, p.apellido_1, 
-		p.apellido_2, p.edad, COUNT(id_intervencion) AS Cantidad FROM Medico m 
-		INNER JOIN Persona p ON m.dni_persona = p.dni_persona
-		INNER JOIN Unidad_Medico um ON um.id_medico = m.id_medico
-		INNER JOIN Unidad u ON um.id_unidad = u.id_unidad
-		INNER JOIN Consulta_Unidad cu ON cu.id_unidad = u.id_unidad
-		INNER JOIN Consulta c ON c.id_consulta = cu.id_consulta 
-		INNER JOIN Intervenciones i ON i.id_consulta = c.id_consulta
-	Group by m.id_medico
-	Order by count(id_intervencion) desc
+AS
+	SELECT TOP 5 m.codigo_medico, p.dni_persona, p.nombre_persona, p.apellido_1, 
+		p.apellido_2, p.edad, 'Cantidad' = COUNT(i.id_intervencion) 
+		FROM DW_GUANA_HOSPI.DBO.Medico m 
+		INNER JOIN DW_GUANA_HOSPI.DBO.Persona p ON m.dni_persona = p.dni_persona
+		INNER JOIN DW_GUANA_HOSPI.DBO.Unidad_Medico um ON um.id_medico = m.id_medico
+		INNER JOIN DW_GUANA_HOSPI.DBO.Unidad u ON um.id_unidad = u.id_unidad
+		INNER JOIN DW_GUANA_HOSPI.DBO.Consulta_Unidad cu ON cu.id_unidad = u.id_unidad
+		INNER JOIN DW_GUANA_HOSPI.DBO.Consulta c ON c.id_consulta = cu.id_consulta 
+		INNER JOIN DW_GUANA_HOSPI.DBO.Intervenciones i ON i.id_consulta = c.id_consulta
+	GROUP BY m.codigo_medico, p.dni_persona, p.nombre_persona, p.apellido_1, p.apellido_2, p.edad
+	ORDER BY COUNT(i.id_intervencion) DESC
 GO
 
-
-
-
-
-
-
-
-
-USE DW_GUANA_HOSPI
+USE GUANA_HOSPI
 GO
-SELECT * FROM Padece
-SELECT * FROM Enfermedad
-
-
+CREATE PROCEDURE SP_Top_Tipo_Intervenciones
+AS
+	SELECT TOP 5 ti.nombre_tipo_intervencion FROM DW_GUANA_HOSPI.DBO.Tipo_Intervencion ti
+		INNER JOIN DW_GUANA_HOSPI.DBO.Intervenciones i ON ti.id_tipo_intervencion = i.id_tipo_intervencion
+	GROUP BY ti.nombre_tipo_intervencion
+	ORDER BY COUNT(i.id_intervencion) DESC
 GO
-DROP PROCEDURE SP_Top_Enfermedades
+
+--use datos
+--go
+--Select Top 5 PROVINCIA, COUNT(PROVINCIA) AS PROVINCIA
+--from rutas
+--Group by PROVINCIA
+--Order by count(PROVINCIA) desc
+
+--EXEC  SP_Top_Enfermedades
+
+--EXEC SP_Top_Unidades
+
+--USE DW_GUANA_HOSPI
+--GO
+--	SELECT * FROM Unidad
+--	SELECT * FROM Paciente_Unidad
+--GO
+
+--DROP PROC SP_Top_Medico_Intervenciones
+
+--USE DW_GUANA_HOSPI
+--GO
+--SELECT * FROM Padece
+--SELECT * FROM Enfermedad
+
+
+--GO
+--DROP PROCEDURE SP_Top_Enfermedades
