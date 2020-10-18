@@ -28,7 +28,6 @@ CREATE TABLE Persona(
 )
 GO
 
-
 USE	DW_GUANA_HOSPI
 GO
 CREATE TABLE Medico(
@@ -38,8 +37,6 @@ CREATE TABLE Medico(
 	CONSTRAINT PK_id_medico PRIMARY KEY (id_medico)
 )
 GO
-
-
 
 USE	DW_GUANA_HOSPI
 GO
@@ -51,7 +48,6 @@ CREATE TABLE Paciente (
 	CONSTRAINT PK_id_paciente PRIMARY KEY (id_paciente)
 )
 GO
-
 
 USE	DW_GUANA_HOSPI
 GO
@@ -65,6 +61,15 @@ GO
 
 USE	DW_GUANA_HOSPI
 GO
+CREATE TABLE Unidad_Medico(
+   id_unidad_medico INT,
+   id_unidad INT NOT NULL,
+   id_medico INT NOT NULL,
+   CONSTRAINT PK_id_unidad_medico PRIMARY KEY (id_unidad_medico),
+ )
+
+USE	DW_GUANA_HOSPI
+GO
 CREATE TABLE Paciente_Unidad(
 	id_paciente_unidad INT,
 	id_paciente INT  NOT NULL,
@@ -72,7 +77,6 @@ CREATE TABLE Paciente_Unidad(
 	CONSTRAINT PK_id_paciente_unidad PRIMARY KEY (id_paciente_unidad)
 )
 GO
-
 
 USE	DW_GUANA_HOSPI
 GO
@@ -84,6 +88,15 @@ CREATE TABLE Consulta(
 )
 GO
 
+USE DW_GUANA_HOSPI
+GO
+CREATE TABLE Consulta_Unidad(
+	id_consulta_unidad INT,
+	id_consulta INT NOT NULL,
+	id_unidad INT NOT NULL, 
+	CONSTRAINT PK_id_consulta_unidad PRIMARY KEY (id_consulta_unidad)
+)
+GO
 
 USE	DW_GUANA_HOSPI
 GO
@@ -94,7 +107,6 @@ CREATE TABLE Enfermedad(
 )
 GO
 
-
 USE	DW_GUANA_HOSPI
 GO
 CREATE TABLE Padece(
@@ -103,7 +115,6 @@ CREATE TABLE Padece(
 	id_enfermedad INT NOT NULL,
 	CONSTRAINT PK_id_padece PRIMARY KEY (id_padece)
 )
-
 
 USE	DW_GUANA_HOSPI
 GO	

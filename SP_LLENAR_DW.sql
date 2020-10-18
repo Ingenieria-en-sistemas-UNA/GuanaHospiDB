@@ -1,4 +1,3 @@
-
 USE GUANA_HOSPI
 GO
 CREATE PROCEDURE SP_LLenarDW
@@ -13,8 +12,10 @@ CREATE PROCEDURE SP_LLenarDW
 		delete from DW_GUANA_HOSPI..Persona
 		delete from DW_GUANA_HOSPI..Tipo_Intervencion
 		delete from DW_GUANA_HOSPI..Unidad
+		delete from DW_Guana_Hospi..Consulta_Unidad
+		delete from DW_Guana_Hospi..Unidad_Medico
 		
- EXEC master..xp_cmdshell 'BCP GUANA_HOSPI.dbo.Consulta OUT C:\BCP\Consulta.txt -T -c'
+ EXEC master..xp_cmdshell 'BCP GUANA_HOSPI.dbo.Consulta OUT C:\BCP\Consulta.txt -ULuis -P12345'
  EXEC master..xp_cmdshell 'BCP GUANA_HOSPI.dbo.Enfermedad OUT C:\BCP\Enfermedad.txt -T -c'
  EXEC master..xp_cmdshell 'BCP GUANA_HOSPI.dbo.Intervenciones OUT C:\BCP\Intervenciones.txt -T -c'
  EXEC master..xp_cmdshell 'BCP GUANA_HOSPI.dbo.Medico OUT C:\BCP\Medico.txt -T -c'
@@ -24,6 +25,8 @@ CREATE PROCEDURE SP_LLenarDW
  EXEC master..xp_cmdshell 'BCP GUANA_HOSPI.dbo.Persona OUT C:\BCP\Persona.txt -T -c'
  EXEC master..xp_cmdshell 'BCP GUANA_HOSPI.dbo.Tipo_Intervencion OUT C:\BCP\Tipo_Intervencion.txt -T -c'
  EXEC master..xp_cmdshell 'BCP GUANA_HOSPI.dbo.Unidad OUT C:\BCP\Unidad.txt -T -c'
+ EXEC master..xp_cmdshell 'BCP GUANA_HOSPI.dbo.Consulta_Unidad OUT C:\BCP\Consulta_Unidad.txt -T -c'
+ EXEC master..xp_cmdshell 'BCP GUANA_HOSPI.dbo.Unidad_Medico OUT C:\BCP\Unidad_Medico.txt -T -c'
 
 
  BULK INSERT DW_GUANA_HOSPI.dbo.Consulta  FROM 'C:\BCP\Consulta.txt'
@@ -36,10 +39,10 @@ CREATE PROCEDURE SP_LLenarDW
  BULK INSERT DW_GUANA_HOSPI.dbo.Persona FROM 'C:\BCP\Persona.txt'
  BULK INSERT DW_GUANA_HOSPI.dbo.Tipo_Intervencion FROM 'C:\BCP\Tipo_Intervencion.txt'
  BULK INSERT DW_GUANA_HOSPI.dbo.Unidad FROM 'C:\BCP\Unidad.txt'
- 
+ BULK INSERT DW_GUANA_HOSPI.dbo.Consulta_Unidad FROM 'C:\BCP\Consulta_Unidad.txt'
+ BULK INSERT DW_GUANA_HOSPI.dbo.Unidad_Medico FROM 'C:\BCP\Unidad_Medico.txt'
 GO
 
-
-EXEC SP_LLenarDW
+--EXEC SP_LLenarDW
 
 
