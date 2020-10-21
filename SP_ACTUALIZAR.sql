@@ -31,7 +31,7 @@ AS
 		END
 	ELSE
         BEGIN
-			PRINT 'EL ID DE LA PERSONA NO EXISTE'
+			SELECT message = 'La cedula de la persona no existe', ok = 0;
 		END
 GO
 
@@ -500,7 +500,7 @@ CREATE PROCEDURE SP_ActualizarTipoIntervension
 	AS
 	IF (@id_tipo_Intervencion = '')
 		BEGIN
-			SELECT message = 'El id del tipo de intervención no puede ser vacio', ok = 0;
+			SELECT message = 'El id del tipo de intervenciï¿½n no puede ser vacio', ok = 0;
 		END
 	ELSE IF ( EXISTS(SELECT id_tipo_intervencion FROM Tipo_Intervencion WHERE id_tipo_intervencion = @id_tipo_Intervencion))
 		BEGIN
@@ -541,7 +541,7 @@ CREATE PROCEDURE SP_ActualizarIntervencion
 	AS
 	IF (@id_intervencion = '')
 		BEGIN
-			SELECT message = 'El id de la intervención no puede ser vacio', ok = 0;
+			SELECT message = 'El id de la intervenciï¿½n no puede ser vacio', ok = 0;
 		END
 	ELSE IF ( EXISTS(SELECT id_intervencion FROM Intervencion WHERE id_intervencion = @id_intervencion))
 		BEGIN
