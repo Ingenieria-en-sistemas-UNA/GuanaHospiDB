@@ -31,7 +31,7 @@ AS
 		END
 	ELSE
         BEGIN
-			PRINT 'EL ID DE LA PERSONA NO EXISTE'
+			SELECT message = 'La cedula de la persona no existe', ok = 0;
 		END
 GO
 
@@ -136,7 +136,7 @@ AS
 				END
 			ELSE
 				BEGIN
-				SELECT message = 'La especialidad ha sido editada exitosamente', ok = 0;
+				SELECT message = 'La especialidad ha sido editada exitosamente', ok = 1;
 					UPDATE Especialidad
 						Set	nombre_especialdad = @nombreEspecialdad
 						WHERE id_especialidad = @id_especialidad
@@ -172,7 +172,7 @@ CREATE PROCEDURE SP_ActualizarUnidad
 				END
 			ELSE
 				BEGIN
-				SELECT message = 'La unidad ha sido editada con exito', ok = 0;
+				SELECT message = 'La unidad ha sido editada con exito', ok = 1;
 					UPDATE Unidad
 						Set	nombre_unidad = @nombre,
 						    numero_planta = @numeroPlanta
@@ -209,7 +209,7 @@ CREATE PROCEDURE SP_ActualizarUnidadMedico
 				END
 			ELSE
 				BEGIN
-				SELECT message = 'La unidad-medico ha sido editada exitosamente', ok = 0;
+				SELECT message = 'La unidad-medico ha sido editada exitosamente', ok = 1;
 					UPDATE Unidad_medico
 						Set	id_unidad = @id_unidad,
 						    id_medico = @id_medico
@@ -245,7 +245,7 @@ CREATE PROCEDURE SP_ActualizarSintoma
 				END
 			ELSE
 				BEGIN
-				SELECT message = 'EL sintoma ha sido editado exitosamente', ok = 0;
+				SELECT message = 'EL sintoma ha sido editado exitosamente', ok = 1;
 					UPDATE Sintoma
 						Set	nombre_sintoma = @nombre
 						WHERE id_sintoma = @id_sintoma
@@ -283,7 +283,7 @@ CREATE PROCEDURE SP_ActualizarPaciente
 				END
 			ELSE
 				BEGIN
-				SELECT message = 'El Paciente ha sido editado correctamente', ok = 0;
+				SELECT message = 'El Paciente ha sido editado correctamente', ok = 1;
 					UPDATE Paciente
 						Set	numero_seguro_social = @numeroSeguroSocial,
 						fecha_ingreso = @fecha_ingreso,
@@ -322,7 +322,7 @@ CREATE PROCEDURE SP_ActualizarConsulta
 				END
 			ELSE
 				BEGIN
-				SELECT message = 'La consulta ha sido editada correctamente', ok = 0;
+				SELECT message = 'La consulta ha sido editada correctamente', ok = 1;
 					UPDATE Consulta
 						Set	fecha_consulta = @fecha,
 						id_paciente = @id_paciente
@@ -361,7 +361,7 @@ CREATE PROCEDURE SP_ActualizarConsultaUnidad
 				END
 			ELSE
 				BEGIN
-				SELECT message = 'La consulta-unidad ha sido editada correctamente', ok = 0;
+				SELECT message = 'La consulta-unidad ha sido editada correctamente', ok = 1;
 					UPDATE Consulta_Unidad
 						Set	id_consulta = @id_consulta,
 						id_unidad = @id_unidad
@@ -401,7 +401,7 @@ CREATE PROCEDURE SP_ActualizarPresenta
 				END
 			ELSE
 				BEGIN
-				SELECT message = 'Presenta ha sido editada correctamente', ok = 0;
+				SELECT message = 'Presenta ha sido editada correctamente', ok = 1;
 					UPDATE Presenta
 						Set	id_consulta = @id_consulta,
 						id_sintoma = @id_sintoma,
@@ -440,7 +440,7 @@ CREATE PROCEDURE SP_ActualizarEnfermedad
 				END
 			ELSE
 				BEGIN
-				SELECT message = 'La enfermedad ha sido editada correctamente', ok = 0;
+				SELECT message = 'La enfermedad ha sido editada correctamente', ok = 1;
 					UPDATE Enfermedad
 						Set	nombre_enfermedad = @nombre
 						WHERE id_enfermedad = @id_enfermedad
@@ -476,7 +476,7 @@ CREATE PROCEDURE SP_ActualizarPadece
 				END
 			ELSE
 				BEGIN
-				SELECT message = 'El padecimiento ha sido editado correctamente', ok = 0;
+				SELECT message = 'El padecimiento ha sido editado correctamente', ok = 1;
 					UPDATE Padece
 						Set	id_paciente = @id_paciente,
 						id_enfermedad = @id_enfermedad
@@ -500,7 +500,7 @@ CREATE PROCEDURE SP_ActualizarTipoIntervension
 	AS
 	IF (@id_tipo_Intervencion = '')
 		BEGIN
-			SELECT message = 'El id del tipo de intervención no puede ser vacio', ok = 0;
+			SELECT message = 'El id del tipo de intervenciï¿½n no puede ser vacio', ok = 0;
 		END
 	ELSE IF ( EXISTS(SELECT id_tipo_intervencion FROM Tipo_Intervencion WHERE id_tipo_intervencion = @id_tipo_Intervencion))
 		BEGIN
@@ -514,7 +514,7 @@ CREATE PROCEDURE SP_ActualizarTipoIntervension
 				END
 			ELSE
 				BEGIN
-				SELECT message = 'El tipo de intervencion ha sido editado correctamente', ok = 0;
+				SELECT message = 'El tipo de intervencion ha sido editado correctamente', ok = 1;
 					UPDATE Tipo_Intervencion
 						Set	nombre_tipo_intervencion = @nombre
 						WHERE id_tipo_intervencion = @id_tipo_Intervencion
@@ -541,7 +541,7 @@ CREATE PROCEDURE SP_ActualizarIntervencion
 	AS
 	IF (@id_intervencion = '')
 		BEGIN
-			SELECT message = 'El id de la intervención no puede ser vacio', ok = 0;
+			SELECT message = 'El id de la intervenciï¿½n no puede ser vacio', ok = 0;
 		END
 	ELSE IF ( EXISTS(SELECT id_intervencion FROM Intervencion WHERE id_intervencion = @id_intervencion))
 		BEGIN
@@ -555,7 +555,7 @@ CREATE PROCEDURE SP_ActualizarIntervencion
 				END
 			ELSE
 				BEGIN
-				SELECT message = 'La intevencion ha sido editada correctamente', ok = 0;
+				SELECT message = 'La intevencion ha sido editada correctamente', ok = 1;
 					UPDATE Intervencion
 						Set	tratamiento = @tratamiento,
 						id_tipo_intervencion = @id_tipo_intervencion,
@@ -598,7 +598,7 @@ CREATE PROCEDURE SP_ActualizarPaciente_unidad
 				END
 			ELSE
 				BEGIN
-				SELECT message = 'El Paciente-unidad ha sido editado correctamente', ok = 0;
+				SELECT message = 'El Paciente-unidad ha sido editado correctamente', ok = 1;
 					UPDATE Paciente_unidad
 						Set	id_paciente = @id_paciente,
 						id_unidad = @id_unidad
@@ -635,7 +635,7 @@ CREATE PROCEDURE SP_ActualizarMedicoEspecialidad
 				END
 			ELSE
 				BEGIN
-				SELECT message = 'El medico-especialidad ha sido editada correctamente', ok = 0;
+				SELECT message = 'El medico-especialidad ha sido editada correctamente', ok = 1;
 					UPDATE Medico_Especialidad
 						Set	id_medico = @id_medico,
 						id_especialidad = @id_especialidad

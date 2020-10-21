@@ -3,13 +3,13 @@ GO
 	CREATE DATABASE  GUANA_HOSPI
 	ON PRIMARY
 	(NAME = 'GUANA_HOSPIL_Data',
-	FILENAME= 'C:\data\GUANA_HOSPI_Data.Mdf',
+	FILENAME= 'D:\Data\GUANA_HOSPI_Data.Mdf',
 	SIZE = 5000MB,
 	MAXSIZE = 10000MB,
 	FILEGROWTH = 1000Mb)
 	LOG ON
 	(NAME = 'GUANA_HOSPI_Log',
-	FILENAME= 'C:\log\GUANA_HOSPI_Log.Ldf',
+	FILENAME= 'D:\Log\GUANA_HOSPI_Log.Ldf',
 	SIZE = 5000MB,
 	MAXSIZE = 10000MB,
 	FILEGROWTH = 1000Mb)
@@ -208,5 +208,14 @@ CREATE TABLE Paciente_Unidad(
 GO
 
 
-
-
+USE GUANA_HOSPI
+GO 
+	CREATE TABLE Auditoria(
+		IdAuditoria int IDENTITY (1,1) NOT NULL,
+		Usuario varchar(50),
+		LoginUsuario varchar (50),
+		Fecha date,
+		Descripcion varchar(50)
+		CONSTRAINT PK_IdAuditoria PRIMARY KEY (IdAuditoria)
+)
+GO

@@ -52,4 +52,7 @@ GO
 	
 
 
-
+--    use GUANA_HOSPI
+--	go
+--	drop procedure SP_Eliminar_Tablas_DW
+--	drop procedure SP_LLenarDW
