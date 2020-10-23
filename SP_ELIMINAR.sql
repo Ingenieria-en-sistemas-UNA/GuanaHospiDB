@@ -14,18 +14,18 @@ AS
 				BEGIN
 					DECLARE @idUsuario INT
 					SET @idUsuario = (SELECT id_usuario FROM Usuario INNER JOIN Medico ON Usuario.id_medico = Medico.id_medico WHERE Medico.dni_persona = @dni_persona)
-					DELETE FROM Persona WHERE Persona.dni_persona = @dni_persona
 					SELECT message ='Se ha eliminado el m�dico', ok = 0
-					DELETE FROM Usuario  WHERE Usuario.id_usuario = @idUsuario
+					DELETE FROM Persona WHERE Persona.dni_persona = @dni_persona
 				    SELECT message = 'Se ha eliminado el usuario de m�dico', ok = 0
+					DELETE FROM Usuario  WHERE Usuario.id_usuario = @idUsuario
 				END
 			ELSE IF EXISTS (SELECT @dni_persona FROM Paciente WHERE dni_persona = @dni_persona)
 				BEGIN
+				    SELECT message ='Se ha eliminado el paciente', ok = 0
 					DELETE FROM Persona WHERE Persona.dni_persona = @dni_persona
-					SELECT message ='Se ha eliminado el paciente', ok = 0
 				END
+				SELECT message ='Se ha eliminado la persona', ok = 0
 			DELETE FROM Persona WHERE Persona.dni_persona = @dni_persona
-			SELECT message ='Se ha eliminado la persona', ok = 0
 		END
 	ELSE
 		BEGIN
@@ -43,8 +43,8 @@ AS
 		END
 	ELSE IF EXISTS (SELECT id_usuario FROM Usuario WHERE id_usuario  = @id_usuario)
 		BEGIN
+		    SELECT message = 'Se ha eliminado el usuario', ok = 0
 			DELETE FROM Usuario WHERE Usuario.id_usuario = @id_usuario
-			SELECT message = 'Se ha eliminado el usuario', ok = 0
 		END
 	ELSE
 		BEGIN
@@ -67,8 +67,8 @@ AS
 		END
 	ELSE IF EXISTS (SELECT id_especialidad FROM Especialidad WHERE Especialidad.id_especialidad = @id_especialidad)
 		BEGIN
+		    SELECT message = 'Se ha eliminado la especalidad', ok = 0
 			DELETE FROM Especialidad WHERE Especialidad.id_especialidad = @id_especialidad
-			SELECT message = 'Se ha eliminado la especalidad', ok = 0
 		END
 	ELSE
 		BEGIN
@@ -82,7 +82,7 @@ CREATE PROC SP_Eliminar_Medico (@id_medico VARCHAR)
 AS
 	IF (@id_medico = '') 
 		BEGIN
-			SELECT message = 'El id de m[edico no puede ser vacio', ok = 0
+			SELECT message = 'El id de médico no puede ser vacio', ok = 0
 		END
 	ELSE IF EXISTS (SELECT id_medico FROM Medico WHERE id_medico  = @id_medico )
 		BEGIN
@@ -90,8 +90,8 @@ AS
 			DECLARE @idPersonaMedico VARCHAR(12)
 			SET @idPersonaMedico = (SELECT dni_persona FROM Medico WHERE id_medico = @id_medico)
 			DELETE FROM Medico WHERE Medico.id_medico = @id_medico
-		    DELETE FROM Persona WHERE Persona.dni_persona = @idPersonaMedico
 			SELECT message = 'Se ha eliminado la persona', ok = 1
+		    DELETE FROM Persona WHERE Persona.dni_persona = @idPersonaMedico
 		END
 	ELSE
 		BEGIN
@@ -115,8 +115,8 @@ AS
 		BEGIN
 	        IF EXISTS (SELECT id_paciente_unidad  FROM Paciente_unidad where id_unidad = @id_unidad)
 				BEGIN
+				    SELECT message = 'Se ha eliminado unidad', ok = 0
 					DELETE FROM Unidad WHERE Unidad.id_unidad = @id_unidad
-					SELECT message = 'Se ha eliminado unidad', ok = 0
 				END
 		END
 	ELSE
@@ -135,8 +135,8 @@ AS
 		END
 	ELSE IF EXISTS (SELECT id_unidad_medico FROM Unidad_medico WHERE Unidad_medico.id_unidad_medico = @id_unidad_medico)
 		BEGIN
-			DELETE FROM Unidad_medico WHERE Unidad_medico.id_unidad_medico = @id_unidad_medico
 			SELECT message = 'Se ha eliminado unidad m�dico', ok = 0
+			DELETE FROM Unidad_medico WHERE Unidad_medico.id_unidad_medico = @id_unidad_medico
 		END
 	ELSE
 		BEGIN
@@ -154,8 +154,8 @@ AS
 		END
 	ELSE IF EXISTS (SELECT id_sintoma FROM Sintoma WHERE id_sintoma = @id_sintoma)
 		BEGIN
+		    SELECT message = 'Se ha eliminado el s�ntoma', ok = 0
 			DELETE FROM Sintoma WHERE id_sintoma = @id_sintoma
-			SELECT message = 'Se ha eliminado el s�ntoma', ok = 0
 		END
 	ELSE
 		BEGIN
@@ -175,10 +175,10 @@ AS
 		BEGIN
 			DECLARE @idPersonaPaciente VARCHAR(12)
 			SET @idPersonaPaciente = (SELECT dni_persona FROM Paciente WHERE id_paciente = @id_paciente)
+			SELECT message = 'Se ha eliminado el paciente', ok = 0
 			DELETE FROM Paciente WHERE Paciente.id_paciente = @id_paciente
 			SELECT message = 'Se ha eliminado el paciente', ok = 0
 			DELETE FROM Persona WHERE Persona.dni_persona = @idPersonaPaciente
-			SELECT message = 'Se ha eliminado el paciente', ok = 0
 		END
 	ELSE
 		BEGIN
@@ -197,8 +197,8 @@ AS
 		END
 	ELSE IF EXISTS (SELECT id_consulta FROM Consulta WHERE Consulta.id_consulta = @id_consulta)
 		BEGIN
+		    SELECT message = 'Se ha eliminado la consulata', ok = 0
 			DELETE FROM Consulta WHERE Consulta.id_consulta = @id_consulta
-			SELECT message = 'Se ha eliminado la consulata', ok = 0
 		END
 	ELSE
 		BEGIN
@@ -217,8 +217,8 @@ AS
 		END
 	ELSE IF EXISTS (SELECT id_presenta FROM Presenta WHERE Presenta.id_presenta = @id_presenta)
 		BEGIN
-			DELETE FROM Presenta WHERE Presenta.id_presenta = @id_presenta
 			SELECT message = 'Se ha eliminado presenta', ok = 0
+			DELETE FROM Presenta WHERE Presenta.id_presenta = @id_presenta
 		END
 		 BEGIN
 			SELECT message = 'El id de presenta no existe', ok = 0
@@ -236,8 +236,8 @@ AS
 		END
 	ELSE IF EXISTS (SELECT id_enfermedad FROM Enfermedad WHERE id_enfermedad = @id_enfermedad)
 		BEGIN
-			DELETE FROM Enfermedad WHERE Enfermedad.id_enfermedad = @id_enfermedad
 			SELECT message = 'Se ha eliminado la enfermedad', ok = 0
+			DELETE FROM Enfermedad WHERE Enfermedad.id_enfermedad = @id_enfermedad
 		END
 	ELSE
 		BEGIN
@@ -273,13 +273,13 @@ AS
 		END
 	ELSE IF EXISTS (SELECT id_tipo_intervencion FROM Tipo_Intervencion WHERE id_tipo_intervencion = @id_tipo_intervencion)
 		BEGIN
-			DELETE FROM Intervenciones WHERE Intervenciones.id_intervencion = @id_tipo_intervencion
 			SELECT message = 'Se ha eliminado el tipo de intervenci�n', ok = 0
+			DELETE FROM Intervenciones WHERE Intervenciones.id_intervencion = @id_tipo_intervencion
 			DECLARE @IdIntervencion INT
 			SET @IdIntervencion = (SELECT id_intervencion FROM Intervenciones WHERE id_tipo_intervencion = @IdIntervencion)
+			SELECT message = 'Se ha eliminado el tipo intervanci�n', ok = 0
 			DELETE FROM Intervenciones WHERE Intervenciones.id_intervencion = @IdIntervencion
 			DELETE FROM Tipo_Intervencion WHERE Tipo_Intervencion.id_tipo_intervencion = @id_tipo_intervencion
-			SELECT message = 'Se ha eliminado el tipo intervanci�n', ok = 0
 		END
 	ELSE
 		BEGIN
@@ -297,8 +297,8 @@ AS
 		END
 	ELSE IF EXISTS(SELECT id_intervencion FROM Intervenciones WHERE id_intervencion  = @id_intervencion )
 		BEGIN
-			DELETE FROM Intervenciones WHERE Intervenciones.id_tipo_intervencion = @id_intervencion
 			SELECT message = 'Se ha eliminado la intervenci�n', ok = 0
+			DELETE FROM Intervenciones WHERE Intervenciones.id_tipo_intervencion = @id_intervencion
 	    END
 	ELSE
 		 BEGIN
@@ -317,8 +317,8 @@ AS
 		END
 	ELSE IF EXISTS (SELECT id_paciente_unidad FROM Paciente_unidad WHERE id_paciente_unidad = @id_paciente_unidad)
 		BEGIN
-			DELETE FROM Paciente_unidad WHERE Paciente_unidad.id_paciente_unidad = @id_paciente_unidad
 			SELECT message = 'Se ha eliminado unidad paciente', ok = 0
+			DELETE FROM Paciente_unidad WHERE Paciente_unidad.id_paciente_unidad = @id_paciente_unidad
 		END
 	ELSE
 		BEGIN
@@ -337,8 +337,8 @@ AS
 		END
 	ELSE IF EXISTS (SELECT id_medico_especialidad FROM Medico_especialidad WHERE id_medico_especialidad = @id_medico_especialidad)
 		BEGIN
-			DELETE FROM Medico_especialidad WHERE Medico_especialidad.id_medico_especialidad = @id_medico_especialidad
 			SELECT message = 'Se ha elimimnado m�dico especialidad', ok = 0
+			DELETE FROM Medico_especialidad WHERE Medico_especialidad.id_medico_especialidad = @id_medico_especialidad
 		END
 	ELSE
 		BEGIN
