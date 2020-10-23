@@ -7,7 +7,6 @@ if @backupSetId is null begin raiserror(N'Verify failed. Backup information for 
 RESTORE VERIFYONLY FROM  DISK = N'C:\Backup\Full_Backup_GuanaHospi' WITH  FILE = @backupSetId,  NOUNLOAD,  NOREWIND
 GO
 
-
 ---Backup Diferencial
 BACKUP DATABASE [GUANA_HOSPI] TO  DISK = N'C:\Backup\Backup_Diferencial_GuanaHospi' WITH  DIFFERENTIAL , NOFORMAT, NOINIT,  NAME = N'GUANA_HOSPI-Full Database Backup', SKIP, NOREWIND, NOUNLOAD,  STATS = 10
 GO
