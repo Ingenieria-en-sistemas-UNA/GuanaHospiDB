@@ -22,7 +22,7 @@ CREATE PROCEDURE SP_LLenarDW
 AS
 	EXEC SP_Eliminar_Tablas_DW
 	
-	EXEC master..xp_cmdshell 'BCP GUANA_HOSPI.dbo.Consulta OUT C:\BCP\Consulta.txt -ULuis -P12345'
+	EXEC master..xp_cmdshell 'BCP GUANA_HOSPI.dbo.Consulta OUT C:\BCP\Consulta.txt -Utamome -Proot'
 	EXEC master..xp_cmdshell 'BCP GUANA_HOSPI.dbo.Enfermedad OUT C:\BCP\Enfermedad.txt -T -c'
 	EXEC master..xp_cmdshell 'BCP GUANA_HOSPI.dbo.Intervenciones OUT C:\BCP\Intervenciones.txt -T -c'
 	EXEC master..xp_cmdshell 'BCP GUANA_HOSPI.dbo.Medico OUT C:\BCP\Medico.txt -T -c'
