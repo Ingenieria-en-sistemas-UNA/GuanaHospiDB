@@ -124,25 +124,7 @@ AS
 			SELECT message = 'La unidad no existe', ok = 0
 		END
 GO
----------------------------------------------------UNIDAD MEDICO-----------------------------------------------------
-USE	GUANA_HOSPI
-GO
-CREATE PROC SP_Eliminar_Unidad_Medico (@id_unidad_medico INT)
-AS
-	IF (@id_unidad_medico = '') 
-		BEGIN
-			SELECT message = 'El id de unidad unidad m�dico no puede ser vacio', ok = 0
-		END
-	ELSE IF EXISTS (SELECT id_unidad_medico FROM Unidad_medico WHERE Unidad_medico.id_unidad_medico = @id_unidad_medico)
-		BEGIN
-			DELETE FROM Unidad_medico WHERE Unidad_medico.id_unidad_medico = @id_unidad_medico
-			SELECT message = 'Se ha eliminado unidad m�dico', ok = 0
-		END
-	ELSE
-		BEGIN
-			SELECT message = 'La unidad m�dico no existe', ok = 0
-		END
-GO
+
 ------------------------------------------------------------ELIMINAR SINTOMA-------------------------------------
 USE	GUANA_HOSPI
 GO

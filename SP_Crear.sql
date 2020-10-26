@@ -152,13 +152,14 @@ USE GUANA_HOSPI
 GO
 CREATE PROC SP_Crear_Unidad
 	@Nombre varchar(50),
-	@Numero_planta varchar(5)
+	@Numero_planta varchar(5),
+	@Id_Medico varchar = NULL
 AS
 	IF (@Nombre = '' OR @Numero_planta = '')
 		BEGIN
 			SELECT message = 'No se permiten campos vacios', ok = 0
 		END
-	ELSE IF(ISNUMERIC(@Numero_planta) = 0)
+	ELSE IF(ISNUMERIC(@Numero_planta) = 0 OR @Id_Medico <> '' AND ISNUMERIC(@Id_Medico) = 0)
 	    BEGIN
 			SELECT message = 'No se permiten caracteres', ok = 0
         END
@@ -169,46 +170,8 @@ AS
 	ELSE
 		BEGIN
 			SELECT message = 'El registro se ha incresado correctamente', ok = 1
-			INSERT INTO Unidad(nombre_unidad, numero_planta)
-			VALUES (@Nombre, CONVERT(int, @numero_planta))
-		END
-GO
--------------------------------------------------------------------------------------------------------------------------------------------------
-USE GUANA_HOSPI
-GO
-CREATE PROC SP_Crear_Unidad_Medico
-	@IdUnidad varchar(5),
-	@IdMedico varchar(5)
-AS
-	IF(@IdUnidad = '' OR @IdMedico = '')
-		BEGIN 
-			SELECT message = 'No se permiten campos vacios', ok = 0
-		END
-	ELSE IF(ISNUMERIC(@IdUnidad) = 0 OR ISNUMERIC(@IdMedico) = 0)
-		BEGIN
-			SELECT message = 'No se permiten caracteres', ok = 0
-		END
-	ELSE IF(NOT EXISTS(SELECT id_unidad FROM Unidad WHERE id_unidad = @IdUnidad))
-		BEGIN
-			SELECT message = 'El id de la unidad no existe', ok = 0
-		END
-	ELSE IF(NOT EXISTS(SELECT id_medico FROM Medico WHERE id_medico = @IdMedico))
-		BEGIN
-			SELECT message = 'El id del medico no existe', ok = 0
-		END
-	ELSE IF(EXISTS(SELECT id_medico FROM Unidad_Medico WHERE id_medico = @IdMedico))
-		BEGIN
-			SELECT message = 'El medico ya cuenta con una unidad', ok = 0
-		END
-	ELSE IF(EXISTS(SELECT id_unidad FROM Unidad_Medico WHERE id_unidad = @IdUnidad))
-		BEGIN 
-			SELECT message = 'La unidad se encuentra ocupada', ok = 0
-		END
-	ELSE
-		BEGIN
-			SELECT message = 'El registro se ha incresado correctamente', ok = 1
-			INSERT INTO Unidad_Medico(id_unidad, id_medico)
-			VALUES (CONVERT(int, @IdUnidad), CONVERT(int, @IdMedico))
+			INSERT INTO Unidad(nombre_unidad, numero_planta, id_medico)
+			VALUES (@Nombre, CONVERT(int, @numero_planta), @Id_Medico)
 		END
 GO
 -------------------------------------------------------------------------------------------------------------------------------------------------

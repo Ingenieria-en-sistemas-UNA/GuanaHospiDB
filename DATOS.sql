@@ -42,20 +42,14 @@ EXEC SP_Crear_Medico_Especialidad 4, 4
 EXEC SP_Crear_Medico_Especialidad 5, 5
 
 -----------------------UNIDAD-------------------------------
-EXEC SP_Crear_Unidad 'Sala A1', 1
-EXEC SP_Crear_Unidad 'Sala B1', 1
-EXEC SP_Crear_Unidad 'Sala C1', 1
-EXEC SP_Crear_Unidad 'Sala D1', 1
-EXEC SP_Crear_Unidad 'Sala A2', 2
-EXEC SP_Crear_Unidad 'Sala B2', 2
+EXEC SP_Crear_Unidad 'Sala A1', 1, 1
+EXEC SP_Crear_Unidad 'Sala B1', 1, 2
+EXEC SP_Crear_Unidad 'Sala C1', 1, 3
+EXEC SP_Crear_Unidad 'Sala D1', 1, 4
+EXEC SP_Crear_Unidad 'Sala A2', 2, 4
+EXEC SP_Crear_Unidad 'Sala B2', 2, 5
 EXEC SP_Crear_Unidad 'Sala C2', 2
 EXEC SP_Crear_Unidad 'Sala D2', 2
-
-----------------------UNIDAD MEDICO---------------------------
-EXEC SP_Crear_Unidad_Medico 1, 1
-EXEC SP_Crear_Unidad_Medico 2, 2
-EXEC SP_Crear_Unidad_Medico 3, 3
-EXEC SP_Crear_Unidad_Medico 4, 4
 
 -----------------------SINTOMA----------------------------------
 EXEC SP_Crear_Sintoma 'Dolor de cabeza'
