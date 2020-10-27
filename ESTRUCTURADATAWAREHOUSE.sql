@@ -55,26 +55,8 @@ CREATE TABLE Unidad(
 	id_unidad INT,
 	nombre_unidad VARCHAR(50) NOT NULL,
 	numero_planta INT NOT NULL,
+	id_medico INT NOT NULL,
 	CONSTRAINT PK_id_unidad PRIMARY KEY (id_unidad),
-)
-GO
-
-USE	DW_GUANA_HOSPI
-GO
-CREATE TABLE Unidad_Medico(
-   id_unidad_medico INT,
-   id_unidad INT NOT NULL,
-   id_medico INT NOT NULL,
-   CONSTRAINT PK_id_unidad_medico PRIMARY KEY (id_unidad_medico),
- )
-
-USE	DW_GUANA_HOSPI
-GO
-CREATE TABLE Paciente_Unidad(
-	id_paciente_unidad INT,
-	id_paciente INT  NOT NULL,
-	id_unidad INT NOT NULL,
-	CONSTRAINT PK_id_paciente_unidad PRIMARY KEY (id_paciente_unidad)
 )
 GO
 
@@ -82,19 +64,10 @@ USE	DW_GUANA_HOSPI
 GO
 CREATE TABLE Consulta(
 	id_consulta INT,
+	id_unidad INT,
 	fecha_consulta DATE NOT NULL,
 	id_paciente INT NOT NULL,
 	CONSTRAINT PK_id_consulta PRIMARY KEY (id_consulta)
-)
-GO
-
-USE DW_GUANA_HOSPI
-GO
-CREATE TABLE Consulta_Unidad(
-	id_consulta_unidad INT,
-	id_consulta INT NOT NULL,
-	id_unidad INT NOT NULL, 
-	CONSTRAINT PK_id_consulta_unidad PRIMARY KEY (id_consulta_unidad)
 )
 GO
 
