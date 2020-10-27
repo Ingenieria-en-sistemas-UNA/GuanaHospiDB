@@ -40,22 +40,11 @@ GO
 
 USE	DW_GUANA_HOSPI
 GO
-CREATE TABLE Paciente (
-	id_paciente INT,
-	numero_seguro_social INT NOT NULL,
-	fecha_ingreso DATE NOT NULL,
-	dni_persona VARCHAR(12),
-	CONSTRAINT PK_id_paciente PRIMARY KEY (id_paciente)
-)
-GO
-
-USE	DW_GUANA_HOSPI
-GO
 CREATE TABLE Unidad(
 	id_unidad INT,
 	nombre_unidad VARCHAR(50) NOT NULL,
 	numero_planta INT NOT NULL,
-	id_medico INT NOT NULL,
+	id_medico INT,
 	CONSTRAINT PK_id_unidad PRIMARY KEY (id_unidad),
 )
 GO
@@ -64,9 +53,9 @@ USE	DW_GUANA_HOSPI
 GO
 CREATE TABLE Consulta(
 	id_consulta INT,
+	fecha_consulta DATE,
+	id_paciente INT,
 	id_unidad INT,
-	fecha_consulta DATE NOT NULL,
-	id_paciente INT NOT NULL,
 	CONSTRAINT PK_id_consulta PRIMARY KEY (id_consulta)
 )
 GO
@@ -108,3 +97,11 @@ CREATE TABLE Intervenciones(
 	CONSTRAINT PK_id_intervencion PRIMARY KEY (id_intervencion)
 )
 GO
+
+use GUANA_HOSPI
+go
+select * from Consulta
+
+use DW_GUANA_HOSPI
+go
+select * from Consulta

@@ -108,6 +108,7 @@ CREATE TABLE Consulta(
 )
 GO
 
+
 USE	GUANA_HOSPI
 GO
 CREATE TABLE Sintoma(
