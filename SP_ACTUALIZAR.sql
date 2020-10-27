@@ -35,7 +35,6 @@ AS
 		END
 GO
 
-
 USE GUANA_HOSPI
 GO
 CREATE PROCEDURE SP_ActualizarMedico
@@ -184,44 +183,6 @@ CREATE PROCEDURE SP_ActualizarUnidad
 			SELECT message = 'El id de la Unidad no existe', ok = 0;
 		END
 GO
-
-
-USE GUANA_HOSPI
-GO
-CREATE PROCEDURE SP_ActualizarUnidadMedico
-	@id_unidad_medico INT,
-    @id_unidad INT,
-    @id_medico INT
-	AS
-	IF (@id_unidad_medico = '')
-		BEGIN
-			SELECT message = 'El id de la Unidad-medico no puede ser vacio', ok = 0;
-		END
-	ELSE IF ( EXISTS(SELECT id_unidad_medico FROM Unidad_medico WHERE id_unidad_medico = @id_unidad_medico))
-		BEGIN
-			IF ((@id_unidad = '') OR (@id_medico = ''))
-				BEGIN
-					SELECT message = 'No se permiten campos vacios', ok = 0;
-				END
-			ELSE IF((ISNUMERIC(@id_unidad_medico) = 0) OR (CONVERT(int, @id_unidad_medico) < 0))
-				BEGIN
-					SELECT message = 'El debe ser numerico y debe ser positivo', ok = 0;
-				END
-			ELSE
-				BEGIN
-				SELECT message = 'La unidad-medico ha sido editada exitosamente', ok = 1;
-					UPDATE Unidad_medico
-						Set	id_unidad = @id_unidad,
-						    id_medico = @id_medico
-						WHERE id_unidad_medico = @id_unidad_medico
-				END
-		END
-	ELSE
-        BEGIN
-			SELECT message = 'El id de la Unidad-medico no existe', ok = 0;
-		END
-GO
-
 
 USE GUANA_HOSPI
 GO

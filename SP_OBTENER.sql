@@ -53,7 +53,7 @@ GO
 
 CREATE PROC SP_Obtener_Unidades
 AS
-	SELECT 'Id_Unidad' = id_unidad, 'Nombre_Unidad' = nombre_unidad , 'Id_Numero_Planta' = numero_planta, ok = 1
+	SELECT 'Id_Unidad' = id_unidad, 'Nombre_Unidad' = nombre_unidad , 'Numero_Planta' = numero_planta, ok = 1
 	FROM Unidad
 GO
 
@@ -128,31 +128,6 @@ AS
 			INNER JOIN Persona
 			ON Persona.dni_persona = Medico.dni_persona
 			WHERE id_medico = @id_medico;
-		END
-GO
-
-CREATE PROC SP_Obtener_Unidad_Medicos
-AS
-	SELECT 'Id_Unidad_Medico' = id_unidad_medico, 'Id_Unidad' = id_unidad , 'Id_Medico' = id_medico, ok = 1
-	FROM Unidad_Medico
-GO
-
-CREATE PROC SP_Obtener_Unidad_Medico_Por_Id
-	(@id_unidad_medico VARCHAR(12))
-AS
-	IF(@id_unidad_medico = '')
-		BEGIN
-			SELECT message = 'El campo id_unidad_medico viene vacio', ok = 0
-		END
-	ELSE IF(ISNUMERIC(@id_unidad_medico) = 0)
-		BEGIN
-			SELECT message = 'El campo id_unidad_medico no es numerico', ok = 0
-		END
-	ELSE
-		BEGIN
-			SELECT 'Id_Unidad_Medico' = id_unidad_medico, 'Id_Unidad' = id_unidad , 'Id_Medico' = id_medico, ok = 1
-			FROM Unidad_Medico
-			WHERE id_unidad_medico = @id_unidad_medico;
 		END
 GO
 
