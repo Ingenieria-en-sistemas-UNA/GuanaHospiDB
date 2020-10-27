@@ -69,16 +69,10 @@ EXEC SP_Crear_Paciente 4039, '2020/07/3', '8'
 EXEC SP_Crear_Paciente 9284, '2020/06/16', '9'
 
 -----------------------CONSULTA-----------------------------------
-EXEC SP_Crear_Consulta '2020/09/5', 1
-EXEC SP_Crear_Consulta '2020/09/5', 2
-EXEC SP_Crear_Consulta '2020/09/5', 3
-EXEC SP_Crear_Consulta '2020/09/5', 4
-
------------------------CONSULTA UNIDAD----------------------------
-EXEC SP_Crear_Consulta_Unidad 1, 1
-EXEC SP_Crear_Consulta_Unidad 2, 2
-EXEC SP_Crear_Consulta_Unidad 3, 3
-EXEC SP_Crear_Consulta_Unidad 4, 4
+EXEC SP_Crear_Consulta '2020/09/5', 1, 1
+EXEC SP_Crear_Consulta '2020/09/5', 2, 2
+EXEC SP_Crear_Consulta '2020/09/5', 3, 3
+EXEC SP_Crear_Consulta '2020/09/5', 4, 4
 
 -----------------------PRESENTE----------------------------------
 EXEC SP_Crear_Presenta 1, 1, 'Tiene que consumir mas agua'
@@ -114,8 +108,3 @@ EXEC SP_Crear_Intervencion 'Comer frutas y tomar 2 litos de agua', 2, 2
 EXEC SP_Crear_Intervencion 'Caminar 20 minutos por dia', 3, 3
 EXEC SP_Crear_Intervencion 'Evitar comida chatarra', 4, 4
 
---------------------------------PACIENTE UNIDAD-------------------------
-EXEC SP_Crear_Paciente_Unidad 1, 1
-EXEC SP_Crear_Paciente_Unidad 2, 2
-EXEC SP_Crear_Paciente_Unidad 3, 3
-EXEC SP_Crear_Paciente_Unidad 4, 4
