@@ -70,7 +70,7 @@ AS
 		END
 	ELSE
 		BEGIN
-			SELECT 'Id_Unidad' = id_unidad, 'Nombre_Unidad' = nombre_unidad , 'Id_Numero_Planta' = numero_planta, ok = 1
+			SELECT 'Id_Unidad' = id_unidad, 'Nombre_Unidad' = nombre_unidad , 'Numero_Planta' = numero_planta, 'Id_Medico' = id_medico, ok = 1
 			FROM Unidad
 			WHERE id_unidad = @id_unidad;
 		END

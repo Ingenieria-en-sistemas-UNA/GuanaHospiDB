@@ -71,48 +71,6 @@ CREATE PROCEDURE SP_ActualizarMedico
 		END
 GO
 
-
-USE GUANA_HOSPI
-GO
-CREATE PROCEDURE SP_ActualizarUsuario
-	@id_usuario INT,
-	@nombre_usuario VARCHAR(40),
-	@contrasenna VARCHAR(12),
-	@id_medico INT
-	AS
-	IF (@id_usuario = '')
-		BEGIN
-			SELECT message = 'El id de usuario no puede ser vacio', ok = 0;
-		END
-	ELSE IF ( EXISTS(SELECT id_usuario FROM Usuario WHERE id_usuario = @id_usuario))
-		BEGIN
-			IF ((@nombre_usuario = '') OR (@contrasenna = '') OR (@id_medico = ''))
-				BEGIN
-						SELECT message = 'No se permiten campos vacios', ok = 0;
-				END
-			ELSE IF((ISNUMERIC(@id_usuario) = 0) OR (CONVERT(int, @id_usuario) < 0))
-				BEGIN
-						SELECT message = 'El id debe ser numerico y no puede ser negativo', ok = 0;
-				END
-			ELSE
-				BEGIN
-				SELECT message = 'El usuario ha sido editado exitosamente', ok = 0;
-					UPDATE Usuario
-						Set	nombre_usuario = @nombre_usuario,
-							contrasenna = @contrasenna,
-							id_medico = @id_medico
-			 		WHERE id_usuario = @id_usuario			
-				END
-		END
-	ELSE
-        BEGIN
-			SELECT message = 'El id del usuario no existe', ok = 0;
-		END
-GO
-
-
-
-
 USE GUANA_HOSPI
 GO
 CREATE PROCEDURE SP_ActualizarEspecialidad
@@ -153,7 +111,8 @@ GO
 CREATE PROCEDURE SP_ActualizarUnidad
 	@id_unidad INT,
 	@nombre VARCHAR(50),
-	@numeroPlanta INT
+	@numeroPlanta INT,
+	@Id_Medico varchar = NULL
 	AS
 	IF (@id_unidad = '')
 		BEGIN
@@ -165,7 +124,7 @@ CREATE PROCEDURE SP_ActualizarUnidad
 				BEGIN
 					SELECT message = 'No se permiten campos vacios', ok = 0;
 				END
-			ELSE IF((ISNUMERIC(@id_unidad) = 0) OR (CONVERT(int, @id_unidad) < 0))
+			ELSE IF((ISNUMERIC(@id_unidad) = 0) OR (CONVERT(int, @id_unidad) < 0) OR @Id_Medico <> NULL AND ISNUMERIC(@Id_Medico) = 0)
 				BEGIN
 					SELECT message = 'El id debe ser un dato numerico y positivo', ok = 0; 
 				END
@@ -174,7 +133,8 @@ CREATE PROCEDURE SP_ActualizarUnidad
 				SELECT message = 'La unidad ha sido editada con exito', ok = 1;
 					UPDATE Unidad
 						Set	nombre_unidad = @nombre,
-						    numero_planta = @numeroPlanta
+						    numero_planta = @numeroPlanta,
+							id_medico = @Id_Medico
 						WHERE id_unidad = @id_unidad
 				END
 		END
