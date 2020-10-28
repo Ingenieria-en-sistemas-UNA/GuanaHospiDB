@@ -27,37 +27,6 @@ AS
 		END
 GO
 
---------------------------------------------------------------------------------------------------------------
-USE GUANA_HOSPI
-GO
-CREATE PROC SP_Crear_Usuario
-	@Nombre VARCHAR(40),
-	@Contrasenna VARCHAR(30),
-	@IdMedico VARCHAR(5)
-AS
-	IF(@Nombre = '' OR @Contrasenna = '' OR @IdMedico = '')
-		BEGIN
-			SELECT message = 'No se permiten campos vacios', ok = 0
-		END
-	ELSE IF(EXISTS(SELECT nombre_usuario FROM Usuario WHERE nombre_usuario = @Nombre))
-		BEGIN
-			SELECT message = 'El nombre de usuario ya existe', ok = 0
-		END
-	ELSE IF(NOT EXISTS(SELECT id_medico FROM Medico WHERE id_medico = @IdMedico))
-		BEGIN
-			SELECT message = 'El id medico no existe', ok = 0
-		END
-	ELSE IF(EXISTS(SELECT id_medico FROM Usuario WHERE id_medico = @IdMedico))
-		BEGIN
-			SELECT message = 'El medico ya cuenta con un usuario', ok = 0
-		END
-	ELSE
-		BEGIN
-			SELECT message = 'El registro se ha incresado correctamente', ok = 1
-			INSERT INTO Usuario(nombre_usuario, contrasenna, id_medico)
-			VALUES (@Nombre, @Contrasenna, CONVERT(int, @IdMedico))
-		END
-GO
 ----------------------------------------------------------------------------------------------------------------
 USE GUANA_HOSPI
 GO
@@ -74,7 +43,7 @@ AS
 		END
 	ELSE
 		BEGIN
-			SELECT message = 'El registro se ha incresado correctamente', ok = 1
+			SELECT message = 'El registro se ha incresado correctamente', beforeId = IDENT_CURRENT( 'Especialidad' ), ok = 1
 			INSERT INTO Especialidad(nombre_especialdad)
 			VALUES (@NombreEspecialidad)
 		END
@@ -108,7 +77,7 @@ AS
 		END
 	ELSE 
 		BEGIN
-			SELECT message = 'El registro se ha incresado correctamente', ok = 1
+			SELECT message = 'El registro se ha incresado correctamente', beforeId = IDENT_CURRENT( 'Medico' ), ok = 1
 			INSERT INTO Medico(codigo_medico, dni_persona)
 			VALUES (CONVERT(int, @CodigoMedico), @DniPersona)
 		END
@@ -142,7 +111,7 @@ AS
 		END
 	ELSE 
 		BEGIN
-			SELECT message = 'El registro se ha incresado correctamente', ok = 1
+			SELECT message = 'El registro se ha incresado correctamente', beforeId = IDENT_CURRENT( 'Medico_Especialidad' ), ok = 1
 			INSERT INTO Medico_Especialidad(id_medico, id_especialidad)
 			VALUES (CONVERT(int, @IdMedico), CONVERT(int, @IdEspecialidad))
 		END
@@ -169,7 +138,7 @@ AS
 		END
 	ELSE
 		BEGIN
-			SELECT message = 'El registro se ha incresado correctamente', ok = 1
+			SELECT message = 'El registro se ha incresado correctamente', beforeId = IDENT_CURRENT( 'Unidad' ), ok = 1
 			INSERT INTO Unidad(nombre_unidad, numero_planta, id_medico)
 			VALUES (@Nombre, CONVERT(int, @numero_planta), @Id_Medico)
 		END
@@ -190,7 +159,7 @@ AS
 		END
 	ELSE
 		BEGIN
-			SELECT message = 'El registro se ha incresado correctamente', ok = 1
+			SELECT message = 'El registro se ha incresado correctamente', beforeId = IDENT_CURRENT( 'Sintoma' ), ok = 1
 			INSERT INTO Sintoma(nombre_sintoma)
 			VALUES (@Nombre)
 		END
@@ -229,7 +198,7 @@ AS
 		END
 	ELSE
 		BEGIN
-			SELECT message = 'El registro se ha incresado correctamente', ok = 1
+			SELECT message = 'El registro se ha incresado correctamente', beforeId = IDENT_CURRENT( 'Paciente' ), ok = 1
 			INSERT INTO Paciente(numero_seguro_social, fecha_ingreso, dni_persona)
 			VALUES (CONVERT(int, @Numero_seguro_social), CONVERT(date, @FechaIngreso), @DniPersona)
 		END
@@ -264,7 +233,7 @@ AS
 		END
 	ELSE
 		BEGIN
-			SELECT message = 'El registro se ha incresado correctamente', ok = 1
+			SELECT message = 'El registro se ha incresado correctamente', beforeId = IDENT_CURRENT( 'Consulta' ), ok = 1
 			INSERT INTO Consulta(fecha_consulta, id_paciente, id_unidad)
 			VALUES (CONVERT(date, @FechaConsulta), CONVERT(int, @IdPaciente), CONVERT(int, @IdUnidad))
 		END
@@ -295,7 +264,7 @@ AS
 		END
 	ELSE
 		BEGIN
-			SELECT message = 'El registro se ha incresado correctamente', ok = 1
+			SELECT message = 'El registro se ha incresado correctamente', beforeId = IDENT_CURRENT( 'Presenta' ), ok = 1
 			INSERT INTO Presenta(id_consulta, id_sintoma, descripcion_presenta)
 			VALUES (CONVERT(int, @IdConsulta), CONVERT(int, @IdSintoma), @Descripcion)
 		END
@@ -316,7 +285,7 @@ AS
 		END
 	ELSE
 		BEGIN
-			SELECT message = 'El registro se ha incresado correctamente', ok = 1
+			SELECT message = 'El registro se ha incresado correctamente', beforeId = IDENT_CURRENT( 'Enfermedad' ), ok = 1
 			INSERT INTO Enfermedad(nombre_enfermedad)
 			VALUES (@Nombre)
 		END
@@ -346,7 +315,7 @@ AS
 		END
 	ELSE
 		BEGIN
-			SELECT message = 'El registro se ha incresado correctamente', ok = 1
+			SELECT message = 'El registro se ha incresado correctamente', beforeId = IDENT_CURRENT( 'Padece' ), ok = 1
 			INSERT INTO Padece(id_paciente, id_enfermedad)
 			VALUES (CONVERT(int, @IdPaciente), CONVERT(int, @IdEnfermedad))
 		END
@@ -367,7 +336,7 @@ AS
 		END
 	ELSE
 		BEGIN
-			SELECT message = 'El registro se ha incresado correctamente', ok = 1
+			SELECT message = 'El registro se ha incresado correctamente', beforeId = IDENT_CURRENT( 'Tipo_Intervencion' ), ok = 1
 			INSERT INTO Tipo_Intervencion(nombre_tipo_intervencion)
 			VALUES (@Nombre)
 		END
@@ -398,7 +367,7 @@ AS
 		END
 	ELSE
 		BEGIN
-			SELECT message = 'El registro se ha incresado correctamente', ok = 1
+			SELECT message = 'El registro se ha incresado correctamente', beforeId = IDENT_CURRENT( 'Intervenciones' ), ok = 1
 			INSERT INTO Intervenciones(tratamiento, id_tipo_intervencion, id_consulta)
 			VALUES (@Tratamiento, CONVERT(int, @IdTipoIntervencion), CONVERT(int, @IdConsulta))
 		END
