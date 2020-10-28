@@ -4,15 +4,15 @@ GO
 	ON PRIMARY
 	(NAME = 'GUANA_HOSPIL_Data',
 	FILENAME= 'C:\Data\GUANA_HOSPI_Data.Mdf',
-	SIZE = 5000MB,
-	MAXSIZE = 10000MB,
-	FILEGROWTH = 1000Mb)
+	SIZE = 5MB,
+	MAXSIZE = 10MB,
+	FILEGROWTH = 1Mb)
 	LOG ON
 	(NAME = 'GUANA_HOSPI_Log',
 	FILENAME= 'C:\Log\GUANA_HOSPI_Log.Ldf',
-	SIZE = 5000MB,
-	MAXSIZE = 10000MB,
-	FILEGROWTH = 1000Mb)
+	SIZE = 5MB,
+	MAXSIZE = 10MB,
+	FILEGROWTH = 1Mb)
 GO
 
 USE	GUANA_HOSPI
@@ -59,7 +59,6 @@ CREATE TABLE Especialidad(
 )
 GO
 
-
 USE	GUANA_HOSPI
 GO
 CREATE TABLE Medico_Especialidad(
@@ -86,15 +85,6 @@ GO
 
 USE	GUANA_HOSPI
 GO
-CREATE TABLE Sintoma(
-	id_sintoma INT IDENTITY (1,1),
-	nombre_sintoma VARCHAR(50) NOT NULL,
-	CONSTRAINT PK_id_sintoma PRIMARY KEY (id_sintoma),
-)
-GO
-
-USE	GUANA_HOSPI
-GO
 CREATE TABLE Paciente (
 	id_paciente INT IDENTITY (1,1),
 	numero_seguro_social INT NOT NULL,
@@ -111,20 +101,20 @@ CREATE TABLE Consulta(
 	id_consulta INT IDENTITY (1,1),
 	fecha_consulta DATE NOT NULL,
 	id_paciente INT NOT NULL,
+	id_unidad INT NOT NULL, 
 	CONSTRAINT PK_id_consulta PRIMARY KEY (id_consulta),
 	CONSTRAINT FK_id_paciente_consulta FOREIGN KEY(id_paciente) REFERENCES Paciente(id_paciente) ON DELETE CASCADE,
+	CONSTRAINT FK_id_unidad_consulta FOREIGN KEY(id_unidad) REFERENCES Unidad(id_unidad) ON DELETE CASCADE,
 )
 GO
 
-USE GUANA_HOSPI
+
+USE	GUANA_HOSPI
 GO
-CREATE TABLE Consulta_Unidad(
-	id_consulta_unidad INT IDENTITY (1,1),
-	id_consulta INT NOT NULL,
-	id_unidad INT NOT NULL, 
-	CONSTRAINT PK_id_consulta_unidad PRIMARY KEY (id_consulta_unidad),
-	CONSTRAINT FK_id_consulta FOREIGN KEY(id_consulta) REFERENCES Consulta(id_consulta) ON DELETE CASCADE,
-	CONSTRAINT FK_id_unidad FOREIGN KEY(id_unidad) REFERENCES Unidad(id_unidad) ON DELETE CASCADE
+CREATE TABLE Sintoma(
+	id_sintoma INT IDENTITY (1,1),
+	nombre_sintoma VARCHAR(50) NOT NULL,
+	CONSTRAINT PK_id_sintoma PRIMARY KEY (id_sintoma),
 )
 GO
 
@@ -149,7 +139,6 @@ CREATE TABLE Enfermedad(
 	CONSTRAINT PK_id_enfermedad PRIMARY KEY (id_enfermedad),
 )
 GO
-
 
 USE	GUANA_HOSPI
 GO
@@ -184,19 +173,6 @@ CREATE TABLE Intervenciones(
 	CONSTRAINT FK_id_consulta_intervenciones FOREIGN KEY (id_consulta) REFERENCES Consulta (id_consulta) ON DELETE CASCADE,
 )
 GO
-
-USE	GUANA_HOSPI
-GO
-CREATE TABLE Paciente_Unidad(
-	id_paciente_unidad INT IDENTITY(1,1),
-	id_paciente INT  NOT NULL,
-	id_unidad INT NOT NULL,
-	CONSTRAINT PK_id_paciente_unidad PRIMARY KEY (id_paciente_unidad),
-	CONSTRAINT FK_id_paciente_paciente_unidad FOREIGN KEY (id_paciente) REFERENCES Paciente (id_paciente) ON DELETE CASCADE,
-	CONSTRAINT FK_id_unidad_paciente_unidad FOREIGN KEY (id_unidad) REFERENCES Unidad(id_unidad) ON DELETE CASCADE,
-)
-GO
-
 
 USE GUANA_HOSPI
 GO 

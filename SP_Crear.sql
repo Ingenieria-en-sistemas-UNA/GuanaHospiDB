@@ -239,9 +239,10 @@ USE GUANA_HOSPI
 GO
 CREATE PROC SP_Crear_Consulta
 	@FechaConsulta VARCHAR(12),
-	@IdPaciente VARCHAR(5)
+	@IdPaciente VARCHAR(5),
+	@IdUnidad VARCHAR(5)
 AS
-	IF(@FechaConsulta = '' OR @IdPaciente = '')
+	IF(@FechaConsulta = '' OR @IdPaciente = '' OR @IdUnidad = '')
 		BEGIN
 			SELECT message = 'No se permiten campos vacios', ok = 0
 		END
@@ -249,7 +250,7 @@ AS
 		BEGIN
 			SELECT message = 'La fecha de consulta debe ser un formato fecha valido', ok = 0
 		END
-	ELSE IF(ISNUMERIC(@IdPaciente) = 0)
+	ELSE IF(ISNUMERIC(@IdPaciente) = 0 OR ISNUMERIC(@IdUnidad) = 0)
 		BEGIN
 			SELECT message = 'No se permiten caracteres', ok = 0
 		END
@@ -257,45 +258,15 @@ AS
 		BEGIN
 			SELECT message = 'El paciente no existe', ok = 0
 		END
-	ELSE
+	ELSE IF(NOT EXISTS(SELECT id_unidad FROM Unidad WHERE id_unidad = @IdUnidad))
 		BEGIN
-			SELECT message = 'El registro se ha incresado correctamente', ok = 1
-			INSERT INTO Consulta(fecha_consulta, id_paciente)
-			VALUES (CONVERT(date, @FechaConsulta), CONVERT(int, @IdPaciente))
-		END
-GO
------------------------------------------------------------------------------------------------------------------------------------------
-USE GUANA_HOSPI
-GO
-CREATE PROC SP_Crear_Consulta_Unidad
-	@IdConsulta VARCHAR(5),
-	@IdUnidad VARCHAR(5)
-AS
-	IF(@IdConsulta = '' OR @IdUnidad = '')
-		BEGIN
-			SELECT message = 'No se permiten campos vacios', ok = 0
-		END
-	ELSE IF(ISNUMERIC(@IdConsulta) = 0 OR ISNUMERIC(@IdUnidad) = 0)
-		BEGIN
-			SELECT message = 'No se permiten caracteres', ok = 0
-		END
-	ELSE IF(NOT EXISTS(SELECT id_consulta FROM Consulta WHERE id_consulta = @IdConsulta))
-		BEGIN
-			SELECT message = 'El id de la consulta no existe', ok = 0
-		END
-	ELSE IF (NOT EXISTS(SELECT id_unidad FROM Unidad WHERE id_unidad = @IdUnidad))
-		BEGIN
-			SELECT message = 'El id de la unidad no existe', ok = 0
-		END
-	ELSE IF (EXISTS(SELECT id_consulta, id_unidad FROM Consulta_Unidad WHERE id_consulta = @IdConsulta AND id_unidad = @IdUnidad))
-		BEGIN
-			SELECT message = 'El registro ya habia sido ingresado anteriormente', ok = 0
+			SELECT message = 'La unidad no existe', ok = 0
 		END
 	ELSE
 		BEGIN
 			SELECT message = 'El registro se ha incresado correctamente', ok = 1
-			INSERT INTO Consulta_Unidad(id_consulta, id_unidad)
-			VALUES (CONVERT(int, @IdConsulta), CONVERT(int, @IdUnidad))
+			INSERT INTO Consulta(fecha_consulta, id_paciente, id_unidad)
+			VALUES (CONVERT(date, @FechaConsulta), CONVERT(int, @IdPaciente), CONVERT(int, @IdUnidad))
 		END
 GO
 -----------------------------------------------------------------------------------------------------------------------------------------
@@ -430,35 +401,5 @@ AS
 			SELECT message = 'El registro se ha incresado correctamente', ok = 1
 			INSERT INTO Intervenciones(tratamiento, id_tipo_intervencion, id_consulta)
 			VALUES (@Tratamiento, CONVERT(int, @IdTipoIntervencion), CONVERT(int, @IdConsulta))
-		END
-GO
---------------------------------------------------------------------------------------------------------------------------------
-USE GUANA_HOSPI
-GO
-CREATE PROC SP_Crear_Paciente_Unidad
-	@IdPaciente VARCHAR(5),
-	@IdUnidad VARCHAR(5)
-AS
-	IF(@IdPaciente = '' OR @IdUnidad = '')
-		BEGIN
-			SELECT message = 'No se permiten campos vacios', ok = 0
-		END
-	ELSE IF(ISNUMERIC(@IdPaciente) = 0 OR ISNUMERIC(@IdUnidad) = 0)
-		BEGIN
-			SELECT message = 'No se permiten caracteres', ok = 0
-		END
-	ELSE IF(NOT EXISTS(SELECT id_paciente FROM Paciente WHERE id_paciente = @IdPaciente))
-		BEGIN
-			SELECT message = 'El id del paciente no existe', ok = 0
-		END
-	ELSE IF(NOT EXISTS(SELECT id_unidad FROM Unidad WHERE id_unidad = @IdUnidad))
-		BEGIN
-			SELECT message = 'El id de la unidad no existe', ok = 0
-		END
-	ELSE
-		BEGIN
-			SELECT message = 'El registro se ha incresado correctamente', ok = 1
-			INSERT INTO Paciente_Unidad(id_paciente, id_unidad)
-			VALUES (CONVERT(int, @IdPaciente), CONVERT(int, @IdUnidad))
 		END
 GO

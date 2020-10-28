@@ -39,7 +39,7 @@ CREATE PROC SP_Eliminar_Usuario (@id_usuario INT)
 AS
 	IF (@id_usuario = '') 
 		BEGIN
-			SELECT message ='El is de uduario no puede ser vacio', ok = 0
+			SELECT message ='El id de usuario no puede ser vacio', ok = 0
 		END
 	ELSE IF EXISTS (SELECT id_usuario FROM Usuario WHERE id_usuario  = @id_usuario)
 		BEGIN
@@ -59,7 +59,7 @@ CREATE PROC SP_Eliminar_Especialidad (@id_especialidad VARCHAR(10))
 AS
 	IF (@id_especialidad = '') 
 		BEGIN
-			SELECT message ='EL ID DE ESPECIALIDAD NO PUEDE SER VACIO', ok = 0
+			SELECT message ='El id de especialidad no puede ser vacio', ok = 0
 		END
 		ELSE IF(ISNUMERIC(@id_especialidad) = 0)
 		BEGIN
@@ -174,7 +174,7 @@ CREATE PROC SP_Elimina_Consulta (@id_consulta INT)
 AS
 	IF (@id_consulta = '') 
 		BEGIN
-			SELECT message = 'El id de consulata no puede ser vacio', ok = 0
+			SELECT message = 'El id de consulta no puede ser vacio', ok = 0
 		END
 	ELSE IF EXISTS (SELECT id_consulta FROM Consulta WHERE Consulta.id_consulta = @id_consulta)
 		BEGIN
@@ -287,25 +287,6 @@ AS
 		END
 GO
 
-----------------------------------PACIENTE UNIDAD-------------------------------------------------------
-USE	GUANA_HOSPI
-GO
-CREATE PROC SP_Eliminar_Unidad_Paciente (@id_paciente_unidad INT)
-AS
-	IF (@id_paciente_unidad = '') 
-		BEGIN
-			SELECT message = 'El id de unidad paciente no puede ser vacio', ok = 0
-		END
-	ELSE IF EXISTS (SELECT id_paciente_unidad FROM Paciente_unidad WHERE id_paciente_unidad = @id_paciente_unidad)
-		BEGIN
-			SELECT message = 'Se ha eliminado unidad paciente', ok = 0
-			DELETE FROM Paciente_unidad WHERE Paciente_unidad.id_paciente_unidad = @id_paciente_unidad
-		END
-	ELSE
-		BEGIN
-			SELECT message = 'La unidad paciente no existe', ok = 0
-		END
-GO
 
 ------------------------------------------ELIMINAR MEDICO ESPECIALIDAD----------------------------
 USE	GUANA_HOSPI

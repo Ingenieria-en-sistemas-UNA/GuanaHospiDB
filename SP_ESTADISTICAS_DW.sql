@@ -15,12 +15,12 @@ USE GUANA_HOSPI
 GO
 CREATE PROCEDURE SP_Top_Unidades
 AS
-		SELECT TOP 5 u.nombre_unidad, u.numero_planta, 'Cantidad' = COUNT(p.id_unidad)
+		SELECT TOP 3 u.nombre_unidad, u.numero_planta, 'Cantidad' = COUNT(c.id_unidad)
 			FROM DW_GUANA_HOSPI.DBO.Unidad u 
-			INNER JOIN DW_GUANA_HOSPI.DBO.Paciente_Unidad p
-			ON u.id_unidad = p.id_unidad
-		GROUP BY u.nombre_unidad
-		ORDER BY COUNT(p.id_unidad) DESC 	
+			INNER JOIN DW_GUANA_HOSPI.DBO.Consulta c
+			ON u.id_unidad = c.id_unidad
+		GROUP BY u.nombre_unidad,u.numero_planta
+		ORDER BY COUNT(c.id_paciente) DESC 	
 GO
 
 USE GUANA_HOSPI
@@ -31,11 +31,9 @@ AS
 		p.apellido_2, p.edad, 'Cantidad' = COUNT(i.id_intervencion) 
 		FROM DW_GUANA_HOSPI.DBO.Medico m 
 		INNER JOIN DW_GUANA_HOSPI.DBO.Persona p ON m.dni_persona = p.dni_persona
-		INNER JOIN DW_GUANA_HOSPI.DBO.Unidad_Medico um ON um.id_medico = m.id_medico
-		INNER JOIN DW_GUANA_HOSPI.DBO.Unidad u ON um.id_unidad = u.id_unidad
-		INNER JOIN DW_GUANA_HOSPI.DBO.Consulta_Unidad cu ON cu.id_unidad = u.id_unidad
-		INNER JOIN DW_GUANA_HOSPI.DBO.Consulta c ON c.id_consulta = cu.id_consulta 
-		INNER JOIN DW_GUANA_HOSPI.DBO.Intervenciones i ON i.id_consulta = c.id_consulta
+		INNER JOIN DW_GUANA_HOSPI.DBO.Unidad u ON u.id_medico = m.id_medico	
+		INNER JOIN DW_GUANA_HOSPI.DBO.Consulta co ON co.id_unidad = u.id_unidad
+		INNER JOIN DW_GUANA_HOSPI.DBO.Intervenciones i ON i.id_consulta = co.id_consulta
 	GROUP BY m.codigo_medico, p.dni_persona, p.nombre_persona, p.apellido_1, p.apellido_2, p.edad
 	ORDER BY COUNT(i.id_intervencion) DESC
 GO
