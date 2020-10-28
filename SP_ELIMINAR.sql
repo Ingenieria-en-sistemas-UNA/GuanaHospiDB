@@ -198,7 +198,7 @@ AS
 		END
 	ELSE IF EXISTS (SELECT id_enfermedad FROM Enfermedad WHERE id_enfermedad = @id_enfermedad)
 		BEGIN
-			SELECT message = 'Se ha eliminado la enfermedad', ok = 0
+			SELECT message = 'Se ha eliminado la enfermedad', ok = 1
 			DELETE FROM Enfermedad WHERE Enfermedad.id_enfermedad = @id_enfermedad
 		END
 	ELSE
