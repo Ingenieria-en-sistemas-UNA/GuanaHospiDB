@@ -106,6 +106,52 @@ AS
 		END
 GO
 
+CREATE PROC SP_Obtener_Roles
+AS
+	SELECT 'Id_Role' = id_role, 'Nombre_Role' = nombre_role, ok = 1
+	FROM Roles
+GO
+
+CREATE PROC SP_Obtener_Role_Por_ID
+	(@IdRole VARCHAR)
+AS
+	IF(@IdRole = '')
+		BEGIN
+			SELECT message = 'El campo id_role viene vacio', ok = 0
+		END
+	ELSE IF(ISNUMERIC(@IdRole) = 0)
+		BEGIN
+			SELECT message = 'El campo id_role no es numerico', ok = 0
+		END
+	ELSE
+		BEGIN
+			SELECT 'Id_Role' = id_role, 'Nombre_Role' = nombre_role, ok = 1
+			FROM Roles
+			WHERE id_role = @IdRole
+		END
+GO
+
+CREATE PROC SP_Obtener_Role_Por_Nombre
+	(@NombreRole VARCHAR(100))
+AS
+	IF(@NombreRole = '')
+		BEGIN
+			SELECT message = 'El campo nombre_role viene vacio', ok = 0
+		END
+	ELSE IF EXISTS(SELECT nombre_role FROM Roles WHERE Roles.nombre_role = @NombreRole)
+		BEGIN
+			SELECT 'Id_Role' = id_role, 'Nombre_Role' = nombre_role, ok = 1
+			FROM Roles
+			WHERE nombre_role = @NombreRole
+		END
+	ELSE
+		BEGIN
+			SELECT message = 'No existe el role', ok = 0
+		END
+GO
+
+EXEC SP_Obtener_Role_Por_Nombre 'Medico'
+
 CREATE PROC SP_Obtener_Consultas
 AS
 	SELECT 'Id_Consulta' = id_consulta, 'Fehca_Consulta' = fecha_consulta , 'Id_Paciente' = id_paciente, ok = 1

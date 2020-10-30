@@ -85,6 +85,27 @@ GO
 -------------------------------------------------------------------------------------------------------------------------
 USE GUANA_HOSPI
 GO
+
+CREATE PROC SP_Crear_Role
+	@NombreRole VARCHAR(20)
+AS
+	IF(@NombreRole = '')
+		BEGIN
+			SELECT message = 'No se permiten campos vacios', ok = 0
+		END
+	ELSE IF (EXISTS(SELECT nombre_role FROM Roles WHERE nombre_role = @NombreRole))
+		BEGIN
+			SELECT message = 'El role ya existe', ok = 0
+		END
+	ELSE
+		BEGIN
+			SELECT message = 'El registro se ha incresado correctamente', beforeId = IDENT_CURRENT( 'Roles' ), ok = 1
+			INSERT INTO ROLES(nombre_role) VALUES (@NombreRole)
+		END
+GO
+-------------------------------------------------------------------------------------------------------------------------
+USE GUANA_HOSPI
+GO
 CREATE PROC SP_Crear_Medico_Especialidad
 	@IdMedico varchar(5),
 	@IdEspecialidad varchar(5)

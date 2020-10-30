@@ -40,12 +40,23 @@ GO
 
 USE	GUANA_HOSPI
 GO
+CREATE TABLE Roles(
+    id_role INT IDENTITY (1,1),
+	nombre_role VARCHAR(100) NOT NULL UNIQUE,
+	CONSTRAINT PK_id_role PRIMARY KEY (id_role),
+)
+GO
+
+USE	GUANA_HOSPI
+GO
 CREATE TABLE users(
     id INT IDENTITY (1,1),
 	email VARCHAR(100) NOT NULL UNIQUE,
 	password VARCHAR(100) NOT NULL,
 	id_medico INT,
+	id_role INT
 	CONSTRAINT PK_id_usuario PRIMARY KEY (id),
+	CONSTRAINT FK_user_role FOREIGN KEY (id_role) REFERENCES Roles (id_role),
 	CONSTRAINT FK_id_medico_usuario FOREIGN KEY (id_medico) REFERENCES Medico (id_medico)
 )
 GO

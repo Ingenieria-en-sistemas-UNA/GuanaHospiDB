@@ -75,6 +75,30 @@ GO
 
 USE GUANA_HOSPI
 GO
+
+CREATE PROC SP_Actualizar_Role
+	@Id INT,
+	@NombreRole VARCHAR
+AS
+	IF(@NombreRole = '' OR @Id = '')
+		BEGIN
+			SELECT message = 'No se permiten campos vacios', ok = 0
+		END
+	ELSE IF (EXISTS(SELECT nombre_role FROM Roles WHERE nombre_role = @NombreRole))
+		BEGIN
+			SELECT message = 'El role se ha actualizado correctamente', ok = 1
+			UPDATE Roles
+				SET nombre_role = @NombreRole
+			WHERE id_role = @Id
+		END
+	ELSE
+		BEGIN
+			SELECT message = 'No existe el role', ok = 0
+		END
+GO
+
+USE GUANA_HOSPI
+GO
 CREATE PROCEDURE SP_ActualizarEspecialidad
 	@id_especialidad INT,
 	@nombreEspecialdad VARCHAR(50)
