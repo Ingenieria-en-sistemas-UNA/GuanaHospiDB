@@ -133,7 +133,7 @@ GO
 
 CREATE PROC SP_Obtener_Consultas
 AS
-	SELECT 'Id_Consulta' = id_consulta, 'Fehca_Consulta' = fecha_consulta , 'Id_Paciente' = id_paciente, ok = 1
+	SELECT 'Id_Consulta' = id_consulta, 'Fehca_Consulta' = fecha_consulta , 'Id_Paciente' = id_paciente, 'Id_Unidad' id_unidad, ok = 1
 	FROM Consulta
 GO
 
@@ -150,34 +150,9 @@ AS
 		END
 	ELSE
 		BEGIN
-			SELECT 'Id_Consulta' = id_consulta, 'Fehca_Consulta' = fecha_consulta , 'Id_Paciente' = id_paciente, ok = 1
+			SELECT 'Id_Consulta' = id_consulta, 'Fehca_Consulta' = fecha_consulta , 'Id_Paciente' = id_paciente, 'Id_Unidad' id_unidad ,ok = 1
 			FROM Consulta
 			WHERE id_consulta = @id_consulta;
-		END
-GO
-
-CREATE PROC SP_Obtener_Consultas_Unidad
-AS
-	SELECT 'Id_Consulta_Unidad' = id_consulta_unidad, 'Id_Consulta' = id_consulta , 'Id_Unidad' = id_unidad, ok = 1
-	FROM Consulta_Unidad
-GO
-
-CREATE PROC SP_Obtener_Consulta_Unidad_Por_Id
-	(@id_consulta_unidad VARCHAR(12))
-AS
-	IF(@id_consulta_unidad = '')
-		BEGIN
-			SELECT message = 'El campo id_consulta_unidad viene vacio', ok = 0
-		END
-	ELSE IF(ISNUMERIC(@id_consulta_unidad) = 0)
-		BEGIN
-			SELECT message = 'El campo id_consulta_unidad no es numerico', ok = 0
-		END
-	ELSE
-		BEGIN
-			SELECT 'Id_Consulta_Unidad' = id_consulta_unidad, 'Id_Consulta' = id_consulta , 'Id_Unidad' = id_unidad, ok = 1
-			FROM Consulta_Unidad
-			WHERE id_consulta_unidad = @id_consulta_unidad;
 		END
 GO
 
@@ -253,31 +228,6 @@ AS
 			SELECT 'Id_Especialidad' = id_especialidad, 'Nombre_Especialidad' = nombre_especialdad, ok = 1
 			FROM Especialidad
 			WHERE id_especialidad = @id_especialidad;
-		END
-GO
-
-CREATE PROC SP_Obtener_Paciente_Unidades
-AS
-	SELECT 'Id_Paciente_Unidad' = id_paciente_unidad, 'Id_Paciente' = id_paciente, 'Id_Unidad' = id_unidad, ok = 1
-	FROM Paciente_Unidad
-GO
-
-CREATE PROC SP_Obtener_Paciente_Unidades_Por_Id
-	(@id_paciente_unidad VARCHAR(12))
-AS
-	IF(@id_paciente_unidad = '')
-		BEGIN
-			SELECT message = 'El campo id_paciente_unidad viene vacio', ok = 0
-		END
-	ELSE IF(ISNUMERIC(@id_paciente_unidad) = 0)
-		BEGIN
-			SELECT message = 'El campo id_paciente_unidad no es numerico', ok = 0
-		END
-	ELSE
-		BEGIN
-			SELECT 'Id_Paciente_Unidad' = id_paciente_unidad, 'Id_Paciente' = id_paciente, 'Id_Unidad' = id_unidad, ok = 1
-			FROM Paciente_Unidad
-			WHERE id_paciente_unidad = @id_paciente_unidad;
 		END
 GO
 

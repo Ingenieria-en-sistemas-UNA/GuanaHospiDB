@@ -153,7 +153,8 @@ GO
 CREATE PROCEDURE SP_ActualizarUnidad
 	@id_unidad INT,
 	@nombre VARCHAR(50),
-	@numeroPlanta INT
+	@numeroPlanta INT,
+	@id_medico INT
 	AS
 	IF (@id_unidad = '')
 		BEGIN
@@ -174,7 +175,8 @@ CREATE PROCEDURE SP_ActualizarUnidad
 				SELECT message = 'La unidad ha sido editada con exito', ok = 1;
 					UPDATE Unidad
 						Set	nombre_unidad = @nombre,
-						    numero_planta = @numeroPlanta
+						    numero_planta = @numeroPlanta,
+							id_medico = @id_medico
 						WHERE id_unidad = @id_unidad
 				END
 		END
