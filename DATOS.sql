@@ -27,13 +27,6 @@ EXEC SP_Crear_Medico 5344, 3
 EXEC SP_Crear_Medico 6453, 4
 EXEC SP_Crear_Medico 4656, 5
 
-----------------------USUARIO------------------------------
-EXEC SP_Crear_Usuario 'tamo', '12345', 1
-EXEC SP_Crear_Usuario 'luis1', 'password', 2
-EXEC SP_Crear_Usuario 'Nelra', '54321', 3
-EXEC SP_Crear_Usuario 'ricmor', 'contrasenna', 4
-EXEC SP_Crear_Usuario 'enrique777', 'abcdef', 5
-
 -----------------Medico Especialid--------------------------
 EXEC SP_Crear_Medico_Especialidad 1, 1
 EXEC SP_Crear_Medico_Especialidad 2, 2

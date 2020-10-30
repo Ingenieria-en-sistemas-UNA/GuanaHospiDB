@@ -40,13 +40,13 @@ GO
 
 USE	GUANA_HOSPI
 GO
-CREATE TABLE Usuario(
-    id_usuario INT IDENTITY (1,1),
-	nombre_usuario VARCHAR(40) NOT NULL,
-	contrasenna VARCHAR(30) NOT NULL,
-	id_medico INT NOT NULL,
-	CONSTRAINT PK_id_usuario PRIMARY KEY (id_usuario),
-	CONSTRAINT FK_id_medico_usuario FOREIGN KEY (id_medico ) REFERENCES Medico (id_medico) ON DELETE CASCADE
+CREATE TABLE users(
+    id INT IDENTITY (1,1),
+	email VARCHAR(100) NOT NULL UNIQUE,
+	password VARCHAR(100) NOT NULL,
+	id_medico INT,
+	CONSTRAINT PK_id_usuario PRIMARY KEY (id),
+	CONSTRAINT FK_id_medico_usuario FOREIGN KEY (id_medico) REFERENCES Medico (id_medico)
 )
 GO
 
@@ -107,6 +107,7 @@ CREATE TABLE Consulta(
 	CONSTRAINT FK_id_unidad_consulta FOREIGN KEY(id_unidad) REFERENCES Unidad(id_unidad) ON DELETE CASCADE,
 )
 GO
+
 
 USE	GUANA_HOSPI
 GO

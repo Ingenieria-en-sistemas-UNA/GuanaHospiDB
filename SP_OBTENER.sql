@@ -70,34 +70,9 @@ AS
 		END
 	ELSE
 		BEGIN
-			SELECT 'Id_Unidad' = id_unidad, 'Nombre_Unidad' = nombre_unidad , 'Id_Numero_Planta' = numero_planta, ok = 1
+			SELECT 'Id_Unidad' = id_unidad, 'Nombre_Unidad' = nombre_unidad , 'Numero_Planta' = numero_planta, 'Id_Medico' = id_medico, ok = 1
 			FROM Unidad
 			WHERE id_unidad = @id_unidad;
-		END
-GO
-
-CREATE PROC SP_Obtener_Usuarios
-AS
-	SELECT 'Id_Usuario' = id_usuario, 'Nombre_Usuario' = nombre_usuario, 'Contrasenna' = contrasenna, 'Id_Medico' = id_medico, ok = 1
-	FROM Usuario
-GO
-
-CREATE PROC SP_Obtener_Usuario_Por_Id
-	(@id_usuario VARCHAR(12))
-AS
-	IF(@id_usuario = '')
-		BEGIN
-			SELECT message = 'El campo id_usuario viene vacio', ok = 0
-		END
-	ELSE IF(ISNUMERIC(@id_usuario) = 0)
-		BEGIN
-			SELECT message = 'El campo id_usuario no es numerico', ok = 0
-		END
-	ELSE
-		BEGIN
-			SELECT 'Id_Usuario' = id_usuario, 'Nombre_Usuario' = nombre_usuario, 'Contrasenna' = contrasenna, 'Id_Medico' = id_medico, ok = 1
-			FROM Usuario
-			WHERE id_usuario = @id_usuario;
 		END
 GO
 

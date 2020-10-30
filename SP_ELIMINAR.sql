@@ -32,25 +32,6 @@ AS
 			SELECT message = 'El id de persona no existe', ok = 0
 		END
 GO
--------------------------------------------------Eliminar Usuario------------------------------------------------------------------
-USE	GUANA_HOSPI
-GO
-CREATE PROC SP_Eliminar_Usuario (@id_usuario INT)
-AS
-	IF (@id_usuario = '') 
-		BEGIN
-			SELECT message ='El id de usuario no puede ser vacio', ok = 0
-		END
-	ELSE IF EXISTS (SELECT id_usuario FROM Usuario WHERE id_usuario  = @id_usuario)
-		BEGIN
-		    SELECT message = 'Se ha eliminado el usuario', ok = 0
-			DELETE FROM Usuario WHERE Usuario.id_usuario = @id_usuario
-		END
-	ELSE
-		BEGIN
-			SELECT message = 'El id de usuario no existe', ok = 0
-		END
-GO
 ---------------------------------SP_ELIMINAR_ESPECIALIDAD-------------------------------
 
 USE	GUANA_HOSPI
@@ -217,7 +198,7 @@ AS
 		END
 	ELSE IF EXISTS (SELECT id_enfermedad FROM Enfermedad WHERE id_enfermedad = @id_enfermedad)
 		BEGIN
-			SELECT message = 'Se ha eliminado la enfermedad', ok = 0
+			SELECT message = 'Se ha eliminado la enfermedad', ok = 1
 			DELETE FROM Enfermedad WHERE Enfermedad.id_enfermedad = @id_enfermedad
 		END
 	ELSE
