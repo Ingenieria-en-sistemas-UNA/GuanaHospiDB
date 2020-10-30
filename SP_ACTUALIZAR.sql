@@ -160,7 +160,7 @@ CREATE PROCEDURE SP_ActualizarUnidad
 					UPDATE Unidad
 						Set	nombre_unidad = @nombre,
 						    numero_planta = @numeroPlanta,
-							id_medico = @Id_Medico
+							id_medico = @id_medico
 						WHERE id_unidad = @id_unidad
 				END
 		END
