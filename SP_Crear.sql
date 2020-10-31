@@ -201,10 +201,6 @@ AS
 		BEGIN
 			SELECT message = 'El numero de seguro social debe ser formato numero', ok = 0
 		END
-	ELSE IF(ISDATE(@FechaIngreso) = 0)
-		BEGIN
-			SELECT message = 'La fecha de ingreso debe ser un formato fecha valido', ok = 0
-		END
 	ELSE IF EXISTS(SELECT numero_seguro_social FROM Paciente WHERE numero_seguro_social = @Numero_seguro_social)
 		BEGIN
 			SELECT message = 'El numero de seguro social ya habia registrado anteriormente', ok = 0
@@ -221,7 +217,7 @@ AS
 		BEGIN
 			SELECT message = 'El registro se ha incresado correctamente', beforeId = IDENT_CURRENT( 'Paciente' ), ok = 1
 			INSERT INTO Paciente(numero_seguro_social, fecha_ingreso, dni_persona)
-			VALUES (CONVERT(int, @Numero_seguro_social), CONVERT(date, @FechaIngreso), @DniPersona)
+			VALUES (CONVERT(int, @Numero_seguro_social), CONVERT(varchar, FORMAT(@FechaIngreso, 'dd/MM/yyyy')), @DniPersona)
 		END
 GO
 -----------------------------------------------------------------------------------------------------------------------------------------
