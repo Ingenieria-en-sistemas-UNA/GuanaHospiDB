@@ -2,6 +2,7 @@ USE GUANA_HOSPI
 GO
 CREATE PROCEDURE SP_Eliminar_Tablas_DW
 AS
+	SELECT message = 'Se elimino los datos exitosamente', ok = 1
 	DELETE FROM DW_GUANA_HOSPI..Consulta;
 	DELETE FROM DW_GUANA_HOSPI..Enfermedad
 	DELETE FROM DW_GUANA_HOSPI..Intervenciones
@@ -17,7 +18,7 @@ GO
 CREATE PROCEDURE SP_LLenarDW
 AS
 
-	SELECT message = 'Se cargo exitosamente', ok = 1
+	SELECT message = 'Se cargaron los datos exitosamente', ok = 1
 	EXEC SP_Eliminar_Tablas_DW
 	
 	EXEC master..xp_cmdshell 'BCP GUANA_HOSPI.dbo.Consulta OUT C:\BCP\Consulta.txt -T -c'
@@ -40,7 +41,7 @@ AS
 GO
 --EXEC SP_LLenarDW
 	
-
+--EXEC SP_Eliminar_Tablas_DW
 
 --    use GUANA_HOSPI
 --	go
