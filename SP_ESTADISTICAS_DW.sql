@@ -3,7 +3,7 @@ USE GUANA_HOSPI
 GO
 CREATE PROCEDURE SP_Top_Enfermedades
 AS
-		SELECT TOP 5 e.nombre_enfermedad, COUNT(p.id_enfermedad) AS Cantidad
+		SELECT TOP 5 e.nombre_enfermedad, COUNT(p.id_enfermedad) AS Cantidad, 'Id_Enfermedad' = e.id_enfermedad
 			FROM DW_GUANA_HOSPI.DBO.Enfermedad e 
 			INNER JOIN DW_GUANA_HOSPI.DBO.Padece p
 			ON e.id_enfermedad = p.id_enfermedad
@@ -15,11 +15,11 @@ USE GUANA_HOSPI
 GO
 CREATE PROCEDURE SP_Top_Unidades
 AS
-		SELECT TOP 3 u.nombre_unidad, u.numero_planta, 'Cantidad' = COUNT(c.id_unidad)
+		SELECT TOP 3 u.nombre_unidad, u.numero_planta, u.id_unidad, 'Cantidad' = COUNT(c.id_unidad)
 			FROM DW_GUANA_HOSPI.DBO.Unidad u 
 			INNER JOIN DW_GUANA_HOSPI.DBO.Consulta c
 			ON u.id_unidad = c.id_unidad
-		GROUP BY u.nombre_unidad,u.numero_planta
+		GROUP BY u.nombre_unidad, u.numero_planta, u.id_unidad
 		ORDER BY COUNT(c.id_paciente) DESC 	
 GO
 
