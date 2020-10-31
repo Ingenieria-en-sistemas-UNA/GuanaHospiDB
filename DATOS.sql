@@ -73,7 +73,8 @@ AS
     EXEC SP_Crear_Consulta '2020/09/5', 2, 2
     EXEC SP_Crear_Consulta '2020/09/5', 3, 3
     EXEC SP_Crear_Consulta '2020/09/5', 4, 4
-
+	EXEC SP_Crear_Consulta '2020/09/5', 1, 4
+	EXEC SP_Crear_Consulta '2020/09/5', 1, 4
     -----------------------PRESENTE----------------------------------
     EXEC SP_Crear_Presenta 1, 1, 'Tiene que consumir mas agua'
     EXEC SP_Crear_Presenta 2, 2, 'Tiene que caminar'
@@ -94,6 +95,8 @@ AS
     EXEC SP_Crear_Padece 2, 2
     EXEC SP_Crear_Padece 3, 3
     EXEC SP_Crear_Padece 4, 4
+	EXEC SP_Crear_Padece 1, 1
+	EXEC SP_Crear_Padece 2, 1
 
     --------------------------TIPO INTERVENCION--------------------------
     EXEC SP_Crear_Tipo_Intervencion 'Cirugia'
