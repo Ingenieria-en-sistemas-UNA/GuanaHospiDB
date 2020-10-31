@@ -16,6 +16,8 @@ USE GUANA_HOSPI
 GO
 CREATE PROCEDURE SP_LLenarDW
 AS
+
+	SELECT message = 'Se cargo exitosamente', ok = 1
 	EXEC SP_Eliminar_Tablas_DW
 	
 	EXEC master..xp_cmdshell 'BCP GUANA_HOSPI.dbo.Consulta OUT C:\BCP\Consulta.txt -T -c'

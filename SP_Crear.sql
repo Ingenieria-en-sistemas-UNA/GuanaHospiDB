@@ -188,10 +188,11 @@ GO
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 USE GUANA_HOSPI
 GO
-CREATE PROC SP_Crear_Paciente
+CREATE PROC SP_Crear_Paciente(
 	@Numero_seguro_social VARCHAR(8),
 	@FechaIngreso VARCHAR(12),
 	@DniPersona VARCHAR(12)
+)
 AS
 	IF(@Numero_seguro_social = '' OR @FechaIngreso = '' OR @DniPersona = '')
 		BEGIN
@@ -217,7 +218,7 @@ AS
 		BEGIN
 			SELECT message = 'El registro se ha incresado correctamente', beforeId = IDENT_CURRENT( 'Paciente' ), ok = 1
 			INSERT INTO Paciente(numero_seguro_social, fecha_ingreso, dni_persona)
-			VALUES (CONVERT(int, @Numero_seguro_social), CONVERT(varchar, FORMAT(@FechaIngreso, 'dd/MM/yyyy')), @DniPersona)
+			VALUES (CONVERT(int, @Numero_seguro_social), CONVERT(varchar, @FechaIngreso, 5), @DniPersona)
 		END
 GO
 -----------------------------------------------------------------------------------------------------------------------------------------
