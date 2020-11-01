@@ -297,20 +297,20 @@ GO
 ------------------------------------------ELIMINAR MEDICO ESPECIALIDAD----------------------------
 USE	GUANA_HOSPI
 GO
-CREATE PROC SP_Eliminar_Medico_Especialidad (@id_medico_especialidad INT)
+CREATE PROC SP_Eliminar_Medico_Especialidad (@Id_Medico INT)
 AS
-	IF (@id_medico_especialidad = '') 
+	IF (@Id_Medico = '') 
 		BEGIN
-			SELECT message = 'El id medico especialidad no puede ser vacio', ok = 0
+			SELECT message = 'El id medico no puede ser vacio', ok = 0
 		END
-	ELSE IF EXISTS (SELECT id_medico_especialidad FROM Medico_especialidad WHERE id_medico_especialidad = @id_medico_especialidad)
+	ELSE IF EXISTS (SELECT id_medico FROM Medico_especialidad WHERE id_medico = @Id_Medico)
 		BEGIN
-			SELECT message = 'Se ha elimimnado medico especialidad', ok = 1
-			DELETE FROM Medico_especialidad WHERE Medico_especialidad.id_medico_especialidad = @id_medico_especialidad
+			SELECT message = 'Se ha eliminado las especialidades del medico', ok = 1
+			DELETE FROM Medico_especialidad WHERE id_medico = @Id_Medico
 		END
 	ELSE
 		BEGIN
-			SELECT message = 'La medico especialidad no existe', ok = 0
+			SELECT message = 'El medico no cuenta con ninguna especialidad', ok = 0
 		END
 GO
 

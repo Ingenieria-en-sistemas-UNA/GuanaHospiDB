@@ -36,6 +36,8 @@ AS
 
     -----------------Medico Especialid--------------------------
     EXEC SP_Crear_Medico_Especialidad 1, 1
+	EXEC SP_Crear_Medico_Especialidad 2, 4
+	EXEC SP_Crear_Medico_Especialidad 2, 3
     EXEC SP_Crear_Medico_Especialidad 2, 2
     EXEC SP_Crear_Medico_Especialidad 3, 3
     EXEC SP_Crear_Medico_Especialidad 4, 4
