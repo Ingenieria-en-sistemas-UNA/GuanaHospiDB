@@ -67,13 +67,13 @@ AS
 		END
 	ELSE IF EXISTS (SELECT id_medico FROM Medico WHERE id_medico  = @id_medico )
 		BEGIN
+			SELECT message = 'Se ha eliminado el medico', ok = 1
 			IF(EXISTS (SELECT id_medico FROM Unidad WHERE id_medico = @id_medico))
 				BEGIN
 					UPDATE Unidad
 					SET id_medico = NULL
 					WHERE id_medico = @id_medico
 				END
-			SELECT message = 'Se ha eliminado el medico', ok = 1
 			DECLARE @idPersonaMedico VARCHAR(12)
 			SET @idPersonaMedico = (SELECT dni_persona FROM Medico WHERE id_medico = @id_medico)
 			DELETE FROM Medico WHERE Medico.id_medico = @id_medico
