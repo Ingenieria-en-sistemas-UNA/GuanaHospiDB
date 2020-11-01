@@ -49,7 +49,7 @@ GO
 
 USE	GUANA_HOSPI
 GO
-CREATE TABLE Users(
+CREATE TABLE users(
     id INT IDENTITY (1,1),
 	email VARCHAR(100) NOT NULL UNIQUE,
 	password VARCHAR(100) NOT NULL,
@@ -57,7 +57,7 @@ CREATE TABLE Users(
 	id_role INT
 	CONSTRAINT PK_id_usuario PRIMARY KEY (id),
 	CONSTRAINT FK_user_role FOREIGN KEY (id_role) REFERENCES Roles (id_role),
-	CONSTRAINT FK_id_medico_usuario FOREIGN KEY (id_medico) REFERENCES Medico (id_medico)
+	CONSTRAINT FK_id_medico_usuario FOREIGN KEY (id_medico) REFERENCES Medico (id_medico) ON DELETE CASCADE
 )
 GO
 
