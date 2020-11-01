@@ -86,8 +86,9 @@ AS
 		END
 GO
 
---EXEC SP_Eliminar_Medico 4
---SELECT * FROM Unidad
+EXEC SP_Eliminar_Medico 4
+SELECT * FROM Unidad
+SELECT * FROM Medico
 --DROP PROC SP_Eliminar_Medico
 ---------------------------------------------ELIMINAR UNIDAD-----------------------------------------------------
 USE	GUANA_HOSPI

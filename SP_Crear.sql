@@ -157,6 +157,10 @@ AS
 		BEGIN
 			SELECT message = 'Esta unidad ya habia sido reistrada anteriormente', ok = 0
 		END
+	ELSE IF(EXISTS(SELECT id_medico FROM Unidad WHERE id_medico = @Id_Medico))
+		BEGIN
+			SELECT message = 'El medico ya cuenta con una unidad a cargo', ok = 0
+		END
 	ELSE
 		BEGIN
 			SELECT message = 'El registro se ha incresado corrnextnte', nextId = IDENT_CURRENT('Unidad') + IDENT_INCR('Unidad'), ok = 1

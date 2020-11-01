@@ -48,8 +48,8 @@ AS
     EXEC SP_Crear_Unidad 'Sala B1', 1, 2
     EXEC SP_Crear_Unidad 'Sala C1', 1, 3
     EXEC SP_Crear_Unidad 'Sala D1', 1, 4
-    EXEC SP_Crear_Unidad 'Sala A2', 2, 4
-    EXEC SP_Crear_Unidad 'Sala B2', 2, 5
+    EXEC SP_Crear_Unidad 'Sala A2', 2, 5
+    EXEC SP_Crear_Unidad 'Sala B2', 2
     EXEC SP_Crear_Unidad 'Sala C2', 2
     EXEC SP_Crear_Unidad 'Sala D2', 2
 
