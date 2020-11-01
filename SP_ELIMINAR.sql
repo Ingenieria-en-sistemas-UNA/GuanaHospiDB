@@ -12,15 +12,15 @@ AS
 		BEGIN
 	        IF EXISTS (SELECT dni_persona  FROM Medico where dni_persona = @dni_persona)
 				BEGIN
-					SELECT message ='Se ha eliminado el m�dico', ok = 0
+					SELECT message ='Se ha eliminado el medico', ok = 1
 					DELETE FROM Persona WHERE Persona.dni_persona = @dni_persona
 				END
 			ELSE IF EXISTS (SELECT @dni_persona FROM Paciente WHERE dni_persona = @dni_persona)
 				BEGIN
-				    SELECT message ='Se ha eliminado el paciente', ok = 0
+				    SELECT message ='Se ha eliminado el paciente', ok = 1
 					DELETE FROM Persona WHERE Persona.dni_persona = @dni_persona
 				END
-			SELECT message ='Se ha eliminado la persona', ok = 0
+			SELECT message ='Se ha eliminado la persona', ok = 1
 			DELETE FROM Persona WHERE Persona.dni_persona = @dni_persona
 		END
 	ELSE
