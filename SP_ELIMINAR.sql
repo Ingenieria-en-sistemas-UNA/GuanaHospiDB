@@ -314,10 +314,10 @@ AS
 		BEGIN
 			SELECT message = 'El id medico no puede ser vacio', ok = 0
 		END
-	ELSE IF EXISTS (SELECT id_medico FROM Medico_especialidad WHERE id_medico = @Id_Medico)
+	ELSE IF EXISTS (SELECT id_medico FROM Medico_Especialidad WHERE id_medico = @Id_Medico)
 		BEGIN
 			SELECT message = 'Se ha eliminado las especialidades del medico', ok = 1
-			DELETE FROM Medico_especialidad WHERE id_medico = @Id_Medico
+			DELETE FROM Medico_Especialidad WHERE id_medico = @Id_Medico
 		END
 	ELSE
 		BEGIN
