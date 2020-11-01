@@ -229,17 +229,12 @@ GO
 USE GUANA_HOSPI
 GO
 CREATE PROC SP_Crear_Consulta
-	@FechaConsulta VARCHAR(12),
 	@IdPaciente VARCHAR(5),
 	@IdUnidad VARCHAR(5)
 AS
-	IF(@FechaConsulta = '' OR @IdPaciente = '' OR @IdUnidad = '')
+	IF(@IdPaciente = '' OR @IdUnidad = '')
 		BEGIN
 			SELECT message = 'No se permiten campos vacios', ok = 0
-		END
-	ELSE IF(ISDATE(@FechaConsulta) = 0)
-		BEGIN
-			SELECT message = 'La fecha de consulta debe ser un formato fecha valido', ok = 0
 		END
 	ELSE IF(ISNUMERIC(@IdPaciente) = 0 OR ISNUMERIC(@IdUnidad) = 0)
 		BEGIN
@@ -257,7 +252,7 @@ AS
 		BEGIN
 			SELECT message = 'El registro se ha incresado correctamente', beforeId = IDENT_CURRENT( 'Consulta' ), ok = 1
 			INSERT INTO Consulta(fecha_consulta, id_paciente, id_unidad)
-			VALUES (CONVERT(date, @FechaConsulta), CONVERT(int, @IdPaciente), CONVERT(int, @IdUnidad))
+			VALUES (CONVERT(date, GETDATE()), CONVERT(int, @IdPaciente), CONVERT(int, @IdUnidad))
 		END
 GO
 -----------------------------------------------------------------------------------------------------------------------------------------

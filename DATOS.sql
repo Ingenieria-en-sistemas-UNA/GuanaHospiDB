@@ -9,6 +9,7 @@ AS
     EXEC SP_Crear_Persona '3', 'Arlen', 'Vargas', 'Galvez', 19
     EXEC SP_Crear_Persona '4', 'Ricardo', 'Morataya', 'Morataya', 20
     EXEC SP_Crear_Persona '5', 'Enrique', 'Arias', 'Salgado', 20
+	EXEC SP_Crear_Persona '5022', 'Enrique', 'Arias', 'Salgado', 20
 
     EXEC SP_Crear_Persona '6', 'Erick', 'Parra', 'Sequeira', 20
     EXEC SP_Crear_Persona '7', 'Emilio', 'Galvez', 'Vargas', 45
@@ -67,6 +68,7 @@ AS
     -----------------------PACIENTE----------------------------------
     EXEC SP_Crear_Paciente 2332, '2020/09/5', '6'	
     EXEC SP_Crear_Paciente 3839, '2020/08/20', '7'
+	EXEC SP_Crear_Paciente 5022, '2020/08/20', '5022'
     EXEC SP_Crear_Paciente 4039, '2020/07/3', '8'
     EXEC SP_Crear_Paciente 9284, '2020/06/16', '9'
 
