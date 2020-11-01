@@ -12,19 +12,15 @@ AS
 		BEGIN
 	        IF EXISTS (SELECT dni_persona  FROM Medico where dni_persona = @dni_persona)
 				BEGIN
-					DECLARE @idUsuario INT
-					SET @idUsuario = (SELECT id_usuario FROM Usuario INNER JOIN Medico ON Usuario.id_medico = Medico.id_medico WHERE Medico.dni_persona = @dni_persona)
 					SELECT message ='Se ha eliminado el m�dico', ok = 0
 					DELETE FROM Persona WHERE Persona.dni_persona = @dni_persona
-				    SELECT message = 'Se ha eliminado el usuario de m�dico', ok = 0
-					DELETE FROM Usuario  WHERE Usuario.id_usuario = @idUsuario
 				END
 			ELSE IF EXISTS (SELECT @dni_persona FROM Paciente WHERE dni_persona = @dni_persona)
 				BEGIN
 				    SELECT message ='Se ha eliminado el paciente', ok = 0
 					DELETE FROM Persona WHERE Persona.dni_persona = @dni_persona
 				END
-				SELECT message ='Se ha eliminado la persona', ok = 0
+			SELECT message ='Se ha eliminado la persona', ok = 0
 			DELETE FROM Persona WHERE Persona.dni_persona = @dni_persona
 		END
 	ELSE
