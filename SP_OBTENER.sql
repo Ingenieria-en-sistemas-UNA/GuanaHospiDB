@@ -44,8 +44,11 @@ AS
 		END
 	ELSE
 		BEGIN
-			SELECT 'Id_Paciente' = id_paciente, 'Numero_Seguro_Social' = numero_seguro_social , 'Fecha_Ingreso' = fecha_ingreso, 'Cedula_Persona' = dni_persona, ok = 1
+			SELECT 'Id_Paciente' = id_paciente, 'Numero_Seguro_Social' = numero_seguro_social , 'Fecha_Ingreso' = fecha_ingreso, 'Cedula_Persona' = Paciente.dni_persona, 
+			'Nombre_Persona' = nombre_persona, 'Primer_Apellido' = apellido_1, 'Segundo_Apellido' = apellido_2, 'Edad' = edad , ok = 1
 			FROM Paciente
+			INNER JOIN Persona
+			ON Persona.dni_persona = Paciente.dni_persona
 			WHERE id_paciente = @id_paciente;
 		END
 GO
