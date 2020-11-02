@@ -401,3 +401,43 @@ AS
 			VALUES (@Tratamiento, CONVERT(int, @IdTipoIntervencion), CONVERT(int, @IdConsulta))
 		END
 GO
+---------------------------------------------------------------------------------------------------------------------------
+USE GUANA_HOSPI
+GO
+CREATE PROC SP_Crear_User
+	@Email VARCHAR(100),
+	@Password VARCHAR(100),
+	@IdMedico VARCHAR(5),
+	@IdRole VARCHAR(5)
+AS
+	IF(@Email = '' OR @Password = '' OR @IdMedico = '' OR @IdRole = '')
+		BEGIN
+			SELECT message = 'No se permiten campos vacios', ok = 0
+		END
+	ELSE IF(ISNUMERIC(@IdMedico) = 0 OR CONVERT(int, @IdMedico) < 0)
+		BEGIN
+			SELECT message = 'El id del medico debe ser de tipo numerico y mayor a cero', ok = 0
+		END
+	ELSE IF(ISNUMERIC(@IdRole) = 0 OR CONVERT(int, @IdRole) < 0)
+		BEGIN
+			SELECT message = 'El id del role debe ser de tipo numerico y mayor a cero', ok = 0
+		END
+	ELSE IF(NOT EXISTS(SELECT id_medico FROM Medico WHERE id_medico = @IdMedico))
+		BEGIN
+			SELECT message = 'El id del medico no existe', ok = 0
+		END
+	ELSE IF(NOT EXISTS(SELECT id_role FROM Roles WHERE id_role = @IdRole))
+		BEGIN
+			SELECT message = 'El id del role no existe', ok = 0
+		END
+	ELSE IF(EXISTS(SELECT email FROM users WHERE LOWER(email) = LOWER(@Email)))
+		BEGIN
+			SELECT message = 'El email ya fue registrado', ok = 0
+		END
+	ELSE
+		BEGIN
+			SELECT message = 'El registro se ha ingresado correctamente', currentId = IDENT_CURRENT('users') + IDENT_INCR('users'), ok = 1
+			INSERT INTO users(email, password, id_medico, id_role)
+			VALUES(@Email, @Password, CONVERT(int, @IdMedico), CONVERT(int, @IdRole))
+		END
+GO
