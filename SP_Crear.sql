@@ -433,3 +433,4 @@ AS
 			INSERT INTO users(email, password, id_medico, id_role)
 			VALUES(@Email, @Password, CONVERT(int, @IdMedico), CONVERT(int, @IdRole))
 		END
+GO
