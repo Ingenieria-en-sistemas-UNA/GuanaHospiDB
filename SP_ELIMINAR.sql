@@ -68,6 +68,12 @@ AS
 	ELSE IF EXISTS (SELECT id_medico FROM Medico WHERE id_medico  = @id_medico )
 		BEGIN
 			SELECT message = 'Se ha eliminado el medico', ok = 1
+			IF(EXISTS (SELECT id_medico FROM Unidad WHERE id_medico = @id_medico))
+				BEGIN
+					UPDATE Unidad
+					SET id_medico = NULL
+					WHERE id_medico = @id_medico
+				END
 			DECLARE @idPersonaMedico VARCHAR(12)
 			SET @idPersonaMedico = (SELECT dni_persona FROM Medico WHERE id_medico = @id_medico)
 			DELETE FROM Medico WHERE Medico.id_medico = @id_medico
@@ -79,6 +85,11 @@ AS
 			SELECT message = 'El medico no existe', ok = 0
 		END
 GO
+
+EXEC SP_Eliminar_Medico 4
+SELECT * FROM Unidad
+SELECT * FROM Medico
+--DROP PROC SP_Eliminar_Medico
 ---------------------------------------------ELIMINAR UNIDAD-----------------------------------------------------
 USE	GUANA_HOSPI
 GO
@@ -297,21 +308,20 @@ GO
 ------------------------------------------ELIMINAR MEDICO ESPECIALIDAD----------------------------
 USE	GUANA_HOSPI
 GO
-CREATE PROC SP_Eliminar_Medico_Especialidad (@id_medico_especialidad INT)
+CREATE PROC SP_Eliminar_Medico_Especialidad (@Id_Medico INT)
 AS
-	IF (@id_medico_especialidad = '') 
+	IF (@Id_Medico = '') 
 		BEGIN
-			SELECT message = 'El id medico especialidad no puede ser vacio', ok = 0
+			SELECT message = 'El id medico no puede ser vacio', ok = 0
 		END
-	ELSE IF EXISTS (SELECT id_medico_especialidad FROM Medico_especialidad WHERE id_medico_especialidad = @id_medico_especialidad)
+	ELSE IF EXISTS (SELECT id_medico FROM Medico_Especialidad WHERE id_medico = @Id_Medico)
 		BEGIN
-			SELECT message = 'Se ha elimimnado medico especialidad', ok = 1
-			DELETE FROM Medico_especialidad WHERE Medico_especialidad.id_medico_especialidad = @id_medico_especialidad
+			SELECT message = 'Se ha eliminado las especialidades del medico', ok = 1
+			DELETE FROM Medico_Especialidad WHERE id_medico = @Id_Medico
 		END
 	ELSE
 		BEGIN
-			SELECT message = 'La medico especialidad no existe', ok = 0
+			SELECT message = 'El medico no cuenta con ninguna especialidad', ok = 0
 		END
 GO
-
 
