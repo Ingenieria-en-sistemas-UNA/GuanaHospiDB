@@ -278,6 +278,30 @@ AS
 		END
 GO
 
+CREATE PROC SP_Obtener_Especialidades_Por_Medico_Id
+	(@id_medico VARCHAR(12))
+AS
+	IF(@id_medico = '')
+		BEGIN
+			SELECT message = 'El campo id medico viene vacio', ok = 0
+		END
+	ELSE IF(ISNUMERIC(@id_medico) = 0)
+		BEGIN
+			SELECT message = 'El campo id medico no es numerico', ok = 0
+		END
+	ELSE IF(NOT EXISTS(SELECT id_medico FROM Medico_Especialidad WHERE id_medico = @id_medico))
+		BEGIN
+			SELECT message = 'El id del medico no existe', ok = 0
+		END
+	ELSE
+		BEGIN
+			SELECT 'Id_Especialidad' = e.id_especialidad, 'Nombre_Especialidad' = e.nombre_especialdad, ok = 1
+			FROM Especialidad e
+			INNER JOIN Medico_Especialidad me ON e.id_especialidad = me.id_especialidad
+			WHERE me.id_medico = @id_medico;
+		END
+GO
+
 CREATE PROC SP_Obtener_Paciente_Unidades
 AS
 	SELECT 'Id_Paciente_Unidad' = id_paciente_unidad, 'Id_Paciente' = id_paciente, 'Id_Unidad' = id_unidad, ok = 1
@@ -409,14 +433,16 @@ AS
 	FROM Medico_Especialidad
 GO
 
-CREATE PROC SP_Obtener_Medico_Especialidad_Por_Id
-	(@id_medico_especialidad VARCHAR(12))
+USE GUANA_HOSPI
+GO
+CREATE PROC SP_Obtener_Medico_Especialidad_Por_Medico_Id
+	(@id_medico VARCHAR(12))
 AS
-	IF(@id_medico_especialidad = '')
+	IF(@id_medico = '')
 		BEGIN
 			SELECT message = 'El campo id_medico_especialidad viene vacio', ok = 0
 		END
-	ELSE IF(ISNUMERIC(@id_medico_especialidad) = 0)
+	ELSE IF(ISNUMERIC(@id_medico) = 0)
 		BEGIN
 			SELECT message = 'El campo id_medico_especialidad no es numerico', ok = 0
 		END
@@ -424,6 +450,6 @@ AS
 		BEGIN
 			SELECT 'Id_Medico_Especialidad' = id_medico_especialidad, 'Id_Medico' = id_medico, 'Id_Especialidad' = id_especialidad, ok = 1
 			FROM Medico_Especialidad
-			WHERE id_medico_especialidad = @id_medico_especialidad;
+			WHERE id_medico = @id_medico;
 		END
 GO
