@@ -67,13 +67,13 @@ AS
 		END
 	ELSE IF EXISTS (SELECT id_medico FROM Medico WHERE id_medico  = @id_medico )
 		BEGIN
+			SELECT message = 'Se ha eliminado el medico', ok = 1
 			IF(EXISTS (SELECT id_medico FROM Unidad WHERE id_medico = @id_medico))
 				BEGIN
 					UPDATE Unidad
 					SET id_medico = NULL
 					WHERE id_medico = @id_medico
 				END
-			SELECT message = 'Se ha eliminado el medico', ok = 1
 			DECLARE @idPersonaMedico VARCHAR(12)
 			SET @idPersonaMedico = (SELECT dni_persona FROM Medico WHERE id_medico = @id_medico)
 			DELETE FROM Medico WHERE Medico.id_medico = @id_medico
@@ -314,15 +314,14 @@ AS
 		BEGIN
 			SELECT message = 'El id medico no puede ser vacio', ok = 0
 		END
-	ELSE IF EXISTS (SELECT id_medico FROM Medico_especialidad WHERE id_medico = @Id_Medico)
+	ELSE IF EXISTS (SELECT id_medico FROM Medico_Especialidad WHERE id_medico = @Id_Medico)
 		BEGIN
 			SELECT message = 'Se ha eliminado las especialidades del medico', ok = 1
-			DELETE FROM Medico_especialidad WHERE id_medico = @Id_Medico
+			DELETE FROM Medico_Especialidad WHERE id_medico = @Id_Medico
 		END
 	ELSE
 		BEGIN
 			SELECT message = 'El medico no cuenta con ninguna especialidad', ok = 0
 		END
 GO
-
 
