@@ -21,7 +21,7 @@ AS
 		END
 	ELSE
 		BEGIN
-			SELECT message = 'El registro se ha incresado correctamente', ok = 1
+			SELECT message = 'El registro se ha ingresado correctamente', ok = 1
 			INSERT INTO Persona( dni_persona, nombre_persona, apellido_1, apellido_2, edad)
 			VALUES (@Dni, @Nombre, @Apellido1, @Apellido2, CONVERT(int, @Edad));
 		END
@@ -53,7 +53,8 @@ USE GUANA_HOSPI
 GO
 CREATE PROC SP_Crear_Medico
 	@CodigoMedico varchar(5),
-	@DniPersona varchar(12)
+	@DniPersona varchar(12),
+	@Id_Usuario varchar(12)
 AS
 	IF(@CodigoMedico = '' OR @DniPersona = '')
 		BEGIN
@@ -78,8 +79,12 @@ AS
 	ELSE 
 		BEGIN
 			SELECT message = 'El registro se ha incresado corrnextnte',  beforeId = IDENT_CURRENT('Medico'), currentId = IDENT_CURRENT('Medico') + IDENT_INCR('Medico'), ok = 1
+			DECLARE @Id_Usuario_Hexa VARBINARY(128)
+			SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
+			SET CONTEXT_INFO @Id_Usuario_Hexa
 			INSERT INTO Medico(codigo_medico, dni_persona)
 			VALUES (CONVERT(int, @CodigoMedico), @DniPersona)
+			SET CONTEXT_INFO 0x0
 		END
 GO
 -------------------------------------------------------------------------------------------------------------------------
