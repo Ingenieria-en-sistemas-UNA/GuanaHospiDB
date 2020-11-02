@@ -16,24 +16,37 @@ AS
     EXEC SP_Crear_Persona '9', 'Carlos', 'Salgado', 'Arias', 31
     EXEC SP_Crear_Persona '10','Jafet', 'Morataya', 'Galvez', 51
 
+    -----------------------Roles-------------------------------
+    EXEC SP_Crear_Role 'Administrador'
+    EXEC SP_Crear_Role 'Medico'
+
+    -----------------------Usuario Administrador-------------------------------
+    -- La contraseña es: 12345678
+
+    EXEC SP_Crear_User 'admin@gmail.com', '$2y$10$zt96rq87c6gXdbGZXryRm.IiLkpSzcx.FOZ1UxsPWZCHMwj02uWqW', 1
+    
+
+    -----------------------MEDICO-------------------------------
+    EXEC SP_Crear_Medico 1234, 1, 1
+    EXEC SP_Crear_Medico 2323, 2, 1
+    EXEC SP_Crear_Medico 5344, 3, 1
+    EXEC SP_Crear_Medico 6453, 4, 1
+    EXEC SP_Crear_Medico 4656, 5, 1
+    -----------------------Usuarios Medicos------------------------------
+
+    EXEC SP_Crear_User 'medico@gmail.com', '$2y$10$zt96rq87c6gXdbGZXryRm.IiLkpSzcx.FOZ1UxsPWZCHMwj02uWqW', 2, 1
+    EXEC SP_Crear_User 'medico2@gmail.com', '$2y$10$zt96rq87c6gXdbGZXryRm.IiLkpSzcx.FOZ1UxsPWZCHMwj02uWqW', 2, 2
+    EXEC SP_Crear_User 'medico3@gmail.com', '$2y$10$zt96rq87c6gXdbGZXryRm.IiLkpSzcx.FOZ1UxsPWZCHMwj02uWqW', 2, 3
+    EXEC SP_Crear_User 'medico4@gmail.com', '$2y$10$zt96rq87c6gXdbGZXryRm.IiLkpSzcx.FOZ1UxsPWZCHMwj02uWqW', 2, 4
+    EXEC SP_Crear_User 'medico5@gmail.com', '$2y$10$zt96rq87c6gXdbGZXryRm.IiLkpSzcx.FOZ1UxsPWZCHMwj02uWqW', 2, 5
+
+
     ----------------------ESPECIALIDAD--------------------------
     EXEC SP_Crear_Especialidad 'Dermatologia'
     EXEC SP_Crear_Especialidad 'Urologia'
     EXEC SP_Crear_Especialidad 'Ginecologia'
     EXEC SP_Crear_Especialidad 'Otorrinolaringologia'
     EXEC SP_Crear_Especialidad 'Oftalmologia'
-
-    -----------------------MEDICO-------------------------------
-    EXEC SP_Crear_Medico 1234, 1
-    EXEC SP_Crear_Medico 2323, 2
-    EXEC SP_Crear_Medico 5344, 3
-    EXEC SP_Crear_Medico 6453, 4
-    EXEC SP_Crear_Medico 4656, 5
-
-    -----------------------Roles-------------------------------
-    EXEC SP_Crear_Role 'Administrador'
-    EXEC SP_Crear_Role 'Medico'
-
     -----------------Medico Especialid--------------------------
     EXEC SP_Crear_Medico_Especialidad 1, 1
 	EXEC SP_Crear_Medico_Especialidad 2, 4

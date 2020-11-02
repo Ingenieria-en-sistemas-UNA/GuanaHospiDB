@@ -88,7 +88,6 @@ AS
 		END
 GO
 
-EXEC SP_Crear_Medico 2022, 88888888, 12
 -------------------------------------------------------------------------------------------------------------------------
 USE GUANA_HOSPI
 GO
@@ -407,24 +406,16 @@ GO
 CREATE PROC SP_Crear_User
 	@Email VARCHAR(100),
 	@Password VARCHAR(100),
-	@IdMedico VARCHAR(5),
-	@IdRole VARCHAR(5)
+	@IdRole VARCHAR(5),
+	@IdMedico VARCHAR(5) = NULL
 AS
-	IF(@Email = '' OR @Password = '' OR @IdMedico = '' OR @IdRole = '')
+	IF(@Email = '' OR @Password = '' OR @IdRole = '')
 		BEGIN
 			SELECT message = 'No se permiten campos vacios', ok = 0
-		END
-	ELSE IF(ISNUMERIC(@IdMedico) = 0 OR CONVERT(int, @IdMedico) < 0)
-		BEGIN
-			SELECT message = 'El id del medico debe ser de tipo numerico y mayor a cero', ok = 0
 		END
 	ELSE IF(ISNUMERIC(@IdRole) = 0 OR CONVERT(int, @IdRole) < 0)
 		BEGIN
 			SELECT message = 'El id del role debe ser de tipo numerico y mayor a cero', ok = 0
-		END
-	ELSE IF(NOT EXISTS(SELECT id_medico FROM Medico WHERE id_medico = @IdMedico))
-		BEGIN
-			SELECT message = 'El id del medico no existe', ok = 0
 		END
 	ELSE IF(NOT EXISTS(SELECT id_role FROM Roles WHERE id_role = @IdRole))
 		BEGIN
