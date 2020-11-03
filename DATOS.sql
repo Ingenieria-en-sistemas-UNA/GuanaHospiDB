@@ -73,12 +73,12 @@ AS
     EXEC SP_Crear_Paciente 9284, '2020/06/16', '9'
 
     -----------------------CONSULTA-----------------------------------
-    EXEC SP_Crear_Consulta '2020/09/5', 1, 1
-    EXEC SP_Crear_Consulta '2020/09/5', 2, 2
-    EXEC SP_Crear_Consulta '2020/09/5', 3, 3
-    EXEC SP_Crear_Consulta '2020/09/5', 4, 4
-	EXEC SP_Crear_Consulta '2020/09/5', 1, 4
-	EXEC SP_Crear_Consulta '2020/09/5', 1, 4
+    EXEC SP_Crear_Consulta  1, 1
+    EXEC SP_Crear_Consulta  2, 2
+    EXEC SP_Crear_Consulta  3, 3
+    EXEC SP_Crear_Consulta  4, 4
+	EXEC SP_Crear_Consulta  1, 4
+	EXEC SP_Crear_Consulta  1, 4
     -----------------------PRESENTE----------------------------------
     EXEC SP_Crear_Presenta 1, 1, 'Tiene que consumir mas agua'
     EXEC SP_Crear_Presenta 2, 2, 'Tiene que caminar'
