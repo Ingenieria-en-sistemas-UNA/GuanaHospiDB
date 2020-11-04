@@ -155,7 +155,7 @@ GO
 
 CREATE PROC SP_Obtener_Consultas
 AS
-	SELECT 'Id_Consulta' = id_consulta, 'Fehca_Consulta' = fecha_consulta , 'Id_Paciente' = id_paciente, ok = 1
+	SELECT 'Id_Consulta' = id_consulta, 'Fehca_Consulta' = fecha_consulta , descipcion , 'Id_Paciente' = id_paciente, ok = 1
 	FROM Consulta
 GO
 
@@ -172,36 +172,12 @@ AS
 		END
 	ELSE
 		BEGIN
-			SELECT 'Id_Consulta' = id_consulta, 'Fehca_Consulta' = fecha_consulta , 'Id_Paciente' = id_paciente, ok = 1
+			SELECT 'Id_Consulta' = id_consulta, 'Fehca_Consulta' = fecha_consulta , descipcion , 'Id_Paciente' = id_paciente, ok = 1
 			FROM Consulta
 			WHERE id_consulta = @id_consulta;
 		END
 GO
 
-CREATE PROC SP_Obtener_Consultas_Unidad
-AS
-	SELECT 'Id_Consulta_Unidad' = id_consulta_unidad, 'Id_Consulta' = id_consulta , 'Id_Unidad' = id_unidad, ok = 1
-	FROM Consulta_Unidad
-GO
-
-CREATE PROC SP_Obtener_Consulta_Unidad_Por_Id
-	(@id_consulta_unidad VARCHAR(12))
-AS
-	IF(@id_consulta_unidad = '')
-		BEGIN
-			SELECT message = 'El campo id_consulta_unidad viene vacio', ok = 0
-		END
-	ELSE IF(ISNUMERIC(@id_consulta_unidad) = 0)
-		BEGIN
-			SELECT message = 'El campo id_consulta_unidad no es numerico', ok = 0
-		END
-	ELSE
-		BEGIN
-			SELECT 'Id_Consulta_Unidad' = id_consulta_unidad, 'Id_Consulta' = id_consulta , 'Id_Unidad' = id_unidad, ok = 1
-			FROM Consulta_Unidad
-			WHERE id_consulta_unidad = @id_consulta_unidad;
-		END
-GO
 
 CREATE PROC SP_Obtener_Enfermedades
 AS
@@ -302,31 +278,6 @@ AS
 		END
 GO
 
-CREATE PROC SP_Obtener_Paciente_Unidades
-AS
-	SELECT 'Id_Paciente_Unidad' = id_paciente_unidad, 'Id_Paciente' = id_paciente, 'Id_Unidad' = id_unidad, ok = 1
-	FROM Paciente_Unidad
-GO
-
-CREATE PROC SP_Obtener_Paciente_Unidades_Por_Id
-	(@id_paciente_unidad VARCHAR(12))
-AS
-	IF(@id_paciente_unidad = '')
-		BEGIN
-			SELECT message = 'El campo id_paciente_unidad viene vacio', ok = 0
-		END
-	ELSE IF(ISNUMERIC(@id_paciente_unidad) = 0)
-		BEGIN
-			SELECT message = 'El campo id_paciente_unidad no es numerico', ok = 0
-		END
-	ELSE
-		BEGIN
-			SELECT 'Id_Paciente_Unidad' = id_paciente_unidad, 'Id_Paciente' = id_paciente, 'Id_Unidad' = id_unidad, ok = 1
-			FROM Paciente_Unidad
-			WHERE id_paciente_unidad = @id_paciente_unidad;
-		END
-GO
-
 CREATE PROC SP_Obtener_Padece
 AS
 	SELECT 'Id_Padece' = id_padece, 'Id_Paciente' = id_paciente, 'Id_Enfermedad' = id_enfermedad, ok = 1
@@ -352,31 +303,6 @@ AS
 		END
 GO
 
-CREATE PROC SP_Obtener_Sintomas
-AS
-	SELECT 'Id_Sintoma' = id_sintoma, 'Nombre_Sintoma' = nombre_sintoma, ok = 1
-	FROM Sintoma
-GO
-
-CREATE PROC SP_Obtener_Sintoma_Por_Id
-	(@id_sintoma VARCHAR(12))
-AS
-	IF(@id_sintoma = '')
-		BEGIN
-			SELECT message = 'El campo id_sintoma viene vacio', ok = 0
-		END
-	ELSE IF(ISNUMERIC(@id_sintoma) = 0)
-		BEGIN
-			SELECT message = 'El campo id_sintoma no es numerico', ok = 0
-		END
-	ELSE
-		BEGIN
-			SELECT 'Id_Sintoma' = id_sintoma, 'Nombre_Sintoma' = nombre_sintoma, ok = 1
-			FROM Sintoma
-			WHERE id_sintoma = @id_sintoma;
-		END
-GO
-
 CREATE PROC SP_Obtener_Tipos_Intervenciones
 AS
 	SELECT 'Id_Tipo_Intervencion' = id_tipo_intervencion, 'Nombre_Tipo_Intervencion' = nombre_tipo_intervencion, ok = 1
@@ -399,31 +325,6 @@ AS
 			SELECT 'Id_Tipo_Intervencion' = id_tipo_intervencion, 'Nombre_Tipo_Intervencion' = nombre_tipo_intervencion, ok = 1
 			FROM Tipo_Intervencion
 			WHERE id_tipo_intervencion = @id_tipo_intervencion;
-		END
-GO
-
-CREATE PROC SP_Obtener_Presenta
-AS
-	SELECT 'Id_Presenta' = id_presenta, 'Id_Consulta' = id_consulta, 'Id_Sintoma' = id_sintoma, 'Descripcion_Presenta' = descripcion_presenta, ok = 1
-	FROM Presenta
-GO
-
-CREATE PROC SP_Obtener_Presenta_Por_Id
-	(@id_presenta VARCHAR(12))
-AS
-	IF(@id_presenta = '')
-		BEGIN
-			SELECT message = 'El campo id_presenta viene vacio', ok = 0
-		END
-	ELSE IF(ISNUMERIC(@id_presenta) = 0)
-		BEGIN
-			SELECT message = 'El campo id_presenta no es numerico', ok = 0
-		END
-	ELSE
-		BEGIN
-			SELECT 'Id_Presenta' = id_presenta, 'Id_Consulta' = id_consulta, 'Id_Sintoma' = id_sintoma, 'Descripcion_Presenta' = descripcion_presenta, ok = 1
-			FROM Presenta
-			WHERE id_presenta = @id_presenta;
 		END
 GO
 

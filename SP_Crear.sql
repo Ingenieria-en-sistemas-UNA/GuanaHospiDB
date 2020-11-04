@@ -234,7 +234,7 @@ CREATE PROC SP_Crear_Consulta
 	@IdPaciente VARCHAR(5),
 	@IdUnidad VARCHAR(5)
 AS
-	IF(@FechaConsulta = '' OR @IdPaciente = '' OR @IdUnidad = '' OR @descripcion = '')
+	IF(@FechaConsulta = '' OR @IdPaciente = '' OR @IdUnidad = '')
 		BEGIN
 			SELECT message = 'No se permiten campos vacios', ok = 0
 		END

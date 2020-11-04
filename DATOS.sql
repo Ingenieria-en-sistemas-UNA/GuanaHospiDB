@@ -66,17 +66,6 @@ AS
     EXEC SP_Crear_Unidad 'Sala C2', 2
     EXEC SP_Crear_Unidad 'Sala D2', 2
 
-    -----------------------SINTOMA----------------------------------
-    EXEC SP_Crear_Sintoma 'Dolor de cabeza'
-    EXEC SP_Crear_Sintoma 'Nauseas'
-    EXEC SP_Crear_Sintoma 'Dolor'
-    EXEC SP_Crear_Sintoma 'Somnolencia'
-    EXEC SP_Crear_Sintoma 'Tos'
-    EXEC SP_Crear_Sintoma 'Fiebre'
-    EXEC SP_Crear_Sintoma 'Dearrea'
-    EXEC SP_Crear_Sintoma 'Dificulta respiratoria'
-    EXEC SP_Crear_Sintoma 'Dolor de estomago'
-
     -----------------------PACIENTE----------------------------------
     EXEC SP_Crear_Paciente 2332, '2020/09/5', '6'	
     EXEC SP_Crear_Paciente 3839, '2020/08/20', '7'
@@ -90,11 +79,6 @@ AS
     EXEC SP_Crear_Consulta '2020/09/5', 4, 4
 	EXEC SP_Crear_Consulta '2020/09/5', 1, 4
 	EXEC SP_Crear_Consulta '2020/09/5', 1, 4
-    -----------------------PRESENTE----------------------------------
-    EXEC SP_Crear_Presenta 1, 1, 'Tiene que consumir mas agua'
-    EXEC SP_Crear_Presenta 2, 2, 'Tiene que caminar'
-    EXEC SP_Crear_Presenta 3, 3, 'Tiene que dormir mas'
-    EXEC SP_Crear_Presenta 4, 4, 'Tiene que consumir drogas'
 
     ----------------------ENFERMEDAD---------------------------------
     EXEC SP_Crear_Enfermedad 'Cancer'
@@ -128,4 +112,4 @@ AS
 GO
 
 
-EXEC SP_Seed_GuanaHospi
+--EXEC SP_Seed_GuanaHospi
