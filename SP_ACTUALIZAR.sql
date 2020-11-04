@@ -42,7 +42,8 @@ GO
 CREATE PROCEDURE SP_ActualizarMedico
 	@id_medico INT,
 	@codigo_medico INT,
-	@dni_persona VARCHAR(12)
+	@dni_persona VARCHAR(12),
+	@Id_Usuario VARCHAR(12)
 	AS
 	IF (@id_medico = '')
 		BEGIN
@@ -61,10 +62,14 @@ CREATE PROCEDURE SP_ActualizarMedico
 			ELSE
 				BEGIN
 				SELECT message = 'El medico se ha actualizado exitosamente', ok = 0;
+					DECLARE @Id_Usuario_Hexa VARBINARY(128)
+					SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
+					SET CONTEXT_INFO @Id_Usuario_Hexa
 					UPDATE Medico
 						Set	codigo_medico = @codigo_medico,
 							dni_persona = @dni_persona
 						WHERE id_medico = @id_medico
+					SET CONTEXT_INFO 0x0
 				END
 		END
 	ELSE

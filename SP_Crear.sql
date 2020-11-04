@@ -31,7 +31,8 @@ GO
 USE GUANA_HOSPI
 GO
 CREATE PROC SP_Crear_Especialidad
-	@NombreEspecialidad VARCHAR(30)
+	@NombreEspecialidad VARCHAR(30),
+	@Id_Usuario VARCHAR(12)
 AS
 	IF(@NombreEspecialidad = '')
 		BEGIN
@@ -44,8 +45,12 @@ AS
 	ELSE
 		BEGIN
 			SELECT message = 'El registro se ha incresado correctamente', beforeId = IDENT_CURRENT('Especialidad'), currentId = IDENT_CURRENT('Especialidad') + IDENT_INCR('Especialidad'), ok = 1
+			DECLARE @Id_Usuario_Hexa VARBINARY(128)
+			SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
+			SET CONTEXT_INFO @Id_Usuario_Hexa
 			INSERT INTO Especialidad(nombre_especialdad)
 			VALUES (@NombreEspecialidad)
+			SET CONTEXT_INFO 0x0
 		END
 GO
 -----------------------------------------------------------------------------------------------------------
@@ -87,6 +92,7 @@ AS
 			SET CONTEXT_INFO 0x0
 		END
 GO
+
 -------------------------------------------------------------------------------------------------------------------------
 USE GUANA_HOSPI
 GO
@@ -148,7 +154,8 @@ GO
 CREATE PROC SP_Crear_Unidad
 	@Nombre varchar(50),
 	@Numero_planta varchar(5),
-	@Id_Medico varchar(5) = NULL
+	@Id_Medico varchar(5) = NULL,
+	@Id_Usuario varchar(12)
 AS
 	IF (@Nombre = '' OR @Numero_planta = '')
 		BEGIN
@@ -169,8 +176,12 @@ AS
 	ELSE
 		BEGIN
 			SELECT message = 'El registro se ha incresado corrnextnte',  beforeId = IDENT_CURRENT('Unidad'), currentId = IDENT_CURRENT('Unidad') + IDENT_INCR('Unidad'), ok = 1
+			DECLARE @Id_Usuario_Hexa VARBINARY(128)
+			SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
+			SET CONTEXT_INFO @Id_Usuario_Hexa
 			INSERT INTO Unidad(nombre_unidad, numero_planta, id_medico)
 			VALUES (@Nombre, CONVERT(int, @numero_planta), @Id_Medico)
+			SET CONTEXT_INFO 0x0
 		END
 GO
 ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -179,7 +190,8 @@ GO
 CREATE PROC SP_Crear_Paciente(
 	@Numero_seguro_social VARCHAR(8),
 	@FechaIngreso VARCHAR(12),
-	@DniPersona VARCHAR(12)
+	@DniPersona VARCHAR(12),
+	@Id_Usuario VARCHAR(12)
 )
 AS
 	IF(@Numero_seguro_social = '' OR @FechaIngreso = '' OR @DniPersona = '')
@@ -205,8 +217,12 @@ AS
 	ELSE
 		BEGIN
 			SELECT message = 'El registro se ha incresado correctanext',  beforeId = IDENT_CURRENT('Paciente'), currentId = IDENT_CURRENT('Paciente') + IDENT_INCR('Paciente'), ok = 1
+			DECLARE @Id_Usuario_Hexa VARBINARY(128)
+			SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
+			SET CONTEXT_INFO @Id_Usuario_Hexa
 			INSERT INTO Paciente(numero_seguro_social, fecha_ingreso, dni_persona)
 			VALUES (CONVERT(int, @Numero_seguro_social), CONVERT(varchar, @FechaIngreso, 5), @DniPersona)
+			SET CONTEXT_INFO 0x0
 		END
 GO
 -----------------------------------------------------------------------------------------------------------------------------------------
@@ -249,7 +265,8 @@ GO
 USE GUANA_HOSPI
 GO
 CREATE PROC SP_Crear_Enfermedad
-	@Nombre varchar(50)
+	@Nombre varchar(50),
+	@Id_Usuario VARCHAR(12)
 AS
 	IF(@Nombre = '')
 		BEGIN
@@ -262,8 +279,12 @@ AS
 	ELSE
 		BEGIN
 			SELECT message = 'El registro se ha incresado correctamente',  beforeId = IDENT_CURRENT('Enfermedad'), currentId = IDENT_CURRENT('Enfermedad') + IDENT_INCR('Enfermedad'), ok = 1
+			DECLARE @Id_Usuario_Hexa VARBINARY(128)
+			SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
+			SET CONTEXT_INFO @Id_Usuario_Hexa
 			INSERT INTO Enfermedad(nombre_enfermedad)
 			VALUES (@Nombre)
+			SET CONTEXT_INFO 0x0
 		END
 GO
 --------------------------------------------------------------------------------------------------------------------------------------------
@@ -354,24 +375,17 @@ GO
 CREATE PROC SP_Crear_User
 	@Email VARCHAR(100),
 	@Password VARCHAR(100),
-	@IdMedico VARCHAR(5),
-	@IdRole VARCHAR(5)
+	@IdRole VARCHAR(5),
+	@IdMedico VARCHAR(5) = NULL,
+	@Id_Usuario VARCHAR(12)
 AS
-	IF(@Email = '' OR @Password = '' OR @IdMedico = '' OR @IdRole = '')
+	IF(@Email = '' OR @Password = '' OR @IdRole = '')
 		BEGIN
 			SELECT message = 'No se permiten campos vacios', ok = 0
-		END
-	ELSE IF(ISNUMERIC(@IdMedico) = 0 OR CONVERT(int, @IdMedico) < 0)
-		BEGIN
-			SELECT message = 'El id del medico debe ser de tipo numerico y mayor a cero', ok = 0
 		END
 	ELSE IF(ISNUMERIC(@IdRole) = 0 OR CONVERT(int, @IdRole) < 0)
 		BEGIN
 			SELECT message = 'El id del role debe ser de tipo numerico y mayor a cero', ok = 0
-		END
-	ELSE IF(NOT EXISTS(SELECT id_medico FROM Medico WHERE id_medico = @IdMedico))
-		BEGIN
-			SELECT message = 'El id del medico no existe', ok = 0
 		END
 	ELSE IF(NOT EXISTS(SELECT id_role FROM Roles WHERE id_role = @IdRole))
 		BEGIN
@@ -384,7 +398,11 @@ AS
 	ELSE
 		BEGIN
 			SELECT message = 'El registro se ha ingresado correctamente', currentId = IDENT_CURRENT('users') + IDENT_INCR('users'), ok = 1
+			DECLARE @Id_Usuario_Hexa VARBINARY(128)
+			SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
+			SET CONTEXT_INFO @Id_Usuario_Hexa
 			INSERT INTO users(email, password, id_medico, id_role)
 			VALUES(@Email, @Password, CONVERT(int, @IdMedico), CONVERT(int, @IdRole))
+			SET CONTEXT_INFO 0x0
 		END
 GO
