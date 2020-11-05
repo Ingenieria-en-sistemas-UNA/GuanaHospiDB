@@ -321,7 +321,8 @@ GO
 USE GUANA_HOSPI
 GO
 CREATE PROC SP_Crear_Tipo_Intervencion
-	@Nombre varchar(50)
+	@Nombre varchar(50),
+	@Id_Usuario VARCHAR(12)
 AS
 	IF(@Nombre = '')
 		BEGIN
@@ -334,8 +335,12 @@ AS
 	ELSE
 		BEGIN
 			SELECT message = 'El registro se ha incresado correctamente',  beforeId = IDENT_CURRENT('Tipo_Intervencion'), currentId = IDENT_CURRENT('Tipo_Intervencion') + IDENT_INCR('Tipo_Intervencion'), ok = 1
+			DECLARE @Id_Usuario_Hexa VARBINARY(128)
+			SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
+			SET CONTEXT_INFO @Id_Usuario_Hexa
 			INSERT INTO Tipo_Intervencion(nombre_tipo_intervencion)
 			VALUES (@Nombre)
+			SET CONTEXT_INFO 0x0
 		END
 GO
 ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -405,4 +410,13 @@ AS
 			VALUES(@Email, @Password, CONVERT(int, @IdMedico), CONVERT(int, @IdRole))
 			SET CONTEXT_INFO 0x0
 		END
+GO
+----------------------------------------------------------------------------------------------------------
+USE GUANA_HOSPI
+GO
+CREATE PROC SP_Crear_Auditoria
+	@Id_Usuario VARCHAR(12),
+	@Descripcion VARCHAR(12)
+AS
+  
 GO

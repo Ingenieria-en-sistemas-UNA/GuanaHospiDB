@@ -15,6 +15,7 @@ AS
     EXEC SP_Crear_Persona '8', 'Daniel', 'Sequeira', 'Parra', 38
     EXEC SP_Crear_Persona '9', 'Carlos', 'Salgado', 'Arias', 31
     EXEC SP_Crear_Persona '10','Jafet', 'Morataya', 'Galvez', 51
+	EXEC SP_Crear_Persona '89','Jafet', 'Morataya', 'Galvez', 53
 
     -----------------------Roles-------------------------------
     EXEC SP_Crear_Role 'Administrador'
@@ -32,6 +33,7 @@ AS
     EXEC SP_Crear_Medico 5344, 3, 1
     EXEC SP_Crear_Medico 6453, 4, 1
     EXEC SP_Crear_Medico 4656, 5, 1
+	EXEC SP_Crear_Medico 4852, 89, 1
     -----------------------Usuarios Medicos------------------------------
 
     EXEC SP_Crear_User 'medico@gmail.com', '$2y$10$zt96rq87c6gXdbGZXryRm.IiLkpSzcx.FOZ1UxsPWZCHMwj02uWqW', 2, 1
@@ -57,11 +59,11 @@ AS
     EXEC SP_Crear_Medico_Especialidad 5, 5
 
     -----------------------UNIDAD-------------------------------
-    EXEC SP_Crear_Unidad 'Sala A1', 1, 1
-    EXEC SP_Crear_Unidad 'Sala B1', 1, 2
-    EXEC SP_Crear_Unidad 'Sala C1', 1, 3
-    EXEC SP_Crear_Unidad 'Sala D1', 1, 4
-    EXEC SP_Crear_Unidad 'Sala A2', 2, 5
+    EXEC SP_Crear_Unidad 'Sala A1', 1, 1, 1
+    EXEC SP_Crear_Unidad 'Sala B1', 1, 2, 1
+    EXEC SP_Crear_Unidad 'Sala C1', 1, 3, 1
+    EXEC SP_Crear_Unidad 'Sala D1', 1, 4, 1
+    EXEC SP_Crear_Unidad 'Sala A2', 2, 5, 1
     EXEC SP_Crear_Unidad 'Sala B2', 2
     EXEC SP_Crear_Unidad 'Sala C2', 2
     EXEC SP_Crear_Unidad 'Sala D2', 2
@@ -73,21 +75,28 @@ AS
     EXEC SP_Crear_Paciente 9284, '2020/06/16', '9'
 
     -----------------------CONSULTA-----------------------------------
-    EXEC SP_Crear_Consulta '2020/09/5', 1, 1
-    EXEC SP_Crear_Consulta '2020/09/5', 2, 2
-    EXEC SP_Crear_Consulta '2020/09/5', 3, 3
-    EXEC SP_Crear_Consulta '2020/09/5', 4, 4
-	EXEC SP_Crear_Consulta '2020/09/5', 1, 4
-	EXEC SP_Crear_Consulta '2020/09/5', 1, 4
+    EXEC SP_Crear_Consulta '2020/09/5', 1, 1, 2
+    EXEC SP_Crear_Consulta '2020/09/5', 2, 2, 2
+    EXEC SP_Crear_Consulta '2020/09/5', 3, 3, 2
+    EXEC SP_Crear_Consulta '2020/09/5', 4, 4, 2
+	EXEC SP_Crear_Consulta '2020/09/5', 1, 4, 2
+	EXEC SP_Crear_Consulta '2020/09/5', 1, 4, 2
+	EXEC SP_Crear_Consulta '2020/09/5', 
+    -----------------------PRESENTE----------------------------------
+    EXEC SP_Crear_Presenta 1, 1, 'Tiene que consumir mas agua'
+    EXEC SP_Crear_Presenta 2, 2, 'Tiene que caminar'
+    EXEC SP_Crear_Presenta 3, 3, 'Tiene que dormir mas'
+    EXEC SP_Crear_Presenta 4, 4, 'Tiene que consumir drogas'
 
     ----------------------ENFERMEDAD---------------------------------
-    EXEC SP_Crear_Enfermedad 'Cancer'
-    EXEC SP_Crear_Enfermedad 'Dengue'
-    EXEC SP_Crear_Enfermedad 'Cockbig'
-    EXEC SP_Crear_Enfermedad 'Asma'
-    EXEC SP_Crear_Enfermedad 'Ebola'
-    EXEC SP_Crear_Enfermedad 'Diabetes'
-    EXEC SP_Crear_Enfermedad 'Sida'
+    EXEC SP_Crear_Enfermedad 'Cancer', 2
+    EXEC SP_Crear_Enfermedad 'Dengue', 2
+    EXEC SP_Crear_Enfermedad 'Cockbig', 2
+    EXEC SP_Crear_Enfermedad 'Asma', 2
+    EXEC SP_Crear_Enfermedad 'Ebola', 2
+    EXEC SP_Crear_Enfermedad 'Diabetes', 2
+    EXEC SP_Crear_Enfermedad 'Sida', 2
+	EXEC SP_Crear_Enfermedad 'Leucenia', 2
 
     ------------------------PADECE--------------------------------------
     EXEC SP_Crear_Padece 1, 1
