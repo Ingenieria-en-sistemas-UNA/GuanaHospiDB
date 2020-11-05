@@ -94,11 +94,6 @@ AS
 			SELECT message = 'El medico no existe', ok = 0
 		END
 GO
-
-EXEC SP_Eliminar_Medico 4
-SELECT * FROM Unidad
-SELECT * FROM Medico
---DROP PROC SP_Eliminar_Medico
 ---------------------------------------------ELIMINAR UNIDAD-----------------------------------------------------
 USE	GUANA_HOSPI
 GO
@@ -126,29 +121,7 @@ AS
 			SELECT message = 'La unidad no existe', ok = 0
 		END
 GO
-------------------------------------------------------------ELIMINAR SINTOMA-------------------------------------
-USE	GUANA_HOSPI
-GO
-CREATE PROC SP_Eliminar_Sintoma (@id_sintoma INT)
-AS
-	IF (@id_sintoma = '') 
-		BEGIN
-			SELECT message = 'El id de sintoma no puede ser vacio', ok = 0
-		END
-	ELSE IF(ISNUMERIC(@id_sintoma) = 0)
-		BEGIN
-			SELECT message = 'Los datos deben de ser de tipo numerico', ok = 0
-		END
-	ELSE IF EXISTS (SELECT id_sintoma FROM Sintoma WHERE id_sintoma = @id_sintoma)
-		BEGIN
-		    SELECT message = 'Se ha eliminado el sintoma', ok = 0
-			DELETE FROM Sintoma WHERE id_sintoma = @id_sintoma
-		END
-	ELSE
-		BEGIN
-			SELECT message = 'El id de sintoma no existe', ok = 0
-		END
-GO
+
 -----------------------------ELIMINAR Paciente-----------------------------------------------------------------
 USE	GUANA_HOSPI
 GO
@@ -204,31 +177,6 @@ AS
 			SELECT message = 'La consulta no existe', ok = 0
 		END
 GO
-
--------------------------------------------ELIMINAR PRESENTA--------------------------------------------------------
-USE	GUANA_HOSPI
-GO
-CREATE PROC SP_Eliminar_Presenta (@id_presenta INT)
-AS
-	IF (@id_presenta = '') 
-		BEGIN
-			SELECT message = 'El id de presenta no puede ser vacio', ok = 0
-		END
-	ELSE IF(ISNUMERIC(@id_presenta) = 0)
-		BEGIN
-			SELECT message = 'Los datos deben de ser de tipo numerico', ok = 0
-		END
-	ELSE IF EXISTS (SELECT id_presenta FROM Presenta WHERE Presenta.id_presenta = @id_presenta)
-		BEGIN
-			SELECT message = 'Se ha eliminado presenta', ok = 0
-			DELETE FROM Presenta WHERE Presenta.id_presenta = @id_presenta
-		END
-	ELSE
-		 BEGIN
-			SELECT message = 'El id de presenta no existe', ok = 0
-		END
-GO
-
 -----------------------------------ELIMINAR ENFERMEDAD-----------------------------------
 USE	GUANA_HOSPI
 GO

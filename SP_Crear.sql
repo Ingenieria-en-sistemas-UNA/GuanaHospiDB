@@ -184,27 +184,6 @@ AS
 			SET CONTEXT_INFO 0x0
 		END
 GO
--------------------------------------------------------------------------------------------------------------------------------------------------
-USE GUANA_HOSPI
-GO
-CREATE PROC SP_Crear_Sintoma
-	@Nombre varchar(50)
-AS
-	IF(@Nombre = '')
-		BEGIN
-			SELECT message = 'No se permiten campos vacios', ok = 0
-		END
-	ELSE IF (EXISTS(SELECT nombre_sintoma FROM Sintoma WHERE nombre_sintoma = @Nombre))
-		BEGIN
-			SELECT message = 'El sintoma ya habia sido registrado anteriormente', ok = 0
-		END
-	ELSE
-		BEGIN
-			SELECT message = 'El registro se ha incresado correcnexte',  beforeId = IDENT_CURRENT('Sintoma'), currentId = IDENT_CURRENT('Sintoma') + IDENT_INCR('Sintoma'), ok = 1
-			INSERT INTO Sintoma(nombre_sintoma)
-			VALUES (@Nombre)
-		END
-GO
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 USE GUANA_HOSPI
 GO
@@ -251,6 +230,7 @@ USE GUANA_HOSPI
 GO
 CREATE PROC SP_Crear_Consulta
 	@FechaConsulta VARCHAR(12),
+	@descripcion VARCHAR(150),
 	@IdPaciente VARCHAR(5),
 	@IdUnidad VARCHAR(5)
 AS
@@ -277,39 +257,8 @@ AS
 	ELSE
 		BEGIN
 			SELECT message = 'El registro se ha incresado correctanext',  beforeId = IDENT_CURRENT('Consulta'), currentId = IDENT_CURRENT('Consulta') + IDENT_INCR('Consulta'), ok = 1
-			INSERT INTO Consulta(fecha_consulta, id_paciente, id_unidad)
-			VALUES (CONVERT(date, @FechaConsulta), CONVERT(int, @IdPaciente), CONVERT(int, @IdUnidad))
-		END
-GO
------------------------------------------------------------------------------------------------------------------------------------------
-USE GUANA_HOSPI
-GO
-CREATE PROC SP_Crear_Presenta
-	@IdConsulta VARCHAR(5),
-	@IdSintoma VARCHAR(5),
-	@Descripcion VARCHAR(50)
-AS
-	IF(@IdConsulta = '' OR @IdSintoma = '' OR @Descripcion = '')
-		BEGIN
-			SELECT message = 'No se permiten campos vacios', ok = 0
-		END  
-	ELSE IF(ISNUMERIC(@IdConsulta) = 0 OR ISNUMERIC(@IdSintoma) = 0)
-		BEGIN
-			SELECT message = 'No se permiten caracteres', ok = 0
-		END
-	ELSE IF(NOT EXISTS(SELECT id_consulta FROM Consulta WHERE id_consulta = @IdConsulta))
-		BEGIN
-			SELECT message = 'El id de la consulta no existe', ok = 0
-		END
-	ELSE IF(NOT EXISTS(SELECT id_sintoma FROM Sintoma WHERE id_sintoma = @IdSintoma))
-		BEGIN
-			SELECT message = 'El id del sintoma no existe', ok = 0
-		END
-	ELSE
-		BEGIN
-			SELECT message = 'El registro se ha incresado correctanext',  beforeId = IDENT_CURRENT('Presenta'), currentId = IDENT_CURRENT('Presenta') + IDENT_INCR('Presenta'), ok = 1
-			INSERT INTO Presenta(id_consulta, id_sintoma, descripcion_presenta)
-			VALUES (CONVERT(int, @IdConsulta), CONVERT(int, @IdSintoma), @Descripcion)
+			INSERT INTO Consulta(fecha_consulta, descipcion, id_paciente, id_unidad)
+			VALUES (CONVERT(date, @FechaConsulta), @descripcion, CONVERT(int, @IdPaciente), CONVERT(int, @IdUnidad))
 		END
 GO
 -----------------------------------------------------------------------------------------------------------------------------------------
