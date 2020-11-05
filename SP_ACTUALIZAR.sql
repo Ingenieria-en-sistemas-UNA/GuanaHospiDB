@@ -217,7 +217,8 @@ CREATE PROCEDURE SP_ActualizarPaciente
 	@id_paciente INT,
 	@numeroSeguroSocial INT,
 	@fecha_ingreso DATE,
-	@dni_persona VARCHAR(12)
+	@dni_persona VARCHAR(12),
+	@Id_Usuario VARCHAR(12)
 	AS
 	IF (@id_paciente = '')
 		BEGIN
@@ -236,11 +237,15 @@ CREATE PROCEDURE SP_ActualizarPaciente
 			ELSE
 				BEGIN
 				SELECT message = 'El Paciente ha sido editado correctamente', ok = 1;
+					DECLARE @Id_Usuario_Hexa VARBINARY(128)
+					SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
+					SET CONTEXT_INFO @Id_Usuario_Hexa
 					UPDATE Paciente
 						Set	numero_seguro_social = @numeroSeguroSocial,
 						fecha_ingreso = @fecha_ingreso,
 						dni_persona = @dni_persona
 						WHERE id_paciente = @id_paciente
+					SET CONTEXT_INFO 0x0
 				END
 		END
 	ELSE
