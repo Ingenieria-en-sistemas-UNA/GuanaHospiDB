@@ -354,3 +354,9 @@ AS
 			WHERE id_medico = @id_medico;
 		END
 GO
+
+CREATE PROC SP_Obtener_Auditoria
+AS
+	SELECT 'Email' = Usuario, 'Fecha' = Fecha, 'Accion' = Descripcion, ok = 1
+	FROM Auditoria
+GO
