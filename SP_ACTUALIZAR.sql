@@ -250,7 +250,7 @@ CREATE PROCEDURE SP_ActualizarConsulta
 			SELECT message = 'La consulta ha sido editada correctamente', ok = 1;
 					UPDATE Consulta
 						Set	fecha_consulta = @fecha,
-						descipcion = @descripcion,
+						descripcion = @descripcion,
 						id_paciente = @id_paciente,
 						id_unidad = @id_unidad
 						WHERE id_consulta = @id_consulta

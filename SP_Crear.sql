@@ -229,7 +229,6 @@ GO
 USE GUANA_HOSPI
 GO
 CREATE PROC SP_Crear_Consulta
-	@FechaConsulta VARCHAR(12),
 	@descripcion VARCHAR(150),
 	@IdPaciente VARCHAR(5),
 	@IdUnidad VARCHAR(5)
@@ -254,7 +253,7 @@ AS
 		BEGIN
 			SELECT message = 'El registro se ha incresado correctanext',  beforeId = IDENT_CURRENT('Consulta'), currentId = IDENT_CURRENT('Consulta') + IDENT_INCR('Consulta'), ok = 1
 			INSERT INTO Consulta(fecha_consulta, descripcion, id_paciente, id_unidad)
-			VALUES (CONVERT(date, @FechaConsulta), @descripcion, CONVERT(int, @IdPaciente), CONVERT(int, @IdUnidad))
+			VALUES (CONVERT(date, GETDATE()), @descripcion, CONVERT(int, @IdPaciente), CONVERT(int, @IdUnidad))
 		END
 GO
 -----------------------------------------------------------------------------------------------------------------------------------------
