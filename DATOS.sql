@@ -80,6 +80,9 @@ EXEC SP_Crear_Consulta 'Brazo roto', 3, 3
 EXEC SP_Crear_Consulta 'Dolor abdominal', 4, 4
 EXEC SP_Crear_Consulta 'Sangrado anal', 1, 4
 EXEC SP_Crear_Consulta 'Dolor de cabeza', 1, 4
+SELECT * FROM Consulta
+SELECT * FROM Paciente
+SELECT * FROM Unidad
 
 ----------------------ENFERMEDAD---------------------------------
 EXEC SP_Crear_Enfermedad 'Cancer', 2
