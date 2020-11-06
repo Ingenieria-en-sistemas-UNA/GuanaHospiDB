@@ -45,11 +45,11 @@ AS
 
 
     ----------------------ESPECIALIDAD--------------------------
-    EXEC SP_Crear_Especialidad 'Dermatologia'
-    EXEC SP_Crear_Especialidad 'Urologia'
-    EXEC SP_Crear_Especialidad 'Ginecologia'
-    EXEC SP_Crear_Especialidad 'Otorrinolaringologia'
-    EXEC SP_Crear_Especialidad 'Oftalmologia'
+    EXEC SP_Crear_Especialidad 'Dermatologia', 1
+    EXEC SP_Crear_Especialidad 'Urologia', 1
+    EXEC SP_Crear_Especialidad 'Ginecologia', 1
+    EXEC SP_Crear_Especialidad 'Otorrinolaringologia', 1
+    EXEC SP_Crear_Especialidad 'Oftalmologia', 1
     -----------------Medico Especialid--------------------------
     EXEC SP_Crear_Medico_Especialidad 1, 1
 	EXEC SP_Crear_Medico_Especialidad 2, 4
@@ -65,25 +65,25 @@ AS
     EXEC SP_Crear_Unidad 'Sala C1', 1, 3, 1
     EXEC SP_Crear_Unidad 'Sala D1', 1, 4, 1
     EXEC SP_Crear_Unidad 'Sala A2', 2, 5, 1
-    EXEC SP_Crear_Unidad 'Sala B2', 2
-    EXEC SP_Crear_Unidad 'Sala C2', 2
-    EXEC SP_Crear_Unidad 'Sala D2', 2
+ -- EXEC SP_Crear_Unidad 'Sala B2', 2
+ -- EXEC SP_Crear_Unidad 'Sala C2', 2
+ -- EXEC SP_Crear_Unidad 'Sala D2', 2
 
     -----------------------PACIENTE----------------------------------
-    EXEC SP_Crear_Paciente 2332, '2020/09/5', '6'	
-    EXEC SP_Crear_Paciente 3839, '2020/08/20', '7'
-	EXEC SP_Crear_Paciente 5022, '2020/08/20', '5022'
-    EXEC SP_Crear_Paciente 4039, '2020/07/3', '8'
-    EXEC SP_Crear_Paciente 9284, '2020/06/16', '9'
+    EXEC SP_Crear_Paciente 2332, '2020/09/5', '6', 2
+    EXEC SP_Crear_Paciente 3839, '2020/08/20', '7', 2
+	EXEC SP_Crear_Paciente 5022, '2020/08/20', '5022',2
+    EXEC SP_Crear_Paciente 4039, '2020/07/3', '8', 2
+    EXEC SP_Crear_Paciente 9284, '2020/06/16', '9', 2
 
     -----------------------CONSULTA-----------------------------------
-    EXEC SP_Crear_Consulta '2020/09/5', 1, 1, 2
-    EXEC SP_Crear_Consulta '2020/09/5', 2, 2, 2
-    EXEC SP_Crear_Consulta '2020/09/5', 3, 3, 2
-    EXEC SP_Crear_Consulta '2020/09/5', 4, 4, 2
-	EXEC SP_Crear_Consulta '2020/09/5', 1, 4, 2
-	EXEC SP_Crear_Consulta '2020/09/5', 1, 4, 2
-	EXEC SP_Crear_Consulta '2020/09/5', 
+    EXEC SP_Crear_Consulta '2020/09/5', 1, 1 
+    EXEC SP_Crear_Consulta '2020/09/5', 2, 2 
+    EXEC SP_Crear_Consulta '2020/09/5', 3, 3 
+    EXEC SP_Crear_Consulta '2020/09/5', 4, 4
+	EXEC SP_Crear_Consulta '2020/09/5', 1, 4
+	EXEC SP_Crear_Consulta '2020/09/5', 1, 4
+
     -----------------------PRESENTE----------------------------------
     EXEC SP_Crear_Presenta 1, 1, 'Tiene que consumir mas agua'
     EXEC SP_Crear_Presenta 2, 2, 'Tiene que caminar'
@@ -109,11 +109,11 @@ AS
 	EXEC SP_Crear_Padece 2, 1
 
     --------------------------TIPO INTERVENCION--------------------------
-    EXEC SP_Crear_Tipo_Intervencion 'Cirugia'
-    EXEC SP_Crear_Tipo_Intervencion 'Dieta'
-    EXEC SP_Crear_Tipo_Intervencion 'Ejercicio'
-    EXEC SP_Crear_Tipo_Intervencion 'Medicamento'
-    EXEC SP_Crear_Tipo_Intervencion 'Salud'
+    EXEC SP_Crear_Tipo_Intervencion 'Cirugia',2
+    EXEC SP_Crear_Tipo_Intervencion 'Dieta',2
+    EXEC SP_Crear_Tipo_Intervencion 'Ejercicio',2
+    EXEC SP_Crear_Tipo_Intervencion 'Medicamento',2
+    EXEC SP_Crear_Tipo_Intervencion 'Salud',2
 
     ------------------------------INTERVENCION-----------------------------
     EXEC SP_Crear_Intervencion 'Tomar dos pastillas cada 6 horas', 1, 1
