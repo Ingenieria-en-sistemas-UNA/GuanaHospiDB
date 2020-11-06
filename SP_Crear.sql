@@ -249,6 +249,10 @@ AS
 		BEGIN
 			SELECT message = 'La unidad no existe', ok = 0
 		END
+	ELSE IF EXISTS(SELECT id_medico FROM Unidad WHERE id_unidad = @IdUnidad AND id_medico IS NULL OR id_medico = '')
+		BEGIN
+			SELECT message = 'No se puede crear una consulta sin un medico a cargo', ok = 0 
+		END
 	ELSE
 		BEGIN
 			SELECT message = 'El registro se ha incresado correctamente',  beforeId = IDENT_CURRENT('Consulta'), currentId = IDENT_CURRENT('Consulta') + IDENT_INCR('Consulta'), ok = 1
@@ -256,6 +260,8 @@ AS
 			VALUES (CONVERT(date, GETDATE()), @descripcion, CONVERT(int, @IdPaciente), CONVERT(int, @IdUnidad))
 		END
 GO
+
+
 -----------------------------------------------------------------------------------------------------------------------------------------
 USE GUANA_HOSPI
 GO

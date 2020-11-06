@@ -65,7 +65,6 @@ EXEC SP_Crear_Unidad 'Sala A2', 2, 5, 1
 EXEC SP_Crear_Unidad 'Sala B2', 2, null, 1
 EXEC SP_Crear_Unidad 'Sala C2', 2, null, 1
 EXEC SP_Crear_Unidad 'Sala D2', 2, null, 1
-
 -----------------------PACIENTE----------------------------------
 EXEC SP_Crear_Paciente 2332, '2020/09/5', '6', 1
 EXEC SP_Crear_Paciente 3839, '2020/08/20', '7', 1
@@ -80,9 +79,6 @@ EXEC SP_Crear_Consulta 'Brazo roto', 3, 3
 EXEC SP_Crear_Consulta 'Dolor abdominal', 4, 4
 EXEC SP_Crear_Consulta 'Sangrado anal', 1, 4
 EXEC SP_Crear_Consulta 'Dolor de cabeza', 1, 4
-SELECT * FROM Consulta
-SELECT * FROM Paciente
-SELECT * FROM Unidad
 
 ----------------------ENFERMEDAD---------------------------------
 EXEC SP_Crear_Enfermedad 'Cancer', 2
