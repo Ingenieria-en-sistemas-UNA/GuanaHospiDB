@@ -297,4 +297,41 @@ AS
 			SELECT message = 'El medico no cuenta con ninguna especialidad', ok = 0
 		END
 GO
-
+--------------eliminar intervencion por id consulta-------------------------------------
+USE	GUANA_HOSPI
+GO
+CREATE PROC SP_Eliminar_Intervencion_Id_Consulta(@Id_Consulta INT)
+AS
+	IF (@Id_Consulta = '') 
+		BEGIN
+			SELECT message = 'El id de la consulta no puede ser vacio', ok = 0
+		END
+	ELSE IF EXISTS (SELECT id_consulta FROM Intervenciones WHERE id_consulta = @Id_Consulta)
+		BEGIN
+			SELECT message = 'Se han eliminado las intervenciones', ok = 1
+			DELETE FROM Intervenciones WHERE id_consulta = @Id_Consulta
+		END
+	ELSE
+		BEGIN
+			SELECT message =  'La consulta no tiene intervenciones', ok = 0
+		END
+GO
+------------------------------eliminar todos los padece por el id de paciente-------
+USE	GUANA_HOSPI
+GO
+CREATE PROC SP_Eliminar_Padece_Id_Paciente(@Id_Paciente INT)
+AS
+	IF (@Id_Paciente = '') 
+		BEGIN
+			SELECT message = 'El id de paciente no puede ser vacio', ok = 0
+		END
+	ELSE IF EXISTS (SELECT id_paciente FROM Padece WHERE id_paciente = @Id_Paciente)
+		BEGIN
+			SELECT message = 'Se han eliminado el o los padecimiento', ok = 1
+			DELETE FROM Padece WHERE id_paciente = @Id_Paciente
+		END
+	ELSE
+		BEGIN
+			SELECT message =  'El paciente no tiene padecimientos', ok = 0
+		END
+GO

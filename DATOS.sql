@@ -114,3 +114,4 @@ EXEC SP_Crear_Intervencion 'Tomar dos pastillas cada 6 horas', 1, 1
 EXEC SP_Crear_Intervencion 'Comer frutas y tomar 2 litos de agua', 2, 2
 EXEC SP_Crear_Intervencion 'Caminar 20 minutos por dia', 3, 3
 EXEC SP_Crear_Intervencion 'Evitar comida chatarra', 4, 4
+
