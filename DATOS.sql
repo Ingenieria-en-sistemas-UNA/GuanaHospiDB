@@ -22,7 +22,7 @@ EXEC SP_Crear_Role 'Medico'
 -----------------------Usuario Administrador-------------------------------
 -- La contraseña es: 12345678
 
-EXEC SP_Crear_User 'admin@gmail.com', '$2y$10$zt96rq87c6gXdbGZXryRm.IiLkpSzcx.FOZ1UxsPWZCHMwj02uWqW', 1
+EXEC SP_Crear_User 'admin@gmail.com', '$2y$10$zt96rq87c6gXdbGZXryRm.IiLkpSzcx.FOZ1UxsPWZCHMwj02uWqW', 1, null, 1
     
 
 -----------------------MEDICO-------------------------------
@@ -34,19 +34,19 @@ EXEC SP_Crear_Medico 4656, 5, 1
 EXEC SP_Crear_Medico 4852, 89, 1
 -----------------------Usuarios Medicos------------------------------
 
-EXEC SP_Crear_User 'medico@gmail.com', '$2y$10$zt96rq87c6gXdbGZXryRm.IiLkpSzcx.FOZ1UxsPWZCHMwj02uWqW', 2, 1
-EXEC SP_Crear_User 'medico2@gmail.com', '$2y$10$zt96rq87c6gXdbGZXryRm.IiLkpSzcx.FOZ1UxsPWZCHMwj02uWqW', 2, 2
-EXEC SP_Crear_User 'medico3@gmail.com', '$2y$10$zt96rq87c6gXdbGZXryRm.IiLkpSzcx.FOZ1UxsPWZCHMwj02uWqW', 2, 3
-EXEC SP_Crear_User 'medico4@gmail.com', '$2y$10$zt96rq87c6gXdbGZXryRm.IiLkpSzcx.FOZ1UxsPWZCHMwj02uWqW', 2, 4
-EXEC SP_Crear_User 'medico5@gmail.com', '$2y$10$zt96rq87c6gXdbGZXryRm.IiLkpSzcx.FOZ1UxsPWZCHMwj02uWqW', 2, 5
+EXEC SP_Crear_User 'medico@gmail.com', '$2y$10$zt96rq87c6gXdbGZXryRm.IiLkpSzcx.FOZ1UxsPWZCHMwj02uWqW', 2, 1, 1
+EXEC SP_Crear_User 'medico2@gmail.com', '$2y$10$zt96rq87c6gXdbGZXryRm.IiLkpSzcx.FOZ1UxsPWZCHMwj02uWqW', 2, 2, 1
+EXEC SP_Crear_User 'medico3@gmail.com', '$2y$10$zt96rq87c6gXdbGZXryRm.IiLkpSzcx.FOZ1UxsPWZCHMwj02uWqW', 2, 3, 1
+EXEC SP_Crear_User 'medico4@gmail.com', '$2y$10$zt96rq87c6gXdbGZXryRm.IiLkpSzcx.FOZ1UxsPWZCHMwj02uWqW', 2, 4, 1
+EXEC SP_Crear_User 'medico5@gmail.com', '$2y$10$zt96rq87c6gXdbGZXryRm.IiLkpSzcx.FOZ1UxsPWZCHMwj02uWqW', 2, 5, 1
 
 
 ----------------------ESPECIALIDAD--------------------------
-EXEC SP_Crear_Especialidad 'Dermatologia'
-EXEC SP_Crear_Especialidad 'Urologia'
-EXEC SP_Crear_Especialidad 'Ginecologia'
-EXEC SP_Crear_Especialidad 'Otorrinolaringologia'
-EXEC SP_Crear_Especialidad 'Oftalmologia'
+EXEC SP_Crear_Especialidad 'Dermatologia', 1
+EXEC SP_Crear_Especialidad 'Urologia', 1
+EXEC SP_Crear_Especialidad 'Ginecologia', 1
+EXEC SP_Crear_Especialidad 'Otorrinolaringologia', 1
+EXEC SP_Crear_Especialidad 'Oftalmologia', 1
 -----------------Medico Especialid--------------------------
 EXEC SP_Crear_Medico_Especialidad 1, 1
 EXEC SP_Crear_Medico_Especialidad 2, 4
@@ -62,9 +62,9 @@ EXEC SP_Crear_Unidad 'Sala B1', 1, 2, 1
 EXEC SP_Crear_Unidad 'Sala C1', 1, 3, 1
 EXEC SP_Crear_Unidad 'Sala D1', 1, 4, 1
 EXEC SP_Crear_Unidad 'Sala A2', 2, 5, 1
-EXEC SP_Crear_Unidad 'Sala B2', 2
-EXEC SP_Crear_Unidad 'Sala C2', 2
-EXEC SP_Crear_Unidad 'Sala D2', 2
+EXEC SP_Crear_Unidad 'Sala B2', 2, null, 1
+EXEC SP_Crear_Unidad 'Sala C2', 2, null, 1
+EXEC SP_Crear_Unidad 'Sala D2', 2, null, 1
 
 -----------------------PACIENTE----------------------------------
 EXEC SP_Crear_Paciente 2332, '2020/09/5', '6', 1
@@ -80,11 +80,6 @@ EXEC SP_Crear_Consulta 'Brazo roto', 3, 3
 EXEC SP_Crear_Consulta 'Dolor abdominal', 4, 4
 EXEC SP_Crear_Consulta 'Sangrado anal', 1, 4
 EXEC SP_Crear_Consulta 'Dolor de cabeza', 1, 4
------------------------PRESENTE----------------------------------
-EXEC SP_Crear_Presenta 1, 1, 'Tiene que consumir mas agua'
-EXEC SP_Crear_Presenta 2, 2, 'Tiene que caminar'
-EXEC SP_Crear_Presenta 3, 3, 'Tiene que dormir mas'
-EXEC SP_Crear_Presenta 4, 4, 'Tiene que consumir drogas'
 
 ----------------------ENFERMEDAD---------------------------------
 EXEC SP_Crear_Enfermedad 'Cancer', 2
@@ -105,11 +100,11 @@ EXEC SP_Crear_Padece 1, 1
 EXEC SP_Crear_Padece 2, 1
 
 --------------------------TIPO INTERVENCION--------------------------
-EXEC SP_Crear_Tipo_Intervencion 'Cirugia'
-EXEC SP_Crear_Tipo_Intervencion 'Dieta'
-EXEC SP_Crear_Tipo_Intervencion 'Ejercicio'
-EXEC SP_Crear_Tipo_Intervencion 'Medicamento'
-EXEC SP_Crear_Tipo_Intervencion 'Salud'
+EXEC SP_Crear_Tipo_Intervencion 'Cirugia', 1
+EXEC SP_Crear_Tipo_Intervencion 'Dieta', 1
+EXEC SP_Crear_Tipo_Intervencion 'Ejercicio', 1
+EXEC SP_Crear_Tipo_Intervencion 'Medicamento', 1
+EXEC SP_Crear_Tipo_Intervencion 'Salud', 1
 
 ------------------------------INTERVENCION-----------------------------
 EXEC SP_Crear_Intervencion 'Tomar dos pastillas cada 6 horas', 1, 1
