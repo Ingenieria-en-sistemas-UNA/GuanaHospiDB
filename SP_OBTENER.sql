@@ -155,7 +155,7 @@ GO
 
 CREATE PROC SP_Obtener_Consultas
 AS
-	SELECT 'Id_Consulta' = id_consulta, 'Fehca_Consulta' = fecha_consulta , descipcion , 'Id_Paciente' = id_paciente, ok = 1
+	SELECT 'Id_Consulta' = id_consulta, 'Fehca_Consulta' = fecha_consulta , descripcion , 'Id_Paciente' = id_paciente, ok = 1
 	FROM Consulta
 GO
 
@@ -172,7 +172,7 @@ AS
 		END
 	ELSE
 		BEGIN
-			SELECT 'Id_Consulta' = id_consulta, 'Fehca_Consulta' = fecha_consulta , descipcion , 'Id_Paciente' = id_paciente, ok = 1
+			SELECT 'Id_Consulta' = id_consulta, 'Fehca_Consulta' = fecha_consulta , descripcion , 'Id_Paciente' = id_paciente, ok = 1
 			FROM Consulta
 			WHERE id_consulta = @id_consulta;
 		END
