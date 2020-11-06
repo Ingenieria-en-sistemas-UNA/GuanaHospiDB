@@ -42,7 +42,8 @@ GO
 CREATE PROCEDURE SP_ActualizarMedico
 	@id_medico INT,
 	@codigo_medico INT,
-	@dni_persona VARCHAR(12)
+	@dni_persona VARCHAR(12),
+	@Id_Usuario VARCHAR(12)
 	AS
 	IF (@id_medico = '')
 		BEGIN
@@ -61,10 +62,14 @@ CREATE PROCEDURE SP_ActualizarMedico
 			ELSE
 				BEGIN
 				SELECT message = 'El medico se ha actualizado exitosamente', ok = 0;
+					DECLARE @Id_Usuario_Hexa VARBINARY(128)
+					SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
+					SET CONTEXT_INFO @Id_Usuario_Hexa
 					UPDATE Medico
 						Set	codigo_medico = @codigo_medico,
 							dni_persona = @dni_persona
 						WHERE id_medico = @id_medico
+					SET CONTEXT_INFO 0x0
 				END
 		END
 	ELSE
@@ -172,47 +177,12 @@ GO
 
 USE GUANA_HOSPI
 GO
-CREATE PROCEDURE SP_ActualizarSintoma
-	@id_sintoma INT,
-	@nombre VARCHAR(50)
-	AS
-	IF (@id_sintoma = '')
-		BEGIN
-			SELECT message = 'El id del sintoma no puede ser vacio', ok = 0;
-		END
-	ELSE IF ( EXISTS(SELECT id_sintoma FROM Sintoma WHERE id_sintoma = @id_sintoma))
-		BEGIN
-			IF (@nombre = '')
-				BEGIN
-					SELECT message = 'No se permiten campos vacios', ok = 0;
-				END
-			ELSE IF((ISNUMERIC(@id_sintoma) = 0) OR (CONVERT(int, @id_sintoma) < 0))
-				BEGIN
-					SELECT message = 'El id debe ser numerico y positivo', ok = 0;
-				END
-			ELSE
-				BEGIN
-				SELECT message = 'EL sintoma ha sido editado exitosamente', ok = 1;
-					UPDATE Sintoma
-						Set	nombre_sintoma = @nombre
-						WHERE id_sintoma = @id_sintoma
-				END
-		END
-	ELSE
-        BEGIN
-		SELECT message = 'El id del sintoma no existe', ok = 0;
-		END
-GO
-
-
-
-USE GUANA_HOSPI
-GO
 CREATE PROCEDURE SP_ActualizarPaciente
 	@id_paciente INT,
 	@numeroSeguroSocial INT,
 	@fecha_ingreso DATE,
-	@dni_persona VARCHAR(12)
+	@dni_persona VARCHAR(12),
+	@Id_Usuario VARCHAR(12)
 	AS
 	IF (@id_paciente = '')
 		BEGIN
@@ -231,11 +201,15 @@ CREATE PROCEDURE SP_ActualizarPaciente
 			ELSE
 				BEGIN
 				SELECT message = 'El Paciente ha sido editado correctamente', ok = 1;
+					DECLARE @Id_Usuario_Hexa VARBINARY(128)
+					SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
+					SET CONTEXT_INFO @Id_Usuario_Hexa
 					UPDATE Paciente
 						Set	numero_seguro_social = @numeroSeguroSocial,
 						fecha_ingreso = @fecha_ingreso,
 						dni_persona = @dni_persona
 						WHERE id_paciente = @id_paciente
+					SET CONTEXT_INFO 0x0
 				END
 		END
 	ELSE
@@ -244,13 +218,12 @@ CREATE PROCEDURE SP_ActualizarPaciente
 		END
 GO
 
-
-
 USE GUANA_HOSPI
 GO
 CREATE PROCEDURE SP_ActualizarConsulta
 	@id_consulta INT ,
 	@fecha DATE,
+	@descripcion varchar(150),
 	@id_paciente INT,
 	@id_unidad INT
 	AS
@@ -277,6 +250,7 @@ CREATE PROCEDURE SP_ActualizarConsulta
 			SELECT message = 'La consulta ha sido editada correctamente', ok = 1;
 					UPDATE Consulta
 						Set	fecha_consulta = @fecha,
+						descipcion = @descripcion,
 						id_paciente = @id_paciente,
 						id_unidad = @id_unidad
 						WHERE id_consulta = @id_consulta
@@ -288,48 +262,6 @@ CREATE PROCEDURE SP_ActualizarConsulta
 			SELECT message = 'El id de la consulta no existe', ok = 0;
 		END
 GO
-
-
-USE GUANA_HOSPI
-GO
-CREATE PROCEDURE SP_ActualizarPresenta
-	@id_presenta INT,
-	@id_consulta INT,
-	@id_sintoma INT,
-	@descripcion_presenta VARCHAR(50)
-	AS
-	IF (@id_presenta = '')
-		BEGIN
-			SELECT message = 'El id de Presenta no puede ser vacio', ok = 0;
-		END
-	ELSE IF ( EXISTS(SELECT id_presenta FROM Presenta WHERE id_presenta = @id_presenta))
-		BEGIN
-			IF ((@id_consulta = '') OR (@id_sintoma='')OR (@descripcion_presenta ='')) 
-				BEGIN
-					SELECT message = 'No se permiten campos vacios', ok = 0;
-				END
-			ELSE IF((ISNUMERIC(@id_presenta) = 0) OR (CONVERT(int, @id_presenta) < 0))
-				BEGIN
-					SELECT message = 'El id debe ser numerico y positivo', ok = 0;
-				END
-			ELSE
-				BEGIN
-				SELECT message = 'Presenta ha sido editada correctamente', ok = 1;
-					UPDATE Presenta
-						Set	id_consulta = @id_consulta,
-						id_sintoma = @id_sintoma,
-						descripcion_presenta = @descripcion_presenta
-						WHERE id_consulta = @id_presenta
-				END
-		END
-	ELSE
-        BEGIN	
-			SELECT message = 'El id de Presenta no existe', ok = 0;
-		END
-GO
-
-
-
 
 USE GUANA_HOSPI
 GO
