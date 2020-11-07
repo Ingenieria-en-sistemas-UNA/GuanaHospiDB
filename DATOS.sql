@@ -65,7 +65,6 @@ EXEC SP_Crear_Unidad 'Sala A2', 2, 5, 1
 EXEC SP_Crear_Unidad 'Sala B2', 2, null, 1
 EXEC SP_Crear_Unidad 'Sala C2', 2, null, 1
 EXEC SP_Crear_Unidad 'Sala D2', 2, null, 1
-
 -----------------------PACIENTE----------------------------------
 EXEC SP_Crear_Paciente 2332, '2020/09/5', '6', 1
 EXEC SP_Crear_Paciente 3839, '2020/08/20', '7', 1
@@ -112,5 +111,3 @@ EXEC SP_Crear_Intervencion 'Comer frutas y tomar 2 litos de agua', 2, 2
 EXEC SP_Crear_Intervencion 'Caminar 20 minutos por dia', 3, 3
 EXEC SP_Crear_Intervencion 'Evitar comida chatarra', 4, 4
 
-exec SP_Obtener_Consultas
-EXEC SP_Obtener_Padece

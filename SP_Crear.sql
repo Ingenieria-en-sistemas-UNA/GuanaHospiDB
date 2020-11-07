@@ -83,7 +83,7 @@ AS
 		END
 	ELSE 
 		BEGIN
-			SELECT message = 'El registro se ha incresado corrnextnte',  beforeId = IDENT_CURRENT('Medico'), currentId = IDENT_CURRENT('Medico') + IDENT_INCR('Medico'), ok = 1
+			SELECT message = 'El registro se ha incresado correctamente',  beforeId = IDENT_CURRENT('Medico'), currentId = IDENT_CURRENT('Medico') + IDENT_INCR('Medico'), ok = 1
 			DECLARE @Id_Usuario_Hexa VARBINARY(128)
 			SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
 			SET CONTEXT_INFO @Id_Usuario_Hexa
@@ -175,7 +175,7 @@ AS
 		END
 	ELSE
 		BEGIN
-			SELECT message = 'El registro se ha incresado corrnextnte',  beforeId = IDENT_CURRENT('Unidad'), currentId = IDENT_CURRENT('Unidad') + IDENT_INCR('Unidad'), ok = 1
+			SELECT message = 'El registro se ha incresado correctamente',  beforeId = IDENT_CURRENT('Unidad'), currentId = IDENT_CURRENT('Unidad') + IDENT_INCR('Unidad'), ok = 1
 			DECLARE @Id_Usuario_Hexa VARBINARY(128)
 			SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
 			SET CONTEXT_INFO @Id_Usuario_Hexa
@@ -216,7 +216,7 @@ AS
 		END
 	ELSE
 		BEGIN
-			SELECT message = 'El registro se ha incresado correctanext',  beforeId = IDENT_CURRENT('Paciente'), currentId = IDENT_CURRENT('Paciente') + IDENT_INCR('Paciente'), ok = 1
+			SELECT message = 'El registro se ha incresado correctamente',  beforeId = IDENT_CURRENT('Paciente'), currentId = IDENT_CURRENT('Paciente') + IDENT_INCR('Paciente'), ok = 1
 			DECLARE @Id_Usuario_Hexa VARBINARY(128)
 			SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
 			SET CONTEXT_INFO @Id_Usuario_Hexa
@@ -249,13 +249,19 @@ AS
 		BEGIN
 			SELECT message = 'La unidad no existe', ok = 0
 		END
+	ELSE IF EXISTS(SELECT id_medico FROM Unidad WHERE id_unidad = @IdUnidad AND id_medico IS NULL OR id_medico = '')
+		BEGIN
+			SELECT message = 'No se puede crear una consulta sin un medico a cargo', ok = 0 
+		END
 	ELSE
 		BEGIN
-			SELECT message = 'El registro se ha incresado correctanext',  beforeId = IDENT_CURRENT('Consulta'), currentId = IDENT_CURRENT('Consulta') + IDENT_INCR('Consulta'), ok = 1
+			SELECT message = 'El registro se ha incresado correctamente',  beforeId = IDENT_CURRENT('Consulta'), currentId = IDENT_CURRENT('Consulta') + IDENT_INCR('Consulta'), ok = 1
 			INSERT INTO Consulta(fecha_consulta, descripcion, id_paciente, id_unidad)
 			VALUES (CONVERT(date, GETDATE()), @descripcion, CONVERT(int, @IdPaciente), CONVERT(int, @IdUnidad))
 		END
 GO
+
+
 -----------------------------------------------------------------------------------------------------------------------------------------
 USE GUANA_HOSPI
 GO
@@ -307,7 +313,7 @@ AS
 		END
 	ELSE
 		BEGIN
-			SELECT message = 'El registro se ha incresado corrnextnte',  beforeId = IDENT_CURRENT('Padece'), currentId = IDENT_CURRENT('Padece') + IDENT_INCR('Padece'), ok = 1
+			SELECT message = 'El registro se ha incresado correctamente',  beforeId = IDENT_CURRENT('Padece'), currentId = IDENT_CURRENT('Padece') + IDENT_INCR('Padece'), ok = 1
 			INSERT INTO Padece(id_paciente, id_enfermedad)
 			VALUES (CONVERT(int, @IdPaciente), CONVERT(int, @IdEnfermedad))
 		END
