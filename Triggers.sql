@@ -75,7 +75,7 @@ ON Consulta AFTER INSERT
 		DECLARE @Email NVARCHAR(MAX)
 		SELECT @Id_Usuario = CAST(CONTEXT_INFO() AS NVARCHAR)
 		SELECT @Email = email FROM users WHERE id = CONVERT(INT, @Id_Usuario)
-		INSERT INTO Auditoria (Usuario, Fecha, Descripcion) VALUES (@Email, GETDATE(),'Ha Una consultal a la lista!!')
+		INSERT INTO Auditoria (Usuario, Fecha, Descripcion) VALUES (@Email, GETDATE(),'Ha Añadido Una Consulta a la lista!!')
 	GO
 
 ------------------------Registros De Actualizar-------------------------------
