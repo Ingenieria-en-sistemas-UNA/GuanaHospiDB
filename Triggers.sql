@@ -160,7 +160,7 @@ CREATE TRIGGER TR_Actualizar_Tipo_Intervencion
 	DECLARE @Email NVARCHAR(MAX)
 	SELECT @Id_Usuario = CAST(CONTEXT_INFO() AS NVARCHAR)
 	SELECT @Email = email FROM users WHERE id = CONVERT(INT, @Id_Usuario)
-	INSERT INTO Auditoria (Usuario, Fecha, Descripcion) VALUES (@Email, GETDATE(),'Ha Actualizado Un Tipo De Especialidad!')
+	INSERT INTO Auditoria (Usuario, Fecha, Descripcion) VALUES (@Email, GETDATE(),'Ha Actualizado Un Tipo De Intervencion!')
  GO
 
 
