@@ -30,6 +30,7 @@ AS
 	SELECT 'Id_Paciente' = id_paciente, 'Numero_Seguro_Social' = numero_seguro_social , 'Fecha_Ingreso' = fecha_ingreso, 'Cedula_Persona' = dni_persona, ok = 1
 	FROM Paciente
 GO
+	
 
 CREATE PROC SP_Obtener_Paciente_Por_Id
 	(@id_paciente VARCHAR(12))
@@ -185,6 +186,25 @@ AS
 	FROM Enfermedad
 GO
 
+CREATE PROCEDURE SP_Obtener_Enfermedades_Por_Id_Paciente
+	(@id_paciente VARCHAR(12))
+AS
+	IF(@id_paciente = '')
+	BEGIN
+		SELECT MESSAGE = 'El ID está vacío', ok = 0
+	END
+		ELSE IF(ISNUMERIC(@id_paciente) = 0)
+	BEGIN
+		SELECT message = 'El campo no es numerico'
+	END
+		ELSE
+	BEGIN
+		SELECT 'Id_Enfermedad' = Enfermedad.id_enfermedad, 'Nombre_Enfermedad' = Enfermedad.nombre_enfermedad, ok = 1
+		FROM Enfermedad INNER JOIN Padece ON Enfermedad.id_enfermedad = Padece.id_enfermedad
+		WHERE id_paciente = @id_paciente
+	END
+GO
+
 CREATE PROC SP_Obtener_Enfermedades_Por_Id
 	(@id_enfermedad VARCHAR(12))
 AS
@@ -228,6 +248,7 @@ AS
 		WHERE id_consulta = @id_consulta;
 	END
 GO
+
 
 CREATE PROC SP_Obtener_Intervenciones_Por_Id
 	(@id_intervencion VARCHAR(12))
@@ -326,6 +347,25 @@ CREATE PROC SP_Obtener_Tipos_Intervenciones
 AS
 	SELECT 'Id_Tipo_Intervencion' = id_tipo_intervencion, 'Nombre_Tipo_Intervencion' = nombre_tipo_intervencion, ok = 1
 	FROM Tipo_Intervencion
+GO
+
+CREATE PROC SP_Obtener_Tipo_Intervencion_Por_Id_Consulta
+	(@id_consulta VARCHAR(12))
+AS
+	IF(@id_consulta = '')
+	BEGIN
+		SELECT MESSAGE = 'El campo id_consulta está vacío', ok = 0
+	END
+		ELSE IF(ISNUMERIC(@id_consulta) = 0)
+	BEGIN
+		SELECT MESSAGE = 'El campo id_consulta no es númerico'
+	END
+		ELSE
+	BEGIN
+		SELECT 'Id_Tipo_Intervencion' = Tipo_Intervencion.id_tipo_intervencion, 'Nombre_Tipo_Intervencion' = Tipo_Intervencion.nombre_tipo_intervencion, ok = 1
+		FROM Tipo_Intervencion INNER JOIN Intervenciones ON Tipo_Intervencion.id_tipo_intervencion = Intervenciones.id_tipo_intervencion
+		WHERE id_consulta = @id_consulta;
+	END
 GO
 
 CREATE PROC SP_Obtener_Tipos_Intervencione_Por_Id
