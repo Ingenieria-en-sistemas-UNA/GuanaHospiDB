@@ -135,9 +135,11 @@ CREATE TABLE Padece(
 	id_padece INT IDENTITY (1,1),
 	id_paciente INT NOT NULL,
 	id_enfermedad INT NOT NULL,
+	id_consulta INT NOT NULL,
 	CONSTRAINT PK_id_padece PRIMARY KEY (id_padece),
 	CONSTRAINT FK_id_paciente_padece FOREIGN  KEY (id_paciente) REFERENCES Paciente (id_paciente) ON DELETE CASCADE,
 	CONSTRAINT FK_id_enfermedad_padece FOREIGN KEY (id_enfermedad) REFERENCES Enfermedad(id_enfermedad) ON DELETE CASCADE,
+	CONSTRAINT FK_id_consulta_padece FOREIGN KEY (id_consulta) REFERENCES Consulta(id_consulta),
 )
 GO
 
