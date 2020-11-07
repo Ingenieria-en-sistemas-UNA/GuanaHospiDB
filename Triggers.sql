@@ -75,9 +75,19 @@ ON Consulta AFTER INSERT
 		DECLARE @Email NVARCHAR(MAX)
 		SELECT @Id_Usuario = CAST(CONTEXT_INFO() AS NVARCHAR)
 		SELECT @Email = email FROM users WHERE id = CONVERT(INT, @Id_Usuario)
-		INSERT INTO Auditoria (Usuario, Fecha, Descripcion) VALUES (@Email, GETDATE(),'Ha Una consultal a la lista!!')
+		INSERT INTO Auditoria (Usuario, Fecha, Descripcion) VALUES (@Email, GETDATE(),'Ha Añadido Una Consulta a la lista!!')
 	GO
 
+
+CREATE TRIGGER TR_Insertar_Usuario
+ON users AFTER INSERT
+	AS
+		DECLARE @Id_Usuario NVARCHAR
+		DECLARE @Email NVARCHAR(MAX)
+		SELECT @Id_Usuario = CAST(CONTEXT_INFO() AS NVARCHAR)
+		SELECT @Email = email FROM users WHERE id = CONVERT(INT, @Id_Usuario)
+		INSERT INTO Auditoria (Usuario, Fecha, Descripcion) VALUES (@Email, GETDATE(),'Ha Añadido Un Usuario!')
+	GO
 ------------------------Registros De Actualizar-------------------------------
 CREATE TRIGGER TR_Actualizar_Medico
 ON Medico AFTER UPDATE
@@ -150,7 +160,7 @@ CREATE TRIGGER TR_Actualizar_Tipo_Intervencion
 	DECLARE @Email NVARCHAR(MAX)
 	SELECT @Id_Usuario = CAST(CONTEXT_INFO() AS NVARCHAR)
 	SELECT @Email = email FROM users WHERE id = CONVERT(INT, @Id_Usuario)
-	INSERT INTO Auditoria (Usuario, Fecha, Descripcion) VALUES (@Email, GETDATE(),'Ha Actualizado Un Tipo De Especialidad!')
+	INSERT INTO Auditoria (Usuario, Fecha, Descripcion) VALUES (@Email, GETDATE(),'Ha Actualizado Un Tipo De Intervencion!')
  GO
 
 

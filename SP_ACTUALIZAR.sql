@@ -484,7 +484,7 @@ GO
 
 USE GUANA_HOSPI 
 GO
-ALTER PROC SP_Actaulizar_User
+CREATE PROC SP_Actaulizar_User
 	@email VARCHAR(100),
 	@password VARCHAR(100),
 	@Id_Usuario VARCHAR(12)
@@ -511,3 +511,38 @@ ALTER PROC SP_Actaulizar_User
 		END
 
 GO
+
+
+USE GUANA_HOSPI 
+GO
+CREATE PROC SP_Actaulizar_User_Correo
+	@id INT,
+	@email VARCHAR(100),
+	@Id_Usuario VARCHAR(12)
+    AS
+	IF(@id = '')
+	 BEGIN
+		SELECT message = 'El id no puede ser vacio', ok = 0;
+	 END
+	 ELSE IF( EXISTS(SELECT email from users WHERE @id=id))
+		BEGIN
+		  SELECT message = 'El usuario se ha actualizado correctamente', ok = 1;
+			DECLARE @Id_Usuario_Hexa VARBINARY(128)
+			SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
+		    SET CONTEXT_INFO @Id_Usuario_Hexa
+			UPDATE users
+				Set email = @email
+				WHERE id = @id
+			SET CONTEXT_INFO 0x0
+		END
+	 ELSE
+		BEGIN
+			SELECT message = 'El usuario no exite', ok = 0;
+		END
+
+GO
+
+exec SP_Actaulizar_User_Correo 3, 'medico232@gmail.com', 1
+ 
+
+
