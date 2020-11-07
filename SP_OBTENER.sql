@@ -265,7 +265,7 @@ AS
 		BEGIN
 			SELECT message = 'El campo id medico no es numerico', ok = 0
 		END
-	ELSE IF(NOT EXISTS(SELECT id_medico FROM Medico_Especialidad WHERE id_medico = @id_medico))
+	ELSE IF(NOT EXISTS(SELECT id_medico FROM Medico WHERE id_medico = @id_medico))
 		BEGIN
 			SELECT message = 'El id del medico no existe', ok = 0
 		END
