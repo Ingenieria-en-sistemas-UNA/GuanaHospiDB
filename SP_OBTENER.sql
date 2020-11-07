@@ -172,7 +172,7 @@ AS
 		END
 	ELSE
 		BEGIN
-			SELECT 'Id_Consulta' = id_consulta, 'Fehca_Consulta' = fecha_consulta , descripcion , 'Id_Paciente' = id_paciente, ok = 1
+			SELECT 'Id_Consulta' = id_consulta, 'Id_Unidad' = id_unidad, 'Fehca_Consulta' = fecha_consulta , descripcion , 'Id_Paciente' = id_paciente, ok = 1
 			FROM Consulta
 			WHERE id_consulta = @id_consulta;
 		END
@@ -208,6 +208,25 @@ CREATE PROC SP_Obtener_Intervenciones
 AS
 	SELECT 'Id_Intervencion' = id_intervencion, 'Tratamiento' = tratamiento, 'Id_Tipo_Intervencion' = id_tipo_intervencion, 'Id_Consulta' = id_consulta, ok = 1
 	FROM Intervenciones
+GO
+
+CREATE PROC SP_Obtener_Interv_Por_Id_Consulta
+	(@id_consulta VARCHAR(12))
+AS
+	IF(@id_consulta = '')
+	BEGIN
+		SELECT MESSAGE = 'El campo id_consulta está vacío', ok = 0
+	END
+		ELSE IF(ISNUMERIC(@id_consulta) = 0)
+	BEGIN
+		SELECT MESSAGE = 'El campo id_consulta no es númerico'
+	END
+		ELSE
+	BEGIN
+		SELECT 'Id_Intervencion' = id_intervencion, 'Tratamiento' = tratamiento, 'Id_Tipo_Intervencion' = id_tipo_intervencion, 'Id_Consulta' = id_consulta, ok = 1
+		FROM Intervenciones
+		WHERE id_consulta = @id_consulta;
+	END
 GO
 
 CREATE PROC SP_Obtener_Intervenciones_Por_Id
