@@ -298,13 +298,14 @@ USE GUANA_HOSPI
 GO
 CREATE PROC SP_Crear_Padece
 	@IdPaciente varchar(5),
-	@IdEnfermedad varchar(5)
+	@IdEnfermedad varchar(5),
+	@IdConsulta varchar(5)
 AS
-	IF(@IdPaciente = '' OR @IdEnfermedad = '')
+	IF(@IdPaciente = '' OR @IdEnfermedad = '' OR @IdConsulta = '')
 		BEGIN
 			SELECT message = 'No se permiten campos vacios', ok = 0
 		END
-	ELSE IF(ISNUMERIC(@IdPaciente) = 0 OR ISNUMERIC(@IdEnfermedad) = 0)
+	ELSE IF(ISNUMERIC(@IdPaciente) = 0 OR ISNUMERIC(@IdEnfermedad) = 0 OR ISNUMERIC(@IdConsulta) = 0)
 		BEGIN
 			SELECT message = 'No se permiten caracteres', ok = 0
 		END
@@ -316,11 +317,15 @@ AS
 		BEGIN
 			SELECT message = 'El id de la enfermedad no existe', ok = 0
 		END
+	ELSE IF(NOT EXISTS(SELECT id_consulta FROM Consulta WHERE id_consulta = @IdConsulta))
+		BEGIN
+			SELECT message = 'El id de la consulta no existe', ok = 0
+		END
 	ELSE
 		BEGIN
 			SELECT message = 'El registro se ha incresado correctamente',  beforeId = IDENT_CURRENT('Padece'), currentId = IDENT_CURRENT('Padece') + IDENT_INCR('Padece'), ok = 1
-			INSERT INTO Padece(id_paciente, id_enfermedad)
-			VALUES (CONVERT(int, @IdPaciente), CONVERT(int, @IdEnfermedad))
+			INSERT INTO Padece(id_paciente, id_enfermedad, id_consulta)
+			VALUES (CONVERT(int, @IdPaciente), CONVERT(int, @IdEnfermedad), CONVERT(int, @IdConsulta))
 		END
 GO
 --------------------------------------------------------------------------------------------------------------------------------------------------

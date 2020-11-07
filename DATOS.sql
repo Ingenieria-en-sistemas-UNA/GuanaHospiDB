@@ -73,12 +73,12 @@ EXEC SP_Crear_Paciente 4039, '2020/07/3', '8', 1
 EXEC SP_Crear_Paciente 9284, '2020/06/16', '9', 1
 
 -----------------------CONSULTA-----------------------------------
-EXEC SP_Crear_Consulta 'Se presentó con dolor', 1, 1
-EXEC SP_Crear_Consulta 'Pierna rota', 2, 2
-EXEC SP_Crear_Consulta 'Brazo roto', 3, 3
-EXEC SP_Crear_Consulta 'Dolor abdominal', 4, 4
-EXEC SP_Crear_Consulta 'Sangrado anal', 1, 4
-EXEC SP_Crear_Consulta 'Dolor de cabeza', 1, 4
+EXEC SP_Crear_Consulta 'Se presentó con dolor', 1, 1, 1
+EXEC SP_Crear_Consulta 'Pierna rota', 2, 2, 1
+EXEC SP_Crear_Consulta 'Brazo roto', 3, 3, 1
+EXEC SP_Crear_Consulta 'Dolor abdominal', 4, 4, 2
+EXEC SP_Crear_Consulta 'Sangrado anal', 1, 4, 2
+EXEC SP_Crear_Consulta 'Dolor de cabeza', 1, 4, 2
 
 ----------------------ENFERMEDAD---------------------------------
 EXEC SP_Crear_Enfermedad 'Cancer', 2
@@ -91,12 +91,12 @@ EXEC SP_Crear_Enfermedad 'Sida', 2
 EXEC SP_Crear_Enfermedad 'Leucenia', 2
 
 ------------------------PADECE--------------------------------------
-EXEC SP_Crear_Padece 1, 1
-EXEC SP_Crear_Padece 2, 2
-EXEC SP_Crear_Padece 3, 3
-EXEC SP_Crear_Padece 4, 4
-EXEC SP_Crear_Padece 1, 1
-EXEC SP_Crear_Padece 2, 1
+EXEC SP_Crear_Padece 1, 1, 1
+EXEC SP_Crear_Padece 2, 2, 2
+EXEC SP_Crear_Padece 3, 3, 1
+EXEC SP_Crear_Padece 4, 4, 3
+EXEC SP_Crear_Padece 1, 1, 2
+EXEC SP_Crear_Padece 2, 1, 1
 
 --------------------------TIPO INTERVENCION--------------------------
 EXEC SP_Crear_Tipo_Intervencion 'Cirugia', 1

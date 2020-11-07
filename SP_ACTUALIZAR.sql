@@ -235,7 +235,7 @@ GO
 
 USE GUANA_HOSPI
 GO
-ALTER PROCEDURE SP_ActualizarConsulta
+CREATE PROCEDURE SP_ActualizarConsulta
 	@id_consulta INT ,
 	@descripcion varchar(150),
 	@id_paciente INT,
@@ -327,7 +327,8 @@ GO
 CREATE PROCEDURE SP_ActualizarPadece
 	@id_padece INT,
 	@id_paciente INT,
-	@id_enfermedad INT
+	@id_enfermedad INT,
+	@id_consulta INT
 	AS
 	IF (@id_padece = '')
 		BEGIN
@@ -335,20 +336,21 @@ CREATE PROCEDURE SP_ActualizarPadece
 		END
 	ELSE IF ( EXISTS(SELECT id_padece FROM Padece WHERE id_padece = @id_padece))
 		BEGIN
-			IF ((@id_paciente = '') OR (@id_enfermedad='')) 
+			IF ((@id_paciente = '') OR (@id_enfermedad='') OR (@id_consulta = '')) 
 				BEGIN
 					SELECT message = 'No se permiten campos vacios', ok = 0;
 				END
-			ELSE IF((ISNUMERIC(@id_padece) = 0) OR (CONVERT(int, @id_padece) < 0))
+			ELSE IF((ISNUMERIC(@id_padece) = 0) OR (CONVERT(int, @id_padece) < 0) OR (CONVERT(int, @id_consulta) < 0))
 				BEGIN
 					SELECT message = 'El id debe ser numerico y positivo', ok = 0;
 				END
 			ELSE
 				BEGIN
-				SELECT message = 'El padecimiento ha sido editado correctamente', ok = 1;
+					SELECT message = 'El padecimiento ha sido editado correctamente', ok = 1;
 					UPDATE Padece
 						Set	id_paciente = @id_paciente,
-						id_enfermedad = @id_enfermedad
+						id_enfermedad = @id_enfermedad,
+						id_consulta = @id_consulta
 						WHERE id_padece = @id_padece
 				END
 		END
@@ -539,10 +541,7 @@ CREATE PROC SP_Actaulizar_User_Correo
 		BEGIN
 			SELECT message = 'El usuario no exite', ok = 0;
 		END
-
 GO
-
-exec SP_Actaulizar_User_Correo 3, 'medico232@gmail.com', 1
  
 
 

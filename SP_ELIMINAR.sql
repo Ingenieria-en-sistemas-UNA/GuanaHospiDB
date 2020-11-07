@@ -170,6 +170,10 @@ AS
 	ELSE IF EXISTS (SELECT id_consulta FROM Consulta WHERE Consulta.id_consulta = @id_consulta)
 		BEGIN
 		    SELECT message = 'Se ha eliminado la consulata', ok = 0
+			IF EXISTS(SELECT id_consulta FROM Padece WHERE id_consulta = @id_consulta)
+				BEGIN
+					DELETE FROM Padece WHERE id_consulta = @id_consulta 
+				END
 			DELETE FROM Consulta WHERE Consulta.id_consulta = @id_consulta
 		END
 	ELSE
@@ -360,6 +364,4 @@ CREATE PROC SP_Eliminar_User(@id VARCHAR(100), @Id_Usuario VARCHAR(12))
 			SELECT message = 'El usuario no existe', ok = 0
 		END
 
-go
-
-exec SP_Eliminar_User 3, 1
+GO
