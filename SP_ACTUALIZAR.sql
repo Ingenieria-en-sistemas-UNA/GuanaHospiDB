@@ -6,7 +6,8 @@ CREATE PROCEDURE SP_ActualizarPersona
 	@Nombre VARCHAR(30),
 	@Apellido1 VARCHAR(40),
 	@Apellido2 VARCHAR(40),
-	@Edad VARCHAR(20)
+	@Edad VARCHAR(20),
+	@Id_Usuario VARCHAR(12)
 AS
 	IF (@Dni = '')
 		BEGIN
@@ -21,12 +22,16 @@ AS
 			ELSE
 				BEGIN
 				SELECT message = 'La persona se a editado exitosamente!', ok = 1
+					DECLARE @Id_Usuario_Hexa VARBINARY(128)
+					SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
+					SET CONTEXT_INFO @Id_Usuario_Hexa
 					UPDATE Persona
 						Set	nombre_persona = @Nombre,
 							apellido_1 = @Apellido1,
 							apellido_2 = @Apellido2,
 							edad = CONVERT(int, @Edad)
 						WHERE dni_persona = @Dni
+					SET CONTEXT_INFO 0x0
 				END
 		END
 	ELSE
@@ -106,7 +111,8 @@ USE GUANA_HOSPI
 GO
 CREATE PROCEDURE SP_ActualizarEspecialidad
 	@id_especialidad INT,
-	@nombreEspecialdad VARCHAR(50)
+	@nombreEspecialdad VARCHAR(50),
+	@Id_Usuario VARCHAR(12)
 AS
 	IF (@id_especialidad = '')
 		BEGIN
@@ -125,9 +131,13 @@ AS
 			ELSE
 				BEGIN
 				SELECT message = 'La especialidad ha sido editada exitosamente', ok = 1;
+					DECLARE @Id_Usuario_Hexa VARBINARY(128)
+					SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
+					SET CONTEXT_INFO @Id_Usuario_Hexa
 					UPDATE Especialidad
 						Set	nombre_especialdad = @nombreEspecialdad
 						WHERE id_especialidad = @id_especialidad
+					SET CONTEXT_INFO 0x0
 				END
 		END
 	ELSE
@@ -143,7 +153,8 @@ CREATE PROCEDURE SP_ActualizarUnidad
 	@id_unidad INT,
 	@nombre VARCHAR(50),
 	@numeroPlanta INT,
-	@Id_Medico varchar = NULL
+	@Id_Medico varchar = NULL,
+	@Id_Usuario Varchar(12)
 	AS
 	IF (@id_unidad = '')
 		BEGIN
@@ -162,11 +173,15 @@ CREATE PROCEDURE SP_ActualizarUnidad
 			ELSE
 				BEGIN
 				SELECT message = 'La unidad ha sido editada con exito', ok = 1;
+				    DECLARE @Id_Usuario_Hexa VARBINARY(128)
+					SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
+					SET CONTEXT_INFO @Id_Usuario_Hexa
 					UPDATE Unidad
 						Set	nombre_unidad = @nombre,
 						    numero_planta = @numeroPlanta,
 							id_medico = @id_medico
 						WHERE id_unidad = @id_unidad
+						SET CONTEXT_INFO 0x0
 				END
 		END
 	ELSE
@@ -220,12 +235,12 @@ GO
 
 USE GUANA_HOSPI
 GO
-CREATE PROCEDURE SP_ActualizarConsulta
+ALTER PROCEDURE SP_ActualizarConsulta
 	@id_consulta INT ,
-	@fecha DATE,
 	@descripcion varchar(150),
 	@id_paciente INT,
-	@id_unidad INT
+	@id_unidad INT,
+	@Id_Usuario VARCHAR(12)
 	AS
 	IF (@id_consulta = '')
 		BEGIN
@@ -233,7 +248,7 @@ CREATE PROCEDURE SP_ActualizarConsulta
 		END
 	ELSE IF ( EXISTS(SELECT id_consulta FROM Consulta WHERE id_consulta = @id_consulta))
 		BEGIN
-			IF ((@fecha = '') OR (@id_paciente='')) 
+			IF(@id_paciente='')
 				BEGIN
 					SELECT message = 'No se permiten campos vacios', ok = 0;
 				END
@@ -248,13 +263,17 @@ CREATE PROCEDURE SP_ActualizarConsulta
 		ELSE 
 		BEGIN
 			SELECT message = 'La consulta ha sido editada correctamente', ok = 1;
+					DECLARE @Id_Usuario_Hexa VARBINARY(128)
+					SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
+					SET CONTEXT_INFO @Id_Usuario_Hexa
 					UPDATE Consulta
-						Set	fecha_consulta = @fecha,
+						Set	fecha_consulta = GETDATE(),
 						descripcion = @descripcion,
 						id_paciente = @id_paciente,
 						id_unidad = @id_unidad
 						WHERE id_consulta = @id_consulta
 						PRINT 'SE HA ACTUALIZADO CORRECTAMENTE'	
+					SET CONTEXT_INFO 0x0
 		END
 	END
 	ELSE
@@ -267,7 +286,8 @@ USE GUANA_HOSPI
 GO
 CREATE PROCEDURE SP_ActualizarEnfermedad
 	@id_enfermedad INT,
-	@nombre VARCHAR(50)
+	@nombre VARCHAR(50),
+	@Id_Usuario VARCHAR(12)
 	AS
 	IF (@id_enfermedad = '')
 		BEGIN
@@ -286,9 +306,13 @@ CREATE PROCEDURE SP_ActualizarEnfermedad
 			ELSE
 				BEGIN
 				SELECT message = 'La enfermedad ha sido editada correctamente', ok = 1;
+					DECLARE @Id_Usuario_Hexa VARBINARY(128)
+					SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
+					SET CONTEXT_INFO @Id_Usuario_Hexa
 					UPDATE Enfermedad
 						Set	nombre_enfermedad = @nombre
 						WHERE id_enfermedad = @id_enfermedad
+					SET CONTEXT_INFO 0x0
 				END
 		END
 	ELSE
@@ -341,7 +365,8 @@ USE GUANA_HOSPI
 GO
 CREATE PROCEDURE SP_ActualizarTipoIntervension
 	@id_tipo_Intervencion INT,
-	@nombre VARCHAR(50)
+	@nombre VARCHAR(50),
+	@Id_Usuario VARCHAR(12)
 	AS
 	IF (@id_tipo_Intervencion = '')
 		BEGIN
@@ -360,9 +385,13 @@ CREATE PROCEDURE SP_ActualizarTipoIntervension
 			ELSE
 				BEGIN
 				SELECT message = 'El tipo de intervencion ha sido editado correctamente', ok = 1;
+					DECLARE @Id_Usuario_Hexa VARBINARY(128)
+					SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
+					SET CONTEXT_INFO @Id_Usuario_Hexa
 					UPDATE Tipo_Intervencion
 						Set	nombre_tipo_intervencion = @nombre
 						WHERE id_tipo_intervencion = @id_tipo_Intervencion
+					SET CONTEXT_INFO 0x0
 				END
 		END
 	ELSE
@@ -452,4 +481,68 @@ CREATE PROCEDURE SP_ActualizarMedicoEspecialidad
 			SELECT message = 'El id de medico-especialidad no existe', ok = 0;
 		END
 GO
+
+USE GUANA_HOSPI 
+GO
+CREATE PROC SP_Actaulizar_User
+	@email VARCHAR(100),
+	@password VARCHAR(100),
+	@Id_Usuario VARCHAR(12)
+    AS
+	IF(@email = '')
+	 BEGIN
+		SELECT message = 'El email no puede ser vacio', ok = 0;
+	 END
+	 ELSE IF( EXISTS(SELECT email from users WHERE @email=email))
+		BEGIN
+		  SELECT message = 'El usuario se ha actualizado correctamente', ok = 1;
+			DECLARE @Id_Usuario_Hexa VARBINARY(128)
+			SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
+		    SET CONTEXT_INFO @Id_Usuario_Hexa
+			UPDATE users
+				Set email = @email,
+				password = @password
+				WHERE email = @email
+			SET CONTEXT_INFO 0x0
+		END
+	 ELSE
+		BEGIN
+			SELECT message = 'El usuario no exite', ok = 0;
+		END
+
+GO
+
+
+USE GUANA_HOSPI 
+GO
+CREATE PROC SP_Actaulizar_User_Correo
+	@id INT,
+	@email VARCHAR(100),
+	@Id_Usuario VARCHAR(12)
+    AS
+	IF(@id = '')
+	 BEGIN
+		SELECT message = 'El id no puede ser vacio', ok = 0;
+	 END
+	 ELSE IF( EXISTS(SELECT email from users WHERE @id=id))
+		BEGIN
+		  SELECT message = 'El usuario se ha actualizado correctamente', ok = 1;
+			DECLARE @Id_Usuario_Hexa VARBINARY(128)
+			SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
+		    SET CONTEXT_INFO @Id_Usuario_Hexa
+			UPDATE users
+				Set email = @email
+				WHERE id = @id
+			SET CONTEXT_INFO 0x0
+		END
+	 ELSE
+		BEGIN
+			SELECT message = 'El usuario no exite', ok = 0;
+		END
+
+GO
+
+exec SP_Actaulizar_User_Correo 3, 'medico232@gmail.com', 1
+ 
+
 

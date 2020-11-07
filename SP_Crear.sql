@@ -231,7 +231,8 @@ GO
 CREATE PROC SP_Crear_Consulta
 	@descripcion VARCHAR(150),
 	@IdPaciente VARCHAR(5),
-	@IdUnidad VARCHAR(5)
+	@IdUnidad VARCHAR(5),
+	@Id_Usuario VARCHAR(12)
 AS
 	IF(@IdPaciente = '' OR @IdUnidad = '')
 		BEGIN
@@ -256,8 +257,12 @@ AS
 	ELSE
 		BEGIN
 			SELECT message = 'El registro se ha incresado correctamente',  beforeId = IDENT_CURRENT('Consulta'), currentId = IDENT_CURRENT('Consulta') + IDENT_INCR('Consulta'), ok = 1
+			DECLARE @Id_Usuario_Hexa VARBINARY(128)
+			SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
+			SET CONTEXT_INFO @Id_Usuario_Hexa
 			INSERT INTO Consulta(fecha_consulta, descripcion, id_paciente, id_unidad)
 			VALUES (CONVERT(date, GETDATE()), @descripcion, CONVERT(int, @IdPaciente), CONVERT(int, @IdUnidad))
+			SET CONTEXT_INFO 0x0
 		END
 GO
 
@@ -417,7 +422,11 @@ USE GUANA_HOSPI
 GO
 CREATE PROC SP_Crear_Auditoria
 	@Id_Usuario VARCHAR(12),
-	@Descripcion VARCHAR(12)
+	@Descripcion VARCHAR(50)
 AS
-  
+	SELECT message = 'La Auditoria se ha creado correctamente', ok = 1
+	DECLARE @Email NVARCHAR(MAX)
+	SELECT @Email = email FROM users WHERE id = CONVERT(INT, @Id_Usuario)
+    INSERT INTO Auditoria (Usuario, Fecha, Descripcion) 
+    VALUES (@Email, GETDATE(), @Descripcion)
 GO

@@ -335,3 +335,31 @@ AS
 			SELECT message =  'El paciente no tiene padecimientos', ok = 0
 		END
 GO
+
+
+------------------------------------Eliminar Usuario----------------------------------
+USE GUANA_HOSPI
+GO 
+CREATE PROC SP_Eliminar_User(@id VARCHAR(100), @Id_Usuario VARCHAR(12))
+	AS
+	IF (@id = '') 
+		BEGIN
+			SELECT message = 'El id no existe', ok = 0
+		END
+	ELSE IF EXISTS(SELECT id FROM users WHERE id = @id )
+	BEGIN
+			SELECT message = 'Se ha eliminado un usuario', ok = 1
+		    DECLARE @Id_Usuario_Hexa VARBINARY(128)
+			SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
+			SET CONTEXT_INFO @Id_Usuario_Hexa	
+			DELETE FROM users WHERE id = @id
+			SET CONTEXT_INFO 0x0
+		END
+	ELSE
+		BEGIN
+			SELECT message = 'El usuario no existe', ok = 0
+		END
+
+go
+
+exec SP_Eliminar_User 3, 1
