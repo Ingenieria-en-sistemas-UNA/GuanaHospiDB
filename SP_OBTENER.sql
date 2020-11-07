@@ -160,7 +160,9 @@ AS
 	FROM Consulta
 GO
 
-CREATE PROC SP_Obtener_Consulta_Por_Id
+USE GUANA_HOSPI
+GO
+ALTER PROC SP_Obtener_Consulta_Por_Id
 	(@id_consulta VARCHAR(12))
 AS
 	IF(@id_consulta = '')
@@ -173,8 +175,11 @@ AS
 		END
 	ELSE
 		BEGIN
-			SELECT 'Id_Consulta' = id_consulta, 'Id_Unidad' = id_unidad, 'Fehca_Consulta' = fecha_consulta , descripcion , 'Id_Paciente' = id_paciente, ok = 1
-			FROM Consulta
+			SELECT 'Id_Consulta' = id_consulta, 'Id_Unidad' = id_unidad, 'Fehca_Consulta' = fecha_consulta , 'Descripcion' = Consulta.descripcion, 'Id_Paciente' = Paciente.id_paciente,
+			'Nombre_Persona' = Persona.nombre_persona, 'Apellido_Uno' = Persona.apellido_1, 'Apellido_Dos' = Persona.apellido_2, ok = 1
+			FROM Consulta 
+			INNER JOIN Paciente ON Consulta.id_paciente = Paciente.id_paciente
+			INNER JOIN Persona ON Persona.dni_persona = Paciente.dni_persona
 			WHERE id_consulta = @id_consulta;
 		END
 GO

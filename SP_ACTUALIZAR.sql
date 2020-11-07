@@ -235,9 +235,8 @@ GO
 
 USE GUANA_HOSPI
 GO
-CREATE PROCEDURE SP_ActualizarConsulta
+ALTER PROCEDURE SP_ActualizarConsulta
 	@id_consulta INT ,
-	@fecha DATE,
 	@descripcion varchar(150),
 	@id_paciente INT,
 	@id_unidad INT,
@@ -249,7 +248,7 @@ CREATE PROCEDURE SP_ActualizarConsulta
 		END
 	ELSE IF ( EXISTS(SELECT id_consulta FROM Consulta WHERE id_consulta = @id_consulta))
 		BEGIN
-			IF ((@fecha = '') OR (@id_paciente='')) 
+			IF(@id_paciente='')
 				BEGIN
 					SELECT message = 'No se permiten campos vacios', ok = 0;
 				END
@@ -268,7 +267,7 @@ CREATE PROCEDURE SP_ActualizarConsulta
 					SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
 					SET CONTEXT_INFO @Id_Usuario_Hexa
 					UPDATE Consulta
-						Set	fecha_consulta = @fecha,
+						Set	fecha_consulta = GETDATE(),
 						descripcion = @descripcion,
 						id_paciente = @id_paciente,
 						id_unidad = @id_unidad
