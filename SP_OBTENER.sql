@@ -325,7 +325,7 @@ GO
 
 CREATE PROC SP_Obtener_Padece
 AS
-	SELECT 'Id_Padece' = id_padece, 'Id_Paciente' = id_paciente, 'Id_Enfermedad' = id_enfermedad, ok = 1
+	SELECT 'Id_Padece' = id_padece, 'Id_Paciente' = id_paciente, 'Id_Enfermedad' = id_enfermedad, 'Id_Consulta' = id_consulta, ok = 1
 	FROM Padece
 GO
 
@@ -342,7 +342,7 @@ AS
 		END
 	ELSE
 		BEGIN
-			SELECT 'Id_Padece' = id_padece, 'Id_Paciente' = id_paciente, 'Id_Enfermedad' = id_enfermedad, ok = 1
+			SELECT 'Id_Padece' = id_padece, 'Id_Paciente' = id_paciente, 'Id_Enfermedad' = id_enfermedad,'Id_Consulta' id_consulta,ok = 1
 			FROM Padece
 			WHERE id_padece = @id_padece;
 		END
