@@ -194,7 +194,7 @@ AS
 	ELSE
 		BEGIN
 			SELECT 'Id_Consulta' = id_consulta, 'Id_Unidad' = id_unidad, 'Fehca_Consulta' = fecha_consulta , 'Descripcion' = Consulta.descripcion, 'Id_Paciente' = Paciente.id_paciente,
-			'Nombre_Persona' = Persona.nombre_persona, 'Apellido_Uno' = Persona.apellido_1, 'Apellido_Dos' = Persona.apellido_2, ok = 1
+			'Nombre_Persona' = Persona.nombre_persona, 'Apellido_Uno' = Persona.apellido_1, 'Apellido_Dos' = Persona.apellido_2,ok = 1
 			FROM Consulta 
 			INNER JOIN Paciente ON Consulta.id_paciente = Paciente.id_paciente
 			INNER JOIN Persona ON Persona.dni_persona = Paciente.dni_persona
@@ -209,23 +209,31 @@ AS
 	FROM Enfermedad
 GO
 
-CREATE PROCEDURE SP_Obtener_Enfermedades_Por_Id_Paciente
-	(@id_paciente VARCHAR(12))
+CREATE PROCEDURE SP_Obtener_Enfermedades_Por_Id_Paciente_Y_Consulta_Id
+	(@id_paciente VARCHAR(12), @id_consulta VARCHAR(12))
 AS
 	IF(@id_paciente = '')
-	BEGIN
-		SELECT MESSAGE = 'El ID está vacío', ok = 0
-	END
-		ELSE IF(ISNUMERIC(@id_paciente) = 0)
-	BEGIN
-		SELECT message = 'El campo no es numerico'
-	END
-		ELSE
-	BEGIN
-		SELECT 'Id_Enfermedad' = Enfermedad.id_enfermedad, 'Nombre_Enfermedad' = Enfermedad.nombre_enfermedad, ok = 1
-		FROM Enfermedad INNER JOIN Padece ON Enfermedad.id_enfermedad = Padece.id_enfermedad
-		WHERE id_paciente = @id_paciente
-	END
+		BEGIN
+			SELECT MESSAGE = 'El id del paciente esta vacio', ok = 0
+		END
+	ELSE IF(@id_consulta = '')
+		BEGIN
+			SELECT MESSAGE = 'El id de la consulta esta vacio', ok = 0
+		END
+	ELSE IF(ISNUMERIC(@id_paciente) = 0)
+		BEGIN
+			SELECT message = 'El campo del id paciente no es numerico'
+		END
+	ELSE IF(ISNUMERIC(@id_consulta) = 0)
+		BEGIN
+			SELECT message = 'El campo del id consulta no es numerico'
+		END
+	ELSE
+		BEGIN
+			SELECT 'Id_Enfermedad' = Enfermedad.id_enfermedad, 'Nombre_Enfermedad' = Enfermedad.nombre_enfermedad, ok = 1
+			FROM Enfermedad INNER JOIN Padece ON Enfermedad.id_enfermedad = Padece.id_enfermedad
+			WHERE id_paciente = @id_paciente AND id_consulta = @id_consulta
+		END
 GO
 
 CREATE PROC SP_Obtener_Enfermedades_Por_Id
