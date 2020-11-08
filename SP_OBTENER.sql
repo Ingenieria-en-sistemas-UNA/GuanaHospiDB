@@ -266,16 +266,17 @@ CREATE PROC SP_Obtener_Interv_Por_Id_Consulta
 AS
 	IF(@id_consulta = '')
 	BEGIN
-		SELECT MESSAGE = 'El campo id_consulta está vacío', ok = 0
+		SELECT MESSAGE = 'El campo id_consulta estï¿½ vacï¿½o', ok = 0
 	END
 		ELSE IF(ISNUMERIC(@id_consulta) = 0)
 	BEGIN
-		SELECT MESSAGE = 'El campo id_consulta no es númerico'
+		SELECT MESSAGE = 'El campo id_consulta no es nï¿½merico'
 	END
 		ELSE
 	BEGIN
-		SELECT 'Id_Intervencion' = id_intervencion, 'Tratamiento' = tratamiento, 'Id_Tipo_Intervencion' = id_tipo_intervencion, 'Id_Consulta' = id_consulta, ok = 1
+		SELECT 'Id_Intervencion' = id_intervencion, 'Tratamiento' = tratamiento, 'Id_Tipo_Intervencion' = Intervenciones.id_tipo_intervencion, 'Id_Consulta' = id_consulta, 'Nombre_Tipo_Intervencion' = Tipo_Intervencion.nombre_tipo_intervencion, ok = 1
 		FROM Intervenciones
+		INNER JOIN Tipo_Intervencion ON Tipo_Intervencion.id_tipo_intervencion = Intervenciones.id_tipo_intervencion
 		WHERE id_consulta = @id_consulta;
 	END
 GO
@@ -385,11 +386,11 @@ CREATE PROC SP_Obtener_Tipo_Intervencion_Por_Id_Consulta
 AS
 	IF(@id_consulta = '')
 	BEGIN
-		SELECT MESSAGE = 'El campo id_consulta está vacío', ok = 0
+		SELECT MESSAGE = 'El campo id_consulta estï¿½ vacï¿½o', ok = 0
 	END
 		ELSE IF(ISNUMERIC(@id_consulta) = 0)
 	BEGIN
-		SELECT MESSAGE = 'El campo id_consulta no es númerico'
+		SELECT MESSAGE = 'El campo id_consulta no es nï¿½merico'
 	END
 		ELSE
 	BEGIN

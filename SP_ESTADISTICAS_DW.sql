@@ -31,8 +31,7 @@ AS
 		p.apellido_2, 'Cantidad' = COUNT(i.id_intervencion)
 		FROM DW_GUANA_HOSPI.DBO.Medico m 
 		INNER JOIN DW_GUANA_HOSPI.DBO.Persona p ON m.dni_persona = p.dni_persona
-		INNER JOIN DW_GUANA_HOSPI.DBO.Unidad u ON u.id_medico = m.id_medico	
-		INNER JOIN DW_GUANA_HOSPI.DBO.Consulta co ON co.id_unidad = u.id_unidad
+		INNER JOIN DW_GUANA_HOSPI.DBO.Consulta co ON co.id_medico = m.id_medico	
 		INNER JOIN DW_GUANA_HOSPI.DBO.Intervenciones i ON i.id_consulta = co.id_consulta
 	GROUP BY m.codigo_medico, p.dni_persona, p.nombre_persona, p.apellido_1, p.apellido_2
 	ORDER BY COUNT(i.id_intervencion) DESC
