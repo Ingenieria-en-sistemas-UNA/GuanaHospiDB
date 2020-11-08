@@ -234,6 +234,29 @@ AS
 			SELECT message = 'El id de padecimiento no existe', ok = 0
 		END
 GO
+
+----------------------------------------ELIMINAR PADECIMIETNO POR ID PACIENTE-IDCONSULTA------------------------------------------------
+USE	GUANA_HOSPI
+GO
+CREATE PROC SP_Eliminar_Padecimiento_Id_Paciente_Consulta (@id_paciente INT, @id_consulta INT)
+AS
+	IF (@id_paciente = '' OR @id_consulta = '') 
+		BEGIN
+			SELECT message = 'El id de padecimiento no uede ser vacio', ok = 0
+		END
+	ELSE IF(ISNUMERIC(@id_paciente) = 0 OR ISNUMERIC(@id_consulta) = 0)
+		BEGIN
+			SELECT message = 'Los datos deben de ser de tipo numerico', ok = 0
+		END
+	ELSE IF EXISTS (SELECT id_padece FROM Padece WHERE id_paciente = @id_paciente AND id_consulta = @id_consulta)
+		BEGIN
+			DELETE FROM Padece WHERE id_paciente = @id_paciente AND id_consulta = @id_consulta
+	    END    
+	ELSE
+		BEGIN
+			SELECT message = 'El id de padecimiento no existe', ok = 0
+		END
+GO
 ---------------------------------------------ELIMINAR TIPO INTERVENcION-----------------------------------------
 USE	GUANA_HOSPI
 GO
