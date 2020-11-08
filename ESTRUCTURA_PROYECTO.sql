@@ -33,6 +33,7 @@ CREATE TABLE Medico(
     id_medico INT IDENTITY(1,1),
 	codigo_medico INT NOT NULL,
 	dni_persona VARCHAR(12) NOT NULL,
+	estado BIT NOT NULL,
 	CONSTRAINT PK_id_medico PRIMARY KEY (id_medico),
 	CONSTRAINT FK_dni_persona_medico FOREIGN KEY (dni_persona) REFERENCES Persona(dni_persona) ON DELETE CASCADE,
 )
@@ -88,7 +89,7 @@ CREATE TABLE Unidad(
 	id_unidad INT IDENTITY (1,1),
 	nombre_unidad VARCHAR(50) NOT NULL,
 	numero_planta INT NOT NULL,
-	id_medico INT,
+	id_medico INT NOT NULL,
 	CONSTRAINT PK_id_unidad PRIMARY KEY (id_unidad),
 	CONSTRAINT FK_id_medico FOREIGN KEY (id_medico) REFERENCES Medico (id_medico)
 )	
@@ -114,9 +115,11 @@ CREATE TABLE Consulta(
 	descripcion VARCHAR(150),
 	id_paciente INT NOT NULL,
 	id_unidad INT NOT NULL, 
+	id_medico INT NOT NULL,
 	CONSTRAINT PK_id_consulta PRIMARY KEY (id_consulta),
 	CONSTRAINT FK_id_paciente_consulta FOREIGN KEY(id_paciente) REFERENCES Paciente(id_paciente) ON DELETE CASCADE,
 	CONSTRAINT FK_id_unidad_consulta FOREIGN KEY(id_unidad) REFERENCES Unidad(id_unidad) ON DELETE CASCADE,
+	CONSTRAINT FK_id_medico_consulta FOREIGN KEY(id_medico) REFERENCES Medico(id_medico),
 )
 GO
 
