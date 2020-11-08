@@ -169,7 +169,7 @@ AS
 		END
 	ELSE IF EXISTS (SELECT id_consulta FROM Consulta WHERE Consulta.id_consulta = @id_consulta)
 		BEGIN
-		    SELECT message = 'Se ha eliminado la consulata', ok = 0
+		    SELECT message = 'Se ha eliminado la consulata', ok = 1
 			DELETE FROM Consulta WHERE Consulta.id_consulta = @id_consulta
 		END
 	ELSE
