@@ -72,7 +72,7 @@ AS
 		END
 	ELSE IF EXISTS (SELECT id_medico FROM Medico WHERE id_medico  = @id_medico )
 		BEGIN
-			SELECT message = 'Se ha eliminado el medico', ok = 1
+			SELECT message = 'El medico esta inactivo', ok = 1
 			IF(EXISTS (SELECT id_medico FROM Unidad WHERE id_medico = @id_medico))
 				BEGIN
 					UPDATE Unidad
@@ -97,6 +97,8 @@ AS
 			SELECT message = 'El medico no existe', ok = 0
 		END
 GO
+--EXEC SP_Eliminar_Medico 1, 1
+--SELECT * FROM Medico
 ---------------------------------------------ELIMINAR UNIDAD-----------------------------------------------------
 USE	GUANA_HOSPI
 GO

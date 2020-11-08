@@ -89,7 +89,7 @@ CREATE TABLE Unidad(
 	id_unidad INT IDENTITY (1,1),
 	nombre_unidad VARCHAR(50) NOT NULL,
 	numero_planta INT NOT NULL,
-	id_medico INT NOT NULL,
+	id_medico INT
 	CONSTRAINT PK_id_unidad PRIMARY KEY (id_unidad),
 	CONSTRAINT FK_id_medico FOREIGN KEY (id_medico) REFERENCES Medico (id_medico)
 )	
