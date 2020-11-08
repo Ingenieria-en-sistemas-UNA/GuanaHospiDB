@@ -71,6 +71,9 @@ GO
 --SELECT * FROM Padece
 --SELECT * FROM Enfermedad
 
-
+--exec SP_Top_Medico_Intervenciones
 --GO
 --DROP PROCEDURE SP_Top_Enfermedades
+
+use GUANA_HOSPI
+go
