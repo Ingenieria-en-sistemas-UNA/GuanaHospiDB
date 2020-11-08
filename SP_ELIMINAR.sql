@@ -88,8 +88,8 @@ AS
 			---Cambia el estado del medico
 			UPDATE Medico
 			SET estado = 0
-
 			WHERE id_medico = @id_medico
+
 			SET CONTEXT_INFO 0x0
 		END
 	ELSE

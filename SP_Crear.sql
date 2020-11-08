@@ -87,8 +87,10 @@ AS
 			DECLARE @Id_Usuario_Hexa VARBINARY(128)
 			SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
 			SET CONTEXT_INFO @Id_Usuario_Hexa
+
 			INSERT INTO Medico(codigo_medico, dni_persona, estado)
 			VALUES (CONVERT(int, @CodigoMedico), @DniPersona, 1)
+
 			SET CONTEXT_INFO 0x0
 		END
 GO
