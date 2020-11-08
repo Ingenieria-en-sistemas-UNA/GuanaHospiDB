@@ -59,6 +59,7 @@ CREATE TABLE Consulta(
 	id_paciente INT,
 	id_unidad INT,
 	id_medico INT,
+	estado BIT
 	CONSTRAINT PK_id_consulta PRIMARY KEY (id_consulta)
 )
 GO
