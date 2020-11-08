@@ -162,7 +162,7 @@ GO
 
 USE GUANA_HOSPI
 GO
-ALTER PROC SP_Obtener_Consulta_Por_Id
+CREATE PROC SP_Obtener_Consulta_Por_Id
 	(@id_consulta VARCHAR(12))
 AS
 	IF(@id_consulta = '')

@@ -3,13 +3,13 @@ GO
 	CREATE DATABASE  DW_GUANA_HOSPI
 	ON PRIMARY
 	(NAME = 'DW_GUANA_HOSPI_Data',
-	FILENAME= 'D:\Data\DW_GUANA_HOSPI_Data.Mdf',
+	FILENAME= 'C:\Data\DW_GUANA_HOSPI_Data.Mdf',
 	SIZE = 5Mb,
 	MAXSIZE = 10Mb,
 	FILEGROWTH = 1Mb)
 	LOG ON
 	(NAME = 'DW_GUANA_HOSPI_Log',
-	FILENAME= 'D:\Log\DW_GUANA_HOSPI_Log.Ldf',
+	FILENAME= 'C:\Log\DW_GUANA_HOSPI_Log.Ldf',
 	SIZE = 5Mb,
 	MAXSIZE = 10Mb,
 	FILEGROWTH = 1Mb)
@@ -54,6 +54,7 @@ GO
 CREATE TABLE Consulta(
 	id_consulta INT,
 	fecha_consulta DATE,
+	descripcion varchar(150),
 	id_paciente INT,
 	id_unidad INT,
 	CONSTRAINT PK_id_consulta PRIMARY KEY (id_consulta)
@@ -75,6 +76,7 @@ CREATE TABLE Padece(
 	id_padece INT,
 	id_paciente INT NOT NULL,
 	id_enfermedad INT NOT NULL,
+	id_consulta INT NOT NULL,
 	CONSTRAINT PK_id_padece PRIMARY KEY (id_padece)
 )
 
