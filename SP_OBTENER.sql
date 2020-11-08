@@ -222,7 +222,7 @@ AS
 	END
 		ELSE
 	BEGIN
-		SELECT 'Id_Enfermedad' = Enfermedad.id_enfermedad, 'Nombre_Enfermedad' = Enfermedad.nombre_enfermedad, ok = 1
+		SELECT 'Id_Enfermedad' = Enfermedad.id_enfermedad, 'Nombre_Enfermedad' = Enfermedad.nombre_enfermedad, 'Id_Consulta' = Padece.id_consulta, ok = 1
 		FROM Enfermedad INNER JOIN Padece ON Enfermedad.id_enfermedad = Padece.id_enfermedad
 		WHERE id_paciente = @id_paciente
 	END
