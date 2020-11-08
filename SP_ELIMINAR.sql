@@ -176,13 +176,13 @@ AS
 		    SELECT message = 'Se ha eliminado la consulata', ok = 0
 			IF EXISTS(SELECT id_consulta FROM Padece WHERE id_consulta = @id_consulta)
 				BEGIN
+				DELETE FROM Padece WHERE id_consulta = @id_consulta 
+				END
 				DECLARE @Id_Usuario_Hexa VARBINARY(128)
 				SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
 				SET CONTEXT_INFO @Id_Usuario_Hexa
-					DELETE FROM Padece WHERE id_consulta = @id_consulta 
+					DELETE FROM Consulta WHERE Consulta.id_consulta = @id_consulta
 				SET CONTEXT_INFO 0x0
-				END
-			DELETE FROM Consulta WHERE Consulta.id_consulta = @id_consulta
 		END
 	ELSE
 		BEGIN
@@ -396,3 +396,4 @@ CREATE PROC SP_Eliminar_User(@id VARCHAR(100), @Id_Usuario VARCHAR(12))
 		END
 
 GO
+
