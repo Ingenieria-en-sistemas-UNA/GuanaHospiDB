@@ -97,8 +97,7 @@ AS
 			SELECT message = 'El medico no existe', ok = 0
 		END
 GO
---EXEC SP_Eliminar_Medico 1, 1
---SELECT * FROM Medico
+
 ---------------------------------------------ELIMINAR UNIDAD-----------------------------------------------------
 USE	GUANA_HOSPI
 GO
