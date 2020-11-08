@@ -88,6 +88,9 @@ ON users AFTER INSERT
 		SELECT @Email = email FROM users WHERE id = CONVERT(INT, @Id_Usuario)
 		INSERT INTO Auditoria (Usuario, Fecha, Descripcion) VALUES (@Email, GETDATE(),'Ha Añadido Un Usuario!')
 	GO
+
+
+
 ------------------------Registros De Actualizar-------------------------------
 CREATE TRIGGER TR_Actualizar_Medico
 ON Medico AFTER UPDATE
@@ -174,8 +177,8 @@ CREATE TRIGGER TR_Actualizar_Tipo_Intervencion
 	SELECT @Email = email FROM users WHERE id = CONVERT(INT, @Id_Usuario)
 	INSERT INTO Auditoria (Usuario, Fecha, Descripcion) VALUES (@Email, GETDATE(),'Ha Actualizado Un Usuario!')
  GO
-
  
+
 
 
 --------------------------ELIMINAR--------------------------
@@ -253,6 +256,16 @@ ON users AFTER DELETE
 	SELECT @Id_Usuario = CAST(CONTEXT_INFO() AS NVARCHAR)
 	SELECT @Email = email FROM users WHERE id = CONVERT(INT, @Id_Usuario)
 	INSERT INTO Auditoria (Usuario, Fecha, Descripcion) VALUES (@Email, GETDATE(),'Ha Eliminado Un Usuario!')
+  GO
+
+CREATE TRIGGER TR_Eliminar_Consulta
+ON Consulta AFTER DELETE
+  AS
+    DECLARE @Id_Usuario NVARCHAR
+	DECLARE @Email NVARCHAR(MAX)
+	SELECT @Id_Usuario = CAST(CONTEXT_INFO() AS NVARCHAR)
+	SELECT @Email = email FROM users WHERE id = CONVERT(INT, @Id_Usuario)
+	INSERT INTO Auditoria (Usuario, Fecha, Descripcion) VALUES (@Email, GETDATE(),'Ha Eliminado Una Consulta!')
   GO
 
 -- DROP TRIGGER TR_Actualizar_Persona   -- SELECT * FROM Auditoria
