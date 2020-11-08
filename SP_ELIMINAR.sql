@@ -72,7 +72,7 @@ AS
 		END
 	ELSE IF EXISTS (SELECT id_medico FROM Medico WHERE id_medico  = @id_medico )
 		BEGIN
-			SELECT message = 'Se ha eliminado el medico', ok = 1
+			SELECT message = 'El medico esta inactivo', ok = 1
 			IF(EXISTS (SELECT id_medico FROM Unidad WHERE id_medico = @id_medico))
 				BEGIN
 					UPDATE Unidad
@@ -84,9 +84,12 @@ AS
 			SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
 			SET CONTEXT_INFO @Id_Usuario_Hexa
 			SET @idPersonaMedico = (SELECT dni_persona FROM Medico WHERE id_medico = @id_medico)
-			DELETE FROM Medico WHERE Medico.id_medico = @id_medico
-			SELECT message = 'Se ha eliminado la persona', ok = 1
-		    DELETE FROM Persona WHERE Persona.dni_persona = @idPersonaMedico
+			
+			---Cambia el estado del medico
+			UPDATE Medico
+			SET estado = 0
+
+			WHERE id_medico = @id_medico
 			SET CONTEXT_INFO 0x0
 		END
 	ELSE
@@ -94,6 +97,7 @@ AS
 			SELECT message = 'El medico no existe', ok = 0
 		END
 GO
+
 ---------------------------------------------ELIMINAR UNIDAD-----------------------------------------------------
 USE	GUANA_HOSPI
 GO

@@ -83,10 +83,20 @@ GO
 CREATE PROC SP_Obtener_Medicos
 AS
 	SELECT 'Id_Medico' = id_medico, 'Codigo_Medico' = codigo_medico , 'Cedula_Persona' = Medico.dni_persona, 'Nombre_Persona' = nombre_persona, 'Primer_Apellido' = apellido_1,
-	'Segundo_Apellido' = apellido_2, 'Edad' = edad, ok = 1	FROM Medico
+	'Segundo_Apellido' = apellido_2, 'Edad' = edad, 'Estado' = estado ,ok = 1	FROM Medico
 	INNER JOIN Persona
 	ON Persona.dni_persona = Medico.dni_persona
 GO
+
+CREATE PROC SP_Obtener_Medicos_Activos
+AS
+	SELECT 'Id_Medico' = id_medico, 'Codigo_Medico' = codigo_medico , 'Cedula_Persona' = Medico.dni_persona, 'Nombre_Persona' = nombre_persona, 'Primer_Apellido' = apellido_1,
+	'Segundo_Apellido' = apellido_2, 'Edad' = edad, 'Estado' = estado ,ok = 1	FROM Medico
+	INNER JOIN Persona
+	ON Persona.dni_persona = Medico.dni_persona
+	WHERE estado = 1
+GO
+
 
 CREATE PROC SP_Obtener_Medicos_Por_Id
 	(@id_medico VARCHAR(12))
@@ -102,7 +112,7 @@ AS
 	ELSE
 		BEGIN
 			SELECT 'Id_Medico' = id_medico, 'Codigo_Medico' = codigo_medico , 'Cedula_Persona' = Medico.dni_persona, 'Nombre_Persona' = nombre_persona, 'Primer_Apellido' = apellido_1,
-			'Segundo_Apellido' = apellido_2, 'Edad' = edad, ok = 1
+			'Segundo_Apellido' = apellido_2, 'Edad' = edad, 'Estado' = estado ,ok = 1
 			FROM Medico
 			INNER JOIN Persona
 			ON Persona.dni_persona = Medico.dni_persona
@@ -156,7 +166,15 @@ GO
 
 CREATE PROC SP_Obtener_Consultas
 AS
-	SELECT 'Id_Consulta' = id_consulta, 'Fehca_Consulta' = fecha_consulta , descripcion , 'Id_Paciente' = id_paciente, ok = 1
+	SELECT 'Id_Consulta' = id_consulta, 'Fehca_Consulta' = fecha_consulta , descripcion , 'Id_Paciente' = id_paciente, 
+	'Id_Medico' = id_medico, 'Id_Unidad' = id_unidad ,ok = 1
+	FROM Consulta
+GO
+
+CREATE PROC SP_Obtener_Consultas_Por_Paciente
+AS
+	SELECT 'Id_Consulta' = id_consulta, 'Fehca_Consulta' = fecha_consulta , descripcion , 'Id_Paciente' = id_paciente, 
+	'Id_Medico' = id_medico, 'Id_Unidad' = id_unidad ,ok = 1
 	FROM Consulta
 GO
 
