@@ -32,6 +32,7 @@ EXEC SP_Crear_Medico 5344, 3, 1
 EXEC SP_Crear_Medico 6453, 4, 1
 EXEC SP_Crear_Medico 4656, 5, 1
 EXEC SP_Crear_Medico 4852, 89, 1
+
 -----------------------Usuarios Medicos------------------------------
 
 EXEC SP_Crear_User 'medico@gmail.com', '$2y$10$zt96rq87c6gXdbGZXryRm.IiLkpSzcx.FOZ1UxsPWZCHMwj02uWqW', 2, 1, 1
@@ -73,12 +74,12 @@ EXEC SP_Crear_Paciente 4039, '2020/07/3', '8', 1
 EXEC SP_Crear_Paciente 9284, '2020/06/16', '9', 1
 
 -----------------------CONSULTA-----------------------------------
-EXEC SP_Crear_Consulta 'Se presentó con dolor', 1, 1, 1
-EXEC SP_Crear_Consulta 'Pierna rota', 2, 2, 1
-EXEC SP_Crear_Consulta 'Brazo roto', 3, 3, 1
-EXEC SP_Crear_Consulta 'Dolor abdominal', 4, 4, 2
-EXEC SP_Crear_Consulta 'Sangrado anal', 1, 4, 2
-EXEC SP_Crear_Consulta 'Dolor de cabeza', 1, 4, 2
+EXEC SP_Crear_Consulta 'Se presentó con dolor', 1, 1, 1, 1
+EXEC SP_Crear_Consulta 'Pierna rota', 2, 2, 1, 1
+EXEC SP_Crear_Consulta 'Brazo roto', 3, 3, 1, 2
+EXEC SP_Crear_Consulta 'Dolor abdominal', 4, 4, 2, 2
+EXEC SP_Crear_Consulta 'Sangrado anal', 1, 4, 2, 2
+EXEC SP_Crear_Consulta 'Dolor de cabeza', 1, 4, 2, 3
 
 ----------------------ENFERMEDAD---------------------------------
 EXEC SP_Crear_Enfermedad 'Cancer', 2

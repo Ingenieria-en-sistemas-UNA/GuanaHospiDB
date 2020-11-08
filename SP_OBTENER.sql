@@ -83,10 +83,20 @@ GO
 CREATE PROC SP_Obtener_Medicos
 AS
 	SELECT 'Id_Medico' = id_medico, 'Codigo_Medico' = codigo_medico , 'Cedula_Persona' = Medico.dni_persona, 'Nombre_Persona' = nombre_persona, 'Primer_Apellido' = apellido_1,
-	'Segundo_Apellido' = apellido_2, 'Edad' = edad, ok = 1	FROM Medico
+	'Segundo_Apellido' = apellido_2, 'Edad' = edad, 'Estado' = estado ,ok = 1	FROM Medico
 	INNER JOIN Persona
 	ON Persona.dni_persona = Medico.dni_persona
 GO
+
+CREATE PROC SP_Obtener_Medicos_Activos
+AS
+	SELECT 'Id_Medico' = id_medico, 'Codigo_Medico' = codigo_medico , 'Cedula_Persona' = Medico.dni_persona, 'Nombre_Persona' = nombre_persona, 'Primer_Apellido' = apellido_1,
+	'Segundo_Apellido' = apellido_2, 'Edad' = edad, 'Estado' = estado ,ok = 1	FROM Medico
+	INNER JOIN Persona
+	ON Persona.dni_persona = Medico.dni_persona
+	WHERE estado = 1
+GO
+
 
 CREATE PROC SP_Obtener_Medicos_Por_Id
 	(@id_medico VARCHAR(12))
@@ -102,7 +112,7 @@ AS
 	ELSE
 		BEGIN
 			SELECT 'Id_Medico' = id_medico, 'Codigo_Medico' = codigo_medico , 'Cedula_Persona' = Medico.dni_persona, 'Nombre_Persona' = nombre_persona, 'Primer_Apellido' = apellido_1,
-			'Segundo_Apellido' = apellido_2, 'Edad' = edad, ok = 1
+			'Segundo_Apellido' = apellido_2, 'Edad' = edad, 'Estado' = estado ,ok = 1
 			FROM Medico
 			INNER JOIN Persona
 			ON Persona.dni_persona = Medico.dni_persona
@@ -156,8 +166,18 @@ GO
 
 CREATE PROC SP_Obtener_Consultas
 AS
-	SELECT 'Id_Consulta' = id_consulta, 'Fehca_Consulta' = fecha_consulta , descripcion , 'Id_Paciente' = id_paciente, ok = 1
+	SELECT 'Id_Consulta' = id_consulta, 'Fehca_Consulta' = fecha_consulta , descripcion , 'Id_Paciente' = id_paciente, 
+	'Id_Medico' = id_medico, 'Id_Unidad' = id_unidad ,ok = 1
 	FROM Consulta
+GO
+
+CREATE PROC SP_Obtener_Consultas_Por_Paciente_Id
+	(@Id_paciente VARCHAR(5))
+AS
+	SELECT 'Id_Consulta' = id_consulta, 'Fehca_Consulta' = fecha_consulta , descripcion , 'Id_Paciente' = id_paciente, 
+	'Id_Medico' = id_medico, 'Id_Unidad' = id_unidad ,ok = 1
+	FROM Consulta
+	WHERE id_paciente = @Id_paciente
 GO
 
 USE GUANA_HOSPI
@@ -176,7 +196,7 @@ AS
 	ELSE
 		BEGIN
 			SELECT 'Id_Consulta' = id_consulta, 'Id_Unidad' = id_unidad, 'Fehca_Consulta' = fecha_consulta , 'Descripcion' = Consulta.descripcion, 'Id_Paciente' = Paciente.id_paciente,
-			'Nombre_Persona' = Persona.nombre_persona, 'Apellido_Uno' = Persona.apellido_1, 'Apellido_Dos' = Persona.apellido_2, ok = 1
+			'Nombre_Persona' = Persona.nombre_persona, 'Apellido_Uno' = Persona.apellido_1, 'Apellido_Dos' = Persona.apellido_2,ok = 1
 			FROM Consulta 
 			INNER JOIN Paciente ON Consulta.id_paciente = Paciente.id_paciente
 			INNER JOIN Persona ON Persona.dni_persona = Paciente.dni_persona
@@ -191,23 +211,31 @@ AS
 	FROM Enfermedad
 GO
 
-CREATE PROCEDURE SP_Obtener_Enfermedades_Por_Id_Paciente
-	(@id_paciente VARCHAR(12))
+CREATE PROCEDURE SP_Obtener_Enfermedades_Por_Id_Paciente_Y_Consulta_Id
+	(@id_paciente VARCHAR(12), @id_consulta VARCHAR(12))
 AS
 	IF(@id_paciente = '')
-	BEGIN
-		SELECT MESSAGE = 'El ID está vacío', ok = 0
-	END
-		ELSE IF(ISNUMERIC(@id_paciente) = 0)
-	BEGIN
-		SELECT message = 'El campo no es numerico'
-	END
-		ELSE
-	BEGIN
-		SELECT 'Id_Enfermedad' = Enfermedad.id_enfermedad, 'Nombre_Enfermedad' = Enfermedad.nombre_enfermedad, ok = 1
-		FROM Enfermedad INNER JOIN Padece ON Enfermedad.id_enfermedad = Padece.id_enfermedad
-		WHERE id_paciente = @id_paciente
-	END
+		BEGIN
+			SELECT MESSAGE = 'El id del paciente esta vacio', ok = 0
+		END
+	ELSE IF(@id_consulta = '')
+		BEGIN
+			SELECT MESSAGE = 'El id de la consulta esta vacio', ok = 0
+		END
+	ELSE IF(ISNUMERIC(@id_paciente) = 0)
+		BEGIN
+			SELECT message = 'El campo del id paciente no es numerico'
+		END
+	ELSE IF(ISNUMERIC(@id_consulta) = 0)
+		BEGIN
+			SELECT message = 'El campo del id consulta no es numerico'
+		END
+	ELSE
+		BEGIN
+			SELECT 'Id_Enfermedad' = Enfermedad.id_enfermedad, 'Nombre_Enfermedad' = Enfermedad.nombre_enfermedad, 'Id_Consulta' = Padece.id_consulta, ok = 1
+			FROM Enfermedad INNER JOIN Padece ON Enfermedad.id_enfermedad = Padece.id_enfermedad
+			WHERE id_paciente = @id_paciente AND id_consulta = @id_consulta
+		END
 GO
 
 CREATE PROC SP_Obtener_Enfermedades_Por_Id
@@ -240,16 +268,17 @@ CREATE PROC SP_Obtener_Interv_Por_Id_Consulta
 AS
 	IF(@id_consulta = '')
 	BEGIN
-		SELECT MESSAGE = 'El campo id_consulta está vacío', ok = 0
+		SELECT MESSAGE = 'El campo id_consulta estï¿½ vacï¿½o', ok = 0
 	END
 		ELSE IF(ISNUMERIC(@id_consulta) = 0)
 	BEGIN
-		SELECT MESSAGE = 'El campo id_consulta no es númerico'
+		SELECT MESSAGE = 'El campo id_consulta no es nï¿½merico'
 	END
 		ELSE
 	BEGIN
-		SELECT 'Id_Intervencion' = id_intervencion, 'Tratamiento' = tratamiento, 'Id_Tipo_Intervencion' = id_tipo_intervencion, 'Id_Consulta' = id_consulta, ok = 1
+		SELECT 'Id_Intervencion' = id_intervencion, 'Tratamiento' = tratamiento, 'Id_Tipo_Intervencion' = Intervenciones.id_tipo_intervencion, 'Id_Consulta' = id_consulta, 'Nombre_Tipo_Intervencion' = Tipo_Intervencion.nombre_tipo_intervencion, ok = 1
 		FROM Intervenciones
+		INNER JOIN Tipo_Intervencion ON Tipo_Intervencion.id_tipo_intervencion = Intervenciones.id_tipo_intervencion
 		WHERE id_consulta = @id_consulta;
 	END
 GO
@@ -359,11 +388,11 @@ CREATE PROC SP_Obtener_Tipo_Intervencion_Por_Id_Consulta
 AS
 	IF(@id_consulta = '')
 	BEGIN
-		SELECT MESSAGE = 'El campo id_consulta está vacío', ok = 0
+		SELECT MESSAGE = 'El campo id_consulta estï¿½ vacï¿½o', ok = 0
 	END
 		ELSE IF(ISNUMERIC(@id_consulta) = 0)
 	BEGIN
-		SELECT MESSAGE = 'El campo id_consulta no es númerico'
+		SELECT MESSAGE = 'El campo id_consulta no es nï¿½merico'
 	END
 		ELSE
 	BEGIN

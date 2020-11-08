@@ -87,8 +87,10 @@ AS
 			DECLARE @Id_Usuario_Hexa VARBINARY(128)
 			SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
 			SET CONTEXT_INFO @Id_Usuario_Hexa
-			INSERT INTO Medico(codigo_medico, dni_persona)
-			VALUES (CONVERT(int, @CodigoMedico), @DniPersona)
+
+			INSERT INTO Medico(codigo_medico, dni_persona, estado)
+			VALUES (CONVERT(int, @CodigoMedico), @DniPersona, 1)
+
 			SET CONTEXT_INFO 0x0
 		END
 GO
@@ -232,13 +234,14 @@ CREATE PROC SP_Crear_Consulta
 	@descripcion VARCHAR(150),
 	@IdPaciente VARCHAR(5),
 	@IdUnidad VARCHAR(5),
+	@IdMedico VARCHAR(12),
 	@Id_Usuario VARCHAR(12)
 AS
-	IF(@IdPaciente = '' OR @IdUnidad = '')
+	IF(@IdPaciente = '' OR @IdUnidad = '' OR @IdMedico = '')
 		BEGIN
 			SELECT message = 'No se permiten campos vacios', ok = 0
 		END
-	ELSE IF(ISNUMERIC(@IdPaciente) = 0 OR ISNUMERIC(@IdUnidad) = 0)
+	ELSE IF(ISNUMERIC(@IdPaciente) = 0 OR ISNUMERIC(@IdUnidad) = 0 OR ISNUMERIC(@IdMedico) = 0)
 		BEGIN
 			SELECT message = 'No se permiten caracteres', ok = 0
 		END
@@ -250,6 +253,10 @@ AS
 		BEGIN
 			SELECT message = 'La unidad no existe', ok = 0
 		END
+	ELSE IF(NOT EXISTS(SELECT id_medico FROM Medico WHERE id_medico = @IdMedico))
+		BEGIN
+			SELECT message = 'El medico no existe', ok = 0
+		END
 	ELSE IF EXISTS(SELECT id_medico FROM Unidad WHERE id_unidad = @IdUnidad AND id_medico IS NULL OR id_medico = '')
 		BEGIN
 			SELECT message = 'No se puede crear una consulta sin un medico a cargo', ok = 0 
@@ -260,8 +267,8 @@ AS
 			DECLARE @Id_Usuario_Hexa VARBINARY(128)
 			SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
 			SET CONTEXT_INFO @Id_Usuario_Hexa
-			INSERT INTO Consulta(fecha_consulta, descripcion, id_paciente, id_unidad)
-			VALUES (CONVERT(date, GETDATE()), @descripcion, CONVERT(int, @IdPaciente), CONVERT(int, @IdUnidad))
+			INSERT INTO Consulta(fecha_consulta, descripcion, id_paciente, id_unidad, id_medico)
+			VALUES (CONVERT(date, GETDATE()), @descripcion, CONVERT(int, @IdPaciente), CONVERT(int, @IdUnidad), CONVERT(int, @IdMedico))
 			SET CONTEXT_INFO 0x0
 		END
 GO
