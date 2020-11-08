@@ -32,7 +32,7 @@ GO
 
 USE	GUANA_HOSPI
 GO
-CREATE PROC SP_Eliminar_Especialidad (@id_especialidad VARCHAR(10))
+CREATE PROC SP_Eliminar_Especialidad (@id_especialidad VARCHAR(10), @Id_USuario VARCHAR(12))
 AS
 	IF (@id_especialidad = '') 
 		BEGIN
@@ -44,8 +44,12 @@ AS
 		END
 	ELSE IF EXISTS (SELECT id_especialidad FROM Especialidad WHERE Especialidad.id_especialidad = @id_especialidad)
 		BEGIN
-		    SELECT message = 'Se ha eliminado la especalidad', ok = 0
+		    DECLARE @Id_Usuario_Hexa VARBINARY(128)
+			SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
+			SET CONTEXT_INFO @Id_Usuario_Hexa
+			SELECT message = 'Se ha eliminado la especalidad', ok = 0
 			DELETE FROM Especialidad WHERE Especialidad.id_especialidad = @id_especialidad
+			SET CONTEXT_INFO 0x0
 		END
 	ELSE
 		BEGIN
@@ -55,7 +59,8 @@ GO
 -------------------------------------------------Eliminar Medico------------------------------------------------------------------
 USE	GUANA_HOSPI
 GO
-CREATE PROC SP_Eliminar_Medico (@id_medico VARCHAR)
+CREATE PROC SP_Eliminar_Medico (@id_medico VARCHAR, @Id_Usuario VARCHAR(12))
+
 AS
 	IF (@id_medico = '') 
 		BEGIN
@@ -75,25 +80,24 @@ AS
 					WHERE id_medico = @id_medico
 				END
 			DECLARE @idPersonaMedico VARCHAR(12)
+			DECLARE @Id_Usuario_Hexa VARBINARY(128)
+			SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
+			SET CONTEXT_INFO @Id_Usuario_Hexa
 			SET @idPersonaMedico = (SELECT dni_persona FROM Medico WHERE id_medico = @id_medico)
 			DELETE FROM Medico WHERE Medico.id_medico = @id_medico
 			SELECT message = 'Se ha eliminado la persona', ok = 1
 		    DELETE FROM Persona WHERE Persona.dni_persona = @idPersonaMedico
+			SET CONTEXT_INFO 0x0
 		END
 	ELSE
 		BEGIN
 			SELECT message = 'El medico no existe', ok = 0
 		END
 GO
-
-EXEC SP_Eliminar_Medico 4
-SELECT * FROM Unidad
-SELECT * FROM Medico
---DROP PROC SP_Eliminar_Medico
 ---------------------------------------------ELIMINAR UNIDAD-----------------------------------------------------
 USE	GUANA_HOSPI
 GO
-CREATE PROC SP_Eliminar_Unidad (@id_unidad VARCHAR(10))
+CREATE PROC SP_Eliminar_Unidad (@id_unidad VARCHAR(10), @Id_Usuario VARCHAR(12))
 AS
 	IF (@id_unidad = '') 
 		BEGIN
@@ -105,41 +109,23 @@ AS
 		END
 	ELSE IF EXISTS (SELECT id_unidad FROM Unidad WHERE id_unidad = @id_unidad)
 		BEGIN
+			DECLARE @Id_Usuario_Hexa VARBINARY(128)
+			SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
+			SET CONTEXT_INFO @Id_Usuario_Hexa
 			SELECT message = 'Se ha eliminado unidad', ok = 0
 			DELETE FROM Unidad WHERE Unidad.id_unidad = @id_unidad
+			SET CONTEXT_INFO 0x0
 		END
 	ELSE
 		BEGIN
 			SELECT message = 'La unidad no existe', ok = 0
 		END
 GO
-------------------------------------------------------------ELIMINAR SINTOMA-------------------------------------
-USE	GUANA_HOSPI
-GO
-CREATE PROC SP_Eliminar_Sintoma (@id_sintoma INT)
-AS
-	IF (@id_sintoma = '') 
-		BEGIN
-			SELECT message = 'El id de sintoma no puede ser vacio', ok = 0
-		END
-	ELSE IF(ISNUMERIC(@id_sintoma) = 0)
-		BEGIN
-			SELECT message = 'Los datos deben de ser de tipo numerico', ok = 0
-		END
-	ELSE IF EXISTS (SELECT id_sintoma FROM Sintoma WHERE id_sintoma = @id_sintoma)
-		BEGIN
-		    SELECT message = 'Se ha eliminado el sintoma', ok = 0
-			DELETE FROM Sintoma WHERE id_sintoma = @id_sintoma
-		END
-	ELSE
-		BEGIN
-			SELECT message = 'El id de sintoma no existe', ok = 0
-		END
-GO
+
 -----------------------------ELIMINAR Paciente-----------------------------------------------------------------
 USE	GUANA_HOSPI
 GO
-CREATE PROC SP_Eliminar_Paciente (@id_paciente INT)
+CREATE PROC SP_Eliminar_Paciente (@id_paciente INT, @Id_Usuario VARCHAR(12))
 AS
 	IF (@id_paciente = '') 
 		BEGIN
@@ -152,11 +138,15 @@ AS
 	ELSE IF EXISTS (SELECT id_paciente FROM Paciente WHERE id_paciente  = @id_paciente )
 		BEGIN
 			DECLARE @idPersonaPaciente VARCHAR(12)
+			DECLARE @Id_Usuario_Hexa VARBINARY(128)
+			SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
+			SET CONTEXT_INFO @Id_Usuario_Hexa
 			SET @idPersonaPaciente = (SELECT dni_persona FROM Paciente WHERE id_paciente = @id_paciente)
 			SELECT message = 'Se ha eliminado el paciente', ok = 0
 			DELETE FROM Paciente WHERE Paciente.id_paciente = @id_paciente
 			SELECT message = 'Se ha eliminado la persona', ok = 0
 			DELETE FROM Persona WHERE Persona.dni_persona = @idPersonaPaciente
+			SET CONTEXT_INFO 0x0
 		END
 	ELSE
 		BEGIN
@@ -180,6 +170,10 @@ AS
 	ELSE IF EXISTS (SELECT id_consulta FROM Consulta WHERE Consulta.id_consulta = @id_consulta)
 		BEGIN
 		    SELECT message = 'Se ha eliminado la consulata', ok = 0
+			IF EXISTS(SELECT id_consulta FROM Padece WHERE id_consulta = @id_consulta)
+				BEGIN
+					DELETE FROM Padece WHERE id_consulta = @id_consulta 
+				END
 			DELETE FROM Consulta WHERE Consulta.id_consulta = @id_consulta
 		END
 	ELSE
@@ -187,35 +181,10 @@ AS
 			SELECT message = 'La consulta no existe', ok = 0
 		END
 GO
-
--------------------------------------------ELIMINAR PRESENTA--------------------------------------------------------
-USE	GUANA_HOSPI
-GO
-CREATE PROC SP_Eliminar_Presenta (@id_presenta INT)
-AS
-	IF (@id_presenta = '') 
-		BEGIN
-			SELECT message = 'El id de presenta no puede ser vacio', ok = 0
-		END
-	ELSE IF(ISNUMERIC(@id_presenta) = 0)
-		BEGIN
-			SELECT message = 'Los datos deben de ser de tipo numerico', ok = 0
-		END
-	ELSE IF EXISTS (SELECT id_presenta FROM Presenta WHERE Presenta.id_presenta = @id_presenta)
-		BEGIN
-			SELECT message = 'Se ha eliminado presenta', ok = 0
-			DELETE FROM Presenta WHERE Presenta.id_presenta = @id_presenta
-		END
-	ELSE
-		 BEGIN
-			SELECT message = 'El id de presenta no existe', ok = 0
-		END
-GO
-
 -----------------------------------ELIMINAR ENFERMEDAD-----------------------------------
 USE	GUANA_HOSPI
 GO
-CREATE PROC SP_Eliminar_Enfermedad (@id_enfermedad INT)
+CREATE PROC SP_Eliminar_Enfermedad (@id_enfermedad INT, @Id_Usuario VARCHAR (12))
 AS
 	IF (@id_enfermedad = '') 
 		BEGIN
@@ -227,8 +196,12 @@ AS
 		END
 	ELSE IF EXISTS (SELECT id_enfermedad FROM Enfermedad WHERE id_enfermedad = @id_enfermedad)
 		BEGIN
+			DECLARE @Id_Usuario_Hexa VARBINARY(128)
+			SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
+			SET CONTEXT_INFO @Id_Usuario_Hexa
 			SELECT message = 'Se ha eliminado la enfermedad', ok = 1
 			DELETE FROM Enfermedad WHERE Enfermedad.id_enfermedad = @id_enfermedad
+			SET CONTEXT_INFO 0x0
 		END
 	ELSE
 		BEGIN
@@ -260,7 +233,7 @@ GO
 ---------------------------------------------ELIMINAR TIPO INTERVENcION-----------------------------------------
 USE	GUANA_HOSPI
 GO
-CREATE PROC SP_Eliminar_Tipo_Intervension(@id_tipo_intervencion INT)
+CREATE PROC SP_Eliminar_Tipo_Intervension(@id_tipo_intervencion INT, @Id_Usuario VARCHAR (12))
 AS
 	IF (@id_tipo_intervencion = '') 
 		BEGIN
@@ -273,7 +246,11 @@ AS
 	ELSE IF EXISTS (SELECT id_tipo_intervencion FROM Tipo_Intervencion WHERE id_tipo_intervencion = @id_tipo_intervencion)
 		BEGIN
 			SELECT message = 'Se ha eliminado el tipo de intervencion', ok = 1
+			DECLARE @Id_Usuario_Hexa VARBINARY(128)
+			SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
+			SET CONTEXT_INFO @Id_Usuario_Hexa
 			DELETE FROM Tipo_Intervencion WHERE Tipo_Intervencion.id_tipo_intervencion = @id_tipo_intervencion
+			SET CONTEXT_INFO 0X0
 		END
 	ELSE
 		BEGIN
@@ -324,4 +301,67 @@ AS
 			SELECT message = 'El medico no cuenta con ninguna especialidad', ok = 0
 		END
 GO
+--------------eliminar intervencion por id consulta-------------------------------------
+USE	GUANA_HOSPI
+GO
+CREATE PROC SP_Eliminar_Intervencion_Id_Consulta(@Id_Consulta INT)
+AS
+	IF (@Id_Consulta = '') 
+		BEGIN
+			SELECT message = 'El id de la consulta no puede ser vacio', ok = 0
+		END
+	ELSE IF EXISTS (SELECT id_consulta FROM Intervenciones WHERE id_consulta = @Id_Consulta)
+		BEGIN
+			SELECT message = 'Se han eliminado las intervenciones', ok = 1
+			DELETE FROM Intervenciones WHERE id_consulta = @Id_Consulta
+		END
+	ELSE
+		BEGIN
+			SELECT message =  'La consulta no tiene intervenciones', ok = 0
+		END
+GO
+------------------------------eliminar todos los padece por el id de paciente-------
+USE	GUANA_HOSPI
+GO
+CREATE PROC SP_Eliminar_Padece_Id_Paciente(@Id_Paciente INT)
+AS
+	IF (@Id_Paciente = '') 
+		BEGIN
+			SELECT message = 'El id de paciente no puede ser vacio', ok = 0
+		END
+	ELSE IF EXISTS (SELECT id_paciente FROM Padece WHERE id_paciente = @Id_Paciente)
+		BEGIN
+			SELECT message = 'Se han eliminado el o los padecimiento', ok = 1
+			DELETE FROM Padece WHERE id_paciente = @Id_Paciente
+		END
+	ELSE
+		BEGIN
+			SELECT message =  'El paciente no tiene padecimientos', ok = 0
+		END
+GO
 
+
+------------------------------------Eliminar Usuario----------------------------------
+USE GUANA_HOSPI
+GO 
+CREATE PROC SP_Eliminar_User(@id VARCHAR(100), @Id_Usuario VARCHAR(12))
+	AS
+	IF (@id = '') 
+		BEGIN
+			SELECT message = 'El id no existe', ok = 0
+		END
+	ELSE IF EXISTS(SELECT id FROM users WHERE id = @id )
+	BEGIN
+			SELECT message = 'Se ha eliminado un usuario', ok = 1
+		    DECLARE @Id_Usuario_Hexa VARBINARY(128)
+			SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
+			SET CONTEXT_INFO @Id_Usuario_Hexa	
+			DELETE FROM users WHERE id = @id
+			SET CONTEXT_INFO 0x0
+		END
+	ELSE
+		BEGIN
+			SELECT message = 'El usuario no existe', ok = 0
+		END
+
+GO

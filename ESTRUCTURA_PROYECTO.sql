@@ -3,13 +3,13 @@ GO
 	CREATE DATABASE  GUANA_HOSPI
 	ON PRIMARY
 	(NAME = 'GUANA_HOSPIL_Data',
-	FILENAME= 'C:\Data\GUANA_HOSPI_Data.Mdf',
+	FILENAME= 'C:\SQLData\GUANA_HOSPI_Data.Mdf',
 	SIZE = 5MB,
 	MAXSIZE = 10MB,
 	FILEGROWTH = 1Mb)
 	LOG ON
 	(NAME = 'GUANA_HOSPI_Log',
-	FILENAME= 'C:\Log\GUANA_HOSPI_Log.Ldf',
+	FILENAME= 'C:\SQLLog\GUANA_HOSPI_Log.Ldf',
 	SIZE = 5MB,
 	MAXSIZE = 10MB,
 	FILEGROWTH = 1Mb)
@@ -111,34 +111,12 @@ GO
 CREATE TABLE Consulta(
 	id_consulta INT IDENTITY (1,1),
 	fecha_consulta DATE NOT NULL,
+	descripcion VARCHAR(150),
 	id_paciente INT NOT NULL,
 	id_unidad INT NOT NULL, 
 	CONSTRAINT PK_id_consulta PRIMARY KEY (id_consulta),
 	CONSTRAINT FK_id_paciente_consulta FOREIGN KEY(id_paciente) REFERENCES Paciente(id_paciente) ON DELETE CASCADE,
 	CONSTRAINT FK_id_unidad_consulta FOREIGN KEY(id_unidad) REFERENCES Unidad(id_unidad) ON DELETE CASCADE,
-)
-GO
-
-
-USE	GUANA_HOSPI
-GO
-CREATE TABLE Sintoma(
-	id_sintoma INT IDENTITY (1,1),
-	nombre_sintoma VARCHAR(50) NOT NULL,
-	CONSTRAINT PK_id_sintoma PRIMARY KEY (id_sintoma),
-)
-GO
-
-USE GUANA_HOSPI
-GO
-CREATE TABLE Presenta (
-	id_presenta INT IDENTITY (1,1),
-	id_consulta INT NOT NULL,
-	id_sintoma INT NOT NULL,
-	descripcion_presenta VARCHAR(50) NOT NULL,
-	CONSTRAINT PK_id_presenta PRIMARY KEY (id_presenta) ,
-	CONSTRAINT FK_id_sintoma_presenta FOREIGN KEY (id_sintoma) REFERENCES  Sintoma(id_sintoma) ON DELETE CASCADE, 
-	CONSTRAINT FK_id_consulta_presenta FOREIGN KEY (id_consulta) REFERENCES Consulta(id_consulta) ON DELETE CASCADE,
 )
 GO
 
@@ -157,9 +135,11 @@ CREATE TABLE Padece(
 	id_padece INT IDENTITY (1,1),
 	id_paciente INT NOT NULL,
 	id_enfermedad INT NOT NULL,
+	id_consulta INT NOT NULL,
 	CONSTRAINT PK_id_padece PRIMARY KEY (id_padece),
 	CONSTRAINT FK_id_paciente_padece FOREIGN  KEY (id_paciente) REFERENCES Paciente (id_paciente) ON DELETE CASCADE,
 	CONSTRAINT FK_id_enfermedad_padece FOREIGN KEY (id_enfermedad) REFERENCES Enfermedad(id_enfermedad) ON DELETE CASCADE,
+	CONSTRAINT FK_id_consulta_padece FOREIGN KEY (id_consulta) REFERENCES Consulta(id_consulta),
 )
 GO
 
@@ -190,7 +170,6 @@ GO
 	CREATE TABLE Auditoria(
 		IdAuditoria int IDENTITY (1,1) NOT NULL,
 		Usuario varchar(50),
-		LoginUsuario varchar (50),
 		Fecha date,
 		Descripcion varchar(50)
 		CONSTRAINT PK_IdAuditoria PRIMARY KEY (IdAuditoria)

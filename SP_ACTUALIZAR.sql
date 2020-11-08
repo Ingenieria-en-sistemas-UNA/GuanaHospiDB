@@ -6,7 +6,8 @@ CREATE PROCEDURE SP_ActualizarPersona
 	@Nombre VARCHAR(30),
 	@Apellido1 VARCHAR(40),
 	@Apellido2 VARCHAR(40),
-	@Edad VARCHAR(20)
+	@Edad VARCHAR(20),
+	@Id_Usuario VARCHAR(12)
 AS
 	IF (@Dni = '')
 		BEGIN
@@ -21,12 +22,16 @@ AS
 			ELSE
 				BEGIN
 				SELECT message = 'La persona se a editado exitosamente!', ok = 1
+					DECLARE @Id_Usuario_Hexa VARBINARY(128)
+					SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
+					SET CONTEXT_INFO @Id_Usuario_Hexa
 					UPDATE Persona
 						Set	nombre_persona = @Nombre,
 							apellido_1 = @Apellido1,
 							apellido_2 = @Apellido2,
 							edad = CONVERT(int, @Edad)
 						WHERE dni_persona = @Dni
+					SET CONTEXT_INFO 0x0
 				END
 		END
 	ELSE
@@ -42,7 +47,8 @@ GO
 CREATE PROCEDURE SP_ActualizarMedico
 	@id_medico INT,
 	@codigo_medico INT,
-	@dni_persona VARCHAR(12)
+	@dni_persona VARCHAR(12),
+	@Id_Usuario VARCHAR(12)
 	AS
 	IF (@id_medico = '')
 		BEGIN
@@ -61,10 +67,14 @@ CREATE PROCEDURE SP_ActualizarMedico
 			ELSE
 				BEGIN
 				SELECT message = 'El medico se ha actualizado exitosamente', ok = 0;
+					DECLARE @Id_Usuario_Hexa VARBINARY(128)
+					SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
+					SET CONTEXT_INFO @Id_Usuario_Hexa
 					UPDATE Medico
 						Set	codigo_medico = @codigo_medico,
 							dni_persona = @dni_persona
 						WHERE id_medico = @id_medico
+					SET CONTEXT_INFO 0x0
 				END
 		END
 	ELSE
@@ -101,7 +111,8 @@ USE GUANA_HOSPI
 GO
 CREATE PROCEDURE SP_ActualizarEspecialidad
 	@id_especialidad INT,
-	@nombreEspecialdad VARCHAR(50)
+	@nombreEspecialdad VARCHAR(50),
+	@Id_Usuario VARCHAR(12)
 AS
 	IF (@id_especialidad = '')
 		BEGIN
@@ -120,9 +131,13 @@ AS
 			ELSE
 				BEGIN
 				SELECT message = 'La especialidad ha sido editada exitosamente', ok = 1;
+					DECLARE @Id_Usuario_Hexa VARBINARY(128)
+					SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
+					SET CONTEXT_INFO @Id_Usuario_Hexa
 					UPDATE Especialidad
 						Set	nombre_especialdad = @nombreEspecialdad
 						WHERE id_especialidad = @id_especialidad
+					SET CONTEXT_INFO 0x0
 				END
 		END
 	ELSE
@@ -138,7 +153,8 @@ CREATE PROCEDURE SP_ActualizarUnidad
 	@id_unidad INT,
 	@nombre VARCHAR(50),
 	@numeroPlanta INT,
-	@Id_Medico varchar = NULL
+	@Id_Medico varchar = NULL,
+	@Id_Usuario Varchar(12)
 	AS
 	IF (@id_unidad = '')
 		BEGIN
@@ -157,11 +173,15 @@ CREATE PROCEDURE SP_ActualizarUnidad
 			ELSE
 				BEGIN
 				SELECT message = 'La unidad ha sido editada con exito', ok = 1;
+				    DECLARE @Id_Usuario_Hexa VARBINARY(128)
+					SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
+					SET CONTEXT_INFO @Id_Usuario_Hexa
 					UPDATE Unidad
 						Set	nombre_unidad = @nombre,
 						    numero_planta = @numeroPlanta,
 							id_medico = @id_medico
 						WHERE id_unidad = @id_unidad
+						SET CONTEXT_INFO 0x0
 				END
 		END
 	ELSE
@@ -172,47 +192,12 @@ GO
 
 USE GUANA_HOSPI
 GO
-CREATE PROCEDURE SP_ActualizarSintoma
-	@id_sintoma INT,
-	@nombre VARCHAR(50)
-	AS
-	IF (@id_sintoma = '')
-		BEGIN
-			SELECT message = 'El id del sintoma no puede ser vacio', ok = 0;
-		END
-	ELSE IF ( EXISTS(SELECT id_sintoma FROM Sintoma WHERE id_sintoma = @id_sintoma))
-		BEGIN
-			IF (@nombre = '')
-				BEGIN
-					SELECT message = 'No se permiten campos vacios', ok = 0;
-				END
-			ELSE IF((ISNUMERIC(@id_sintoma) = 0) OR (CONVERT(int, @id_sintoma) < 0))
-				BEGIN
-					SELECT message = 'El id debe ser numerico y positivo', ok = 0;
-				END
-			ELSE
-				BEGIN
-				SELECT message = 'EL sintoma ha sido editado exitosamente', ok = 1;
-					UPDATE Sintoma
-						Set	nombre_sintoma = @nombre
-						WHERE id_sintoma = @id_sintoma
-				END
-		END
-	ELSE
-        BEGIN
-		SELECT message = 'El id del sintoma no existe', ok = 0;
-		END
-GO
-
-
-
-USE GUANA_HOSPI
-GO
 CREATE PROCEDURE SP_ActualizarPaciente
 	@id_paciente INT,
 	@numeroSeguroSocial INT,
 	@fecha_ingreso DATE,
-	@dni_persona VARCHAR(12)
+	@dni_persona VARCHAR(12),
+	@Id_Usuario VARCHAR(12)
 	AS
 	IF (@id_paciente = '')
 		BEGIN
@@ -231,11 +216,15 @@ CREATE PROCEDURE SP_ActualizarPaciente
 			ELSE
 				BEGIN
 				SELECT message = 'El Paciente ha sido editado correctamente', ok = 1;
+					DECLARE @Id_Usuario_Hexa VARBINARY(128)
+					SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
+					SET CONTEXT_INFO @Id_Usuario_Hexa
 					UPDATE Paciente
 						Set	numero_seguro_social = @numeroSeguroSocial,
 						fecha_ingreso = @fecha_ingreso,
 						dni_persona = @dni_persona
 						WHERE id_paciente = @id_paciente
+					SET CONTEXT_INFO 0x0
 				END
 		END
 	ELSE
@@ -244,15 +233,14 @@ CREATE PROCEDURE SP_ActualizarPaciente
 		END
 GO
 
-
-
 USE GUANA_HOSPI
 GO
 CREATE PROCEDURE SP_ActualizarConsulta
 	@id_consulta INT ,
-	@fecha DATE,
+	@descripcion varchar(150),
 	@id_paciente INT,
-	@id_unidad INT
+	@id_unidad INT,
+	@Id_Usuario VARCHAR(12)
 	AS
 	IF (@id_consulta = '')
 		BEGIN
@@ -260,7 +248,7 @@ CREATE PROCEDURE SP_ActualizarConsulta
 		END
 	ELSE IF ( EXISTS(SELECT id_consulta FROM Consulta WHERE id_consulta = @id_consulta))
 		BEGIN
-			IF ((@fecha = '') OR (@id_paciente='')) 
+			IF(@id_paciente='')
 				BEGIN
 					SELECT message = 'No se permiten campos vacios', ok = 0;
 				END
@@ -275,12 +263,17 @@ CREATE PROCEDURE SP_ActualizarConsulta
 		ELSE 
 		BEGIN
 			SELECT message = 'La consulta ha sido editada correctamente', ok = 1;
+					DECLARE @Id_Usuario_Hexa VARBINARY(128)
+					SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
+					SET CONTEXT_INFO @Id_Usuario_Hexa
 					UPDATE Consulta
-						Set	fecha_consulta = @fecha,
+						Set	fecha_consulta = GETDATE(),
+						descripcion = @descripcion,
 						id_paciente = @id_paciente,
 						id_unidad = @id_unidad
 						WHERE id_consulta = @id_consulta
 						PRINT 'SE HA ACTUALIZADO CORRECTAMENTE'	
+					SET CONTEXT_INFO 0x0
 		END
 	END
 	ELSE
@@ -289,53 +282,12 @@ CREATE PROCEDURE SP_ActualizarConsulta
 		END
 GO
 
-
-USE GUANA_HOSPI
-GO
-CREATE PROCEDURE SP_ActualizarPresenta
-	@id_presenta INT,
-	@id_consulta INT,
-	@id_sintoma INT,
-	@descripcion_presenta VARCHAR(50)
-	AS
-	IF (@id_presenta = '')
-		BEGIN
-			SELECT message = 'El id de Presenta no puede ser vacio', ok = 0;
-		END
-	ELSE IF ( EXISTS(SELECT id_presenta FROM Presenta WHERE id_presenta = @id_presenta))
-		BEGIN
-			IF ((@id_consulta = '') OR (@id_sintoma='')OR (@descripcion_presenta ='')) 
-				BEGIN
-					SELECT message = 'No se permiten campos vacios', ok = 0;
-				END
-			ELSE IF((ISNUMERIC(@id_presenta) = 0) OR (CONVERT(int, @id_presenta) < 0))
-				BEGIN
-					SELECT message = 'El id debe ser numerico y positivo', ok = 0;
-				END
-			ELSE
-				BEGIN
-				SELECT message = 'Presenta ha sido editada correctamente', ok = 1;
-					UPDATE Presenta
-						Set	id_consulta = @id_consulta,
-						id_sintoma = @id_sintoma,
-						descripcion_presenta = @descripcion_presenta
-						WHERE id_consulta = @id_presenta
-				END
-		END
-	ELSE
-        BEGIN	
-			SELECT message = 'El id de Presenta no existe', ok = 0;
-		END
-GO
-
-
-
-
 USE GUANA_HOSPI
 GO
 CREATE PROCEDURE SP_ActualizarEnfermedad
 	@id_enfermedad INT,
-	@nombre VARCHAR(50)
+	@nombre VARCHAR(50),
+	@Id_Usuario VARCHAR(12)
 	AS
 	IF (@id_enfermedad = '')
 		BEGIN
@@ -354,9 +306,13 @@ CREATE PROCEDURE SP_ActualizarEnfermedad
 			ELSE
 				BEGIN
 				SELECT message = 'La enfermedad ha sido editada correctamente', ok = 1;
+					DECLARE @Id_Usuario_Hexa VARBINARY(128)
+					SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
+					SET CONTEXT_INFO @Id_Usuario_Hexa
 					UPDATE Enfermedad
 						Set	nombre_enfermedad = @nombre
 						WHERE id_enfermedad = @id_enfermedad
+					SET CONTEXT_INFO 0x0
 				END
 		END
 	ELSE
@@ -371,7 +327,8 @@ GO
 CREATE PROCEDURE SP_ActualizarPadece
 	@id_padece INT,
 	@id_paciente INT,
-	@id_enfermedad INT
+	@id_enfermedad INT,
+	@id_consulta INT
 	AS
 	IF (@id_padece = '')
 		BEGIN
@@ -379,20 +336,21 @@ CREATE PROCEDURE SP_ActualizarPadece
 		END
 	ELSE IF ( EXISTS(SELECT id_padece FROM Padece WHERE id_padece = @id_padece))
 		BEGIN
-			IF ((@id_paciente = '') OR (@id_enfermedad='')) 
+			IF ((@id_paciente = '') OR (@id_enfermedad='') OR (@id_consulta = '')) 
 				BEGIN
 					SELECT message = 'No se permiten campos vacios', ok = 0;
 				END
-			ELSE IF((ISNUMERIC(@id_padece) = 0) OR (CONVERT(int, @id_padece) < 0))
+			ELSE IF((ISNUMERIC(@id_padece) = 0) OR (CONVERT(int, @id_padece) < 0) OR (CONVERT(int, @id_consulta) < 0))
 				BEGIN
 					SELECT message = 'El id debe ser numerico y positivo', ok = 0;
 				END
 			ELSE
 				BEGIN
-				SELECT message = 'El padecimiento ha sido editado correctamente', ok = 1;
+					SELECT message = 'El padecimiento ha sido editado correctamente', ok = 1;
 					UPDATE Padece
 						Set	id_paciente = @id_paciente,
-						id_enfermedad = @id_enfermedad
+						id_enfermedad = @id_enfermedad,
+						id_consulta = @id_consulta
 						WHERE id_padece = @id_padece
 				END
 		END
@@ -409,7 +367,8 @@ USE GUANA_HOSPI
 GO
 CREATE PROCEDURE SP_ActualizarTipoIntervension
 	@id_tipo_Intervencion INT,
-	@nombre VARCHAR(50)
+	@nombre VARCHAR(50),
+	@Id_Usuario VARCHAR(12)
 	AS
 	IF (@id_tipo_Intervencion = '')
 		BEGIN
@@ -428,9 +387,13 @@ CREATE PROCEDURE SP_ActualizarTipoIntervension
 			ELSE
 				BEGIN
 				SELECT message = 'El tipo de intervencion ha sido editado correctamente', ok = 1;
+					DECLARE @Id_Usuario_Hexa VARBINARY(128)
+					SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
+					SET CONTEXT_INFO @Id_Usuario_Hexa
 					UPDATE Tipo_Intervencion
 						Set	nombre_tipo_intervencion = @nombre
 						WHERE id_tipo_intervencion = @id_tipo_Intervencion
+					SET CONTEXT_INFO 0x0
 				END
 		END
 	ELSE
@@ -520,4 +483,65 @@ CREATE PROCEDURE SP_ActualizarMedicoEspecialidad
 			SELECT message = 'El id de medico-especialidad no existe', ok = 0;
 		END
 GO
+
+USE GUANA_HOSPI 
+GO
+CREATE PROC SP_Actaulizar_User
+	@email VARCHAR(100),
+	@password VARCHAR(100),
+	@Id_Usuario VARCHAR(12)
+    AS
+	IF(@email = '')
+	 BEGIN
+		SELECT message = 'El email no puede ser vacio', ok = 0;
+	 END
+	 ELSE IF( EXISTS(SELECT email from users WHERE @email=email))
+		BEGIN
+		  SELECT message = 'El usuario se ha actualizado correctamente', ok = 1;
+			DECLARE @Id_Usuario_Hexa VARBINARY(128)
+			SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
+		    SET CONTEXT_INFO @Id_Usuario_Hexa
+			UPDATE users
+				Set email = @email,
+				password = @password
+				WHERE email = @email
+			SET CONTEXT_INFO 0x0
+		END
+	 ELSE
+		BEGIN
+			SELECT message = 'El usuario no exite', ok = 0;
+		END
+
+GO
+
+
+USE GUANA_HOSPI 
+GO
+CREATE PROC SP_Actaulizar_User_Correo
+	@id INT,
+	@email VARCHAR(100),
+	@Id_Usuario VARCHAR(12)
+    AS
+	IF(@id = '')
+	 BEGIN
+		SELECT message = 'El id no puede ser vacio', ok = 0;
+	 END
+	 ELSE IF( EXISTS(SELECT email from users WHERE @id=id))
+		BEGIN
+		  SELECT message = 'El usuario se ha actualizado correctamente', ok = 1;
+			DECLARE @Id_Usuario_Hexa VARBINARY(128)
+			SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
+		    SET CONTEXT_INFO @Id_Usuario_Hexa
+			UPDATE users
+				Set email = @email
+				WHERE id = @id
+			SET CONTEXT_INFO 0x0
+		END
+	 ELSE
+		BEGIN
+			SELECT message = 'El usuario no exite', ok = 0;
+		END
+GO
+ 
+
 
