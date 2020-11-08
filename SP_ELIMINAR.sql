@@ -157,7 +157,7 @@ GO
 ------------------------------------------ELIMINAR CONSULTA------------------------------------------------------------
 USE	GUANA_HOSPI
 GO
-CREATE PROC SP_Elimina_Consulta (@id_consulta INT)
+CREATE PROC SP_Elimina_Consulta (@id_consulta INT, @Id_Usuario VARCHAR(12))
 AS
 	IF (@id_consulta = '') 
 		BEGIN
@@ -172,7 +172,11 @@ AS
 		    SELECT message = 'Se ha eliminado la consulata', ok = 0
 			IF EXISTS(SELECT id_consulta FROM Padece WHERE id_consulta = @id_consulta)
 				BEGIN
+				DECLARE @Id_Usuario_Hexa VARBINARY(128)
+				SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
+				SET CONTEXT_INFO @Id_Usuario_Hexa
 					DELETE FROM Padece WHERE id_consulta = @id_consulta 
+				SET CONTEXT_INFO 0x0
 				END
 			DELETE FROM Consulta WHERE Consulta.id_consulta = @id_consulta
 		END
