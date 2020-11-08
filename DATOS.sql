@@ -1,6 +1,8 @@
 USE GUANA_HOSPI
 GO
 -----------------PERSONA--------------------------------
+--dni_persona / nombre / apellido1 / apellido2 / edad
+
 EXEC SP_Crear_Persona '1', 'Tatiana', 'Morales', 'Mendez', 19
 EXEC SP_Crear_Persona '2', 'Luis', 'Rodriguez', 'Baltodano', 21
 EXEC SP_Crear_Persona '3', 'Arlen', 'Vargas', 'Galvez', 19
@@ -16,16 +18,21 @@ EXEC SP_Crear_Persona '10','Jafet', 'Morataya', 'Galvez', 51
 EXEC SP_Crear_Persona '89','Jafet', 'Morataya', 'Galvez', 53
 
 -----------------------Roles-------------------------------
+--nombre_role
+
 EXEC SP_Crear_Role 'Administrador'
 EXEC SP_Crear_Role 'Medico'
 
 -----------------------Usuario Administrador-------------------------------
 -- La contraseña es: 12345678
+--email / password / id_medico / id_role 
 
 EXEC SP_Crear_User 'admin@gmail.com', '$2y$10$zt96rq87c6gXdbGZXryRm.IiLkpSzcx.FOZ1UxsPWZCHMwj02uWqW', 1, null, 1
     
 
 -----------------------MEDICO-------------------------------
+--codigo_medico / dni_persona / estado(BIT 1 o 0) 
+
 EXEC SP_Crear_Medico 1234, 1, 1
 EXEC SP_Crear_Medico 2323, 2, 1
 EXEC SP_Crear_Medico 5344, 3, 1
@@ -43,12 +50,17 @@ EXEC SP_Crear_User 'medico5@gmail.com', '$2y$10$zt96rq87c6gXdbGZXryRm.IiLkpSzcx.
 
 
 ----------------------ESPECIALIDAD--------------------------
+--nombre_especialidad / id_usuario 
+
 EXEC SP_Crear_Especialidad 'Dermatologia', 1
 EXEC SP_Crear_Especialidad 'Urologia', 1
 EXEC SP_Crear_Especialidad 'Ginecologia', 1
 EXEC SP_Crear_Especialidad 'Otorrinolaringologia', 1
 EXEC SP_Crear_Especialidad 'Oftalmologia', 1
+
 -----------------Medico Especialid--------------------------
+--id_medico / id_especialidad
+
 EXEC SP_Crear_Medico_Especialidad 1, 1
 EXEC SP_Crear_Medico_Especialidad 2, 4
 EXEC SP_Crear_Medico_Especialidad 2, 3
@@ -58,6 +70,8 @@ EXEC SP_Crear_Medico_Especialidad 4, 4
 EXEC SP_Crear_Medico_Especialidad 5, 5
 
 -----------------------UNIDAD-------------------------------
+--nombre_unidad / numero_planta / id_medico / id_usuario
+
 EXEC SP_Crear_Unidad 'Sala A1', 1, 1, 1
 EXEC SP_Crear_Unidad 'Sala B1', 1, 2, 1
 EXEC SP_Crear_Unidad 'Sala C1', 1, 3, 1
@@ -66,7 +80,10 @@ EXEC SP_Crear_Unidad 'Sala A2', 2, 5, 1
 EXEC SP_Crear_Unidad 'Sala B2', 2, null, 1
 EXEC SP_Crear_Unidad 'Sala C2', 2, null, 1
 EXEC SP_Crear_Unidad 'Sala D2', 2, null, 1
+
 -----------------------PACIENTE----------------------------------
+--numero_seguro_social / fecha_ingreso / dni_persona / id_usuario
+
 EXEC SP_Crear_Paciente 2332, '2020/09/5', '6', 1
 EXEC SP_Crear_Paciente 3839, '2020/08/20', '7', 1
 EXEC SP_Crear_Paciente 5022, '2020/08/20', '5022', 1
@@ -74,6 +91,8 @@ EXEC SP_Crear_Paciente 4039, '2020/07/3', '8', 1
 EXEC SP_Crear_Paciente 9284, '2020/06/16', '9', 1
 
 -----------------------CONSULTA-----------------------------------
+--descripcion / id_paciente / id_unidad / id_medico / id_usuario
+
 EXEC SP_Crear_Consulta 'Se presentó con dolor', 1, 1, 1, 1
 EXEC SP_Crear_Consulta 'Pierna rota', 2, 2, 1, 1
 EXEC SP_Crear_Consulta 'Brazo roto', 3, 3, 1, 2
@@ -82,6 +101,8 @@ EXEC SP_Crear_Consulta 'Sangrado anal', 1, 4, 2, 2
 EXEC SP_Crear_Consulta 'Dolor de cabeza', 1, 4, 2, 3
 
 ----------------------ENFERMEDAD---------------------------------
+--nombre_enfermedad / id_usuario / apellido1 / apellido2 / edad
+
 EXEC SP_Crear_Enfermedad 'Cancer', 2
 EXEC SP_Crear_Enfermedad 'Dengue', 2
 EXEC SP_Crear_Enfermedad 'Cockbig', 2
@@ -92,6 +113,8 @@ EXEC SP_Crear_Enfermedad 'Sida', 2
 EXEC SP_Crear_Enfermedad 'Leucenia', 2
 
 ------------------------PADECE--------------------------------------
+--id_paciente / id_enfermedad / id_consulta
+
 EXEC SP_Crear_Padece 1, 1, 1
 EXEC SP_Crear_Padece 2, 2, 2
 EXEC SP_Crear_Padece 3, 3, 1
@@ -100,6 +123,8 @@ EXEC SP_Crear_Padece 1, 1, 2
 EXEC SP_Crear_Padece 2, 1, 1
 
 --------------------------TIPO INTERVENCION--------------------------
+--nombre_tipo_intervencion / id_usuario 
+
 EXEC SP_Crear_Tipo_Intervencion 'Cirugia', 1
 EXEC SP_Crear_Tipo_Intervencion 'Dieta', 1
 EXEC SP_Crear_Tipo_Intervencion 'Ejercicio', 1
@@ -107,6 +132,8 @@ EXEC SP_Crear_Tipo_Intervencion 'Medicamento', 1
 EXEC SP_Crear_Tipo_Intervencion 'Salud', 1
 
 ------------------------------INTERVENCION-----------------------------
+--tratamiento / id_tipo_intervencion / id_consulta 
+
 EXEC SP_Crear_Intervencion 'Tomar dos pastillas cada 6 horas', 1, 1
 EXEC SP_Crear_Intervencion 'Comer frutas y tomar 2 litos de agua', 2, 2
 EXEC SP_Crear_Intervencion 'Caminar 20 minutos por dia', 3, 3
