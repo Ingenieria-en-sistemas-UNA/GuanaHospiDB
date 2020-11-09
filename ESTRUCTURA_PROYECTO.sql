@@ -116,6 +116,7 @@ CREATE TABLE Consulta(
 	id_paciente INT NOT NULL,
 	id_unidad INT NOT NULL, 
 	id_medico INT NOT NULL,
+	estado_consulta BIT NOT NULL,
 	CONSTRAINT PK_id_consulta PRIMARY KEY (id_consulta),
 	CONSTRAINT FK_id_paciente_consulta FOREIGN KEY(id_paciente) REFERENCES Paciente(id_paciente) ON DELETE CASCADE,
 	CONSTRAINT FK_id_unidad_consulta FOREIGN KEY(id_unidad) REFERENCES Unidad(id_unidad) ON DELETE CASCADE,
