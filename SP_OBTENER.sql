@@ -25,10 +25,13 @@ AS
 GO
 
 
-CREATE PROC SP_Obtener_Pacientes
+Alter PROC SP_Obtener_Pacientes
 AS
-	SELECT 'Id_Paciente' = id_paciente, 'Numero_Seguro_Social' = numero_seguro_social , 'Fecha_Ingreso' = fecha_ingreso, 'Cedula_Persona' = dni_persona, ok = 1
+	SELECT 'Id_Paciente' = id_paciente, 'Numero_Seguro_Social' = numero_seguro_social , 'Fecha_Ingreso' = fecha_ingreso, 'Cedula_Persona' = Paciente.dni_persona, 'Nombre_Persona' = nombre_persona, 'Primer_Apellido' = apellido_1,
+	'Segundo_Apellido' = apellido_2, ok = 1
 	FROM Paciente
+	INNER JOIN Persona
+	ON Persona.dni_persona = Paciente.dni_persona
 GO
 	
 
@@ -171,13 +174,22 @@ AS
 	FROM Consulta
 GO
 
+CREATE PROC SP_Obtener_Consultas_Activas
+AS
+	SELECT 'Id_Consulta' = id_consulta, 'Fehca_Consulta' = fecha_consulta , descripcion , 'Id_Paciente' = id_paciente, 
+	'Id_Medico' = id_medico, 'Id_Unidad' = id_unidad ,'Estado_Consulta'=estado_consulta,ok = 1
+	FROM Consulta
+	WHERE estado_consulta = 1
+GO
+
+
 CREATE PROC SP_Obtener_Consultas_Por_Paciente_Id
 	(@Id_paciente VARCHAR(5))
 AS
 	SELECT 'Id_Consulta' = id_consulta, 'Fehca_Consulta' = fecha_consulta , descripcion , 'Id_Paciente' = id_paciente, 
 	'Id_Medico' = id_medico, 'Id_Unidad' = id_unidad ,ok = 1
 	FROM Consulta
-	WHERE id_paciente = @Id_paciente
+	WHERE id_paciente = @Id_paciente 
 GO
 
 USE GUANA_HOSPI
