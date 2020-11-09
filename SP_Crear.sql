@@ -191,17 +191,22 @@ USE GUANA_HOSPI
 GO
 CREATE PROC SP_Crear_Paciente(
 	@Numero_seguro_social VARCHAR(8),
+	@FechaIngreso VARCHAR(30),
 	@DniPersona VARCHAR(12),
 	@Id_Usuario VARCHAR(12)
 )
 AS
-	IF(@Numero_seguro_social = '' OR @DniPersona = '')
+	IF(@Numero_seguro_social = '' OR @DniPersona = '' OR @FechaIngreso = '')
 		BEGIN
 			SELECT message = 'No se permiten campos vacios', ok = 0
 		END
 	ELSE IF(ISNUMERIC(@Numero_seguro_social) = 0)
 		BEGIN
 			SELECT message = 'El numero de seguro social debe ser formato numero', ok = 0
+		END
+	ELSE IF(ISDATE(@FechaIngreso) = '')
+		BEGIN
+			SELECT message = 'Debe ser una fecha valida'
 		END
 	ELSE IF EXISTS(SELECT numero_seguro_social FROM Paciente WHERE numero_seguro_social = @Numero_seguro_social)
 		BEGIN
@@ -226,7 +231,7 @@ AS
 			SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
 			SET CONTEXT_INFO @Id_Usuario_Hexa
 			INSERT INTO Paciente(numero_seguro_social, fecha_ingreso, dni_persona, estado_paciente)
-			VALUES (CONVERT(int, @Numero_seguro_social), CONVERT(datetime, GETDATE()), @DniPersona, 1)
+			VALUES (CONVERT(int, @Numero_seguro_social), CONVERT(datetime, @FechaIngreso), @DniPersona, 1)
 			SET CONTEXT_INFO 0x0
 		END
 GO
