@@ -180,8 +180,6 @@ AS
 			DECLARE @Id_Usuario_Hexa VARBINARY(128)
 			SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
 			SET CONTEXT_INFO @Id_Usuario_Hexa
-			SET CONTEXT_INFO 0x0
-
             ---Cambia el estado del consulta
 			UPDATE Consulta
 			SET estado_consulta = 0
@@ -241,6 +239,7 @@ AS
 		END
 	ELSE IF EXISTS (SELECT id_padece FROM Padece WHERE id_padece  = @id_padece )
 		BEGIN
+			SELECT message = 'El id de padecimiento se ha eliminado existosamente!', ok = 1
 			DELETE FROM Padece WHERE id_padece = @id_padece
 	    END    
 	ELSE
