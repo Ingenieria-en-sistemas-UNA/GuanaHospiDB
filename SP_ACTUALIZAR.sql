@@ -59,7 +59,7 @@ CREATE PROCEDURE SP_ActualizarMedico
 				BEGIN
 					SELECT message = 'No se permiten campos vacios', ok = 0;
 				END
-			ELSE IF((ISNUMERIC(@id_medico) = 0) OR (CONVERT(int, @id_medico) < 0))
+			ELSE IF(ISNUMERIC(@id_medico) = 0)
 				BEGIN
 					SELECT message = 'El id debe ser numerico y no puede ser negativo', ok = 0;
 				END
@@ -124,7 +124,7 @@ AS
 				BEGIN
 					SELECT message = 'No se permiten campos vacios', ok = 0;
 				END
-			ELSE IF((ISNUMERIC(@id_especialidad) = 0) OR (CONVERT(int, @id_especialidad) < 0))
+			ELSE IF(ISNUMERIC(@id_especialidad) = 0)
 				BEGIN
 					SELECT message = 'El id debe ser un dato numerico y debe ser positivo', ok = 0;
 				END
@@ -166,7 +166,7 @@ CREATE PROCEDURE SP_ActualizarUnidad
 				BEGIN
 					SELECT message = 'No se permiten campos vacios', ok = 0;
 				END
-			ELSE IF((ISNUMERIC(@id_unidad) = 0) OR (CONVERT(int, @id_unidad) < 0) OR @Id_Medico <> NULL AND ISNUMERIC(@Id_Medico) = 0)
+			ELSE IF((ISNUMERIC(@id_unidad) = 0) OR @Id_Medico <> NULL AND ISNUMERIC(@Id_Medico) = 0)
 				BEGIN
 					SELECT message = 'El id debe ser un dato numerico y positivo', ok = 0; 
 				END
@@ -209,7 +209,7 @@ CREATE PROCEDURE SP_ActualizarPaciente
 				BEGIN
 					SELECT message = 'No se permiten campos vacios', ok = 0;
 				END
-			ELSE IF((ISNUMERIC(@id_paciente) = 0) OR (CONVERT(int, @id_paciente) < 0))
+			ELSE IF(ISNUMERIC(@id_paciente) = 0)
 				BEGIN
 					SELECT message = 'El id debe ser numerico y positivo', ok = 0; 
 				END
@@ -252,7 +252,7 @@ CREATE PROCEDURE SP_ActualizarConsulta
 				BEGIN
 					SELECT message = 'No se permiten campos vacios', ok = 0;
 				END
-			ELSE IF((ISNUMERIC(@id_consulta) = 0) OR (CONVERT(int, @id_consulta) < 0))
+			ELSE IF(ISNUMERIC(@id_consulta) = 0)
 				BEGIN
 					SELECT message = 'El id debe ser numerico y positivo', ok = 0; 
 				END
@@ -299,7 +299,7 @@ CREATE PROCEDURE SP_ActualizarEnfermedad
 				BEGIN
 					SELECT message = 'No se permiten campos vacios', ok = 0;
 				END
-			ELSE IF((ISNUMERIC(@id_enfermedad) = 0) OR (CONVERT(int, @id_enfermedad) < 0))
+			ELSE IF(ISNUMERIC(@id_enfermedad) = 0)
 				BEGIN
 					SELECT message = 'El id debe ser numerico y positivo', ok = 0; 
 				END
@@ -340,7 +340,7 @@ CREATE PROCEDURE SP_ActualizarPadece
 				BEGIN
 					SELECT message = 'No se permiten campos vacios', ok = 0;
 				END
-			ELSE IF((ISNUMERIC(@id_padece) = 0) OR (CONVERT(int, @id_padece) < 0) OR (CONVERT(int, @id_consulta) < 0))
+			ELSE IF((ISNUMERIC(@id_padece) = 0) OR (ISNUMERIC(@id_consulta) = 0))
 				BEGIN
 					SELECT message = 'El id debe ser numerico y positivo', ok = 0;
 				END
@@ -380,7 +380,7 @@ CREATE PROCEDURE SP_ActualizarTipoIntervension
 				BEGIN
 					SELECT message = 'No se permiten campos vacios', ok = 0;
 				END
-			ELSE IF((ISNUMERIC(@id_tipo_Intervencion) = 0) OR (CONVERT(int, @id_tipo_Intervencion) < 0))
+			ELSE IF(ISNUMERIC(@id_tipo_Intervencion) = 0)
 				BEGIN
 					SELECT message = 'El id debe ser numerico y positivo', ok = 0; 
 				END
@@ -425,7 +425,7 @@ CREATE PROCEDURE SP_ActualizarIntervencion
 				BEGIN
 					SELECT message = 'No se permiten campos vacios', ok = 0;
 				END
-			ELSE IF((ISNUMERIC(@id_intervencion) = 0) OR (CONVERT(int, @id_intervencion) < 0))
+			ELSE IF(ISNUMERIC(@id_intervencion) = 0)
 				BEGIN
 					SELECT message = 'El id debe ser numerico y positivo', ok = 0;
 				END
@@ -465,7 +465,7 @@ CREATE PROCEDURE SP_ActualizarMedicoEspecialidad
 				BEGIN
 					SELECT message = 'No se permiten campos vacios', ok = 0;
 				END
-			ELSE IF((ISNUMERIC(@id_medico_especialidad) = 0) OR (CONVERT(int, @id_medico_especialidad) < 0))
+			ELSE IF(ISNUMERIC(@id_medico_especialidad) = 0)
 				BEGIN
 					SELECT message = 'El id debe ser numerico y positivo', ok = 0;
 				END
