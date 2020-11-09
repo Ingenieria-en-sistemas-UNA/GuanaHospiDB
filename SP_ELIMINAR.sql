@@ -182,8 +182,12 @@ AS
 					DELETE FROM Padece WHERE id_consulta = @id_consulta 
 				SET CONTEXT_INFO 0x0
 				END
-			DELETE FROM Consulta WHERE Consulta.id_consulta = @id_consulta
-		END
+            ---Cambia el estado del consulta
+			UPDATE Consulta
+			SET estado = 0
+			WHERE id_consulta = @id_consulta
+
+			SET CONTEXT_INFO 0x0		END
 	ELSE
 		BEGIN
 			SELECT message = 'La consulta no existe', ok = 0

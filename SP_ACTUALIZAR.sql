@@ -240,6 +240,7 @@ CREATE PROCEDURE SP_ActualizarConsulta
 	@descripcion varchar(150),
 	@id_paciente INT,
 	@id_unidad INT,
+	@estado BIT,
 	@Id_Usuario VARCHAR(12)
 	AS
 	IF (@id_consulta = '')
@@ -270,7 +271,8 @@ CREATE PROCEDURE SP_ActualizarConsulta
 						Set	fecha_consulta = GETDATE(),
 						descripcion = @descripcion,
 						id_paciente = @id_paciente,
-						id_unidad = @id_unidad
+						id_unidad = @id_unidad,
+						estado = @estado
 						WHERE id_consulta = @id_consulta
 						PRINT 'SE HA ACTUALIZADO CORRECTAMENTE'	
 					SET CONTEXT_INFO 0x0
