@@ -25,7 +25,7 @@ AS
 GO
 
 
-Alter PROC SP_Obtener_Pacientes
+CREATE PROC SP_Obtener_Pacientes
 AS
 	SELECT 'Id_Paciente' = id_paciente, 'Numero_Seguro_Social' = numero_seguro_social , 'Fecha_Ingreso' = fecha_ingreso, 'Cedula_Persona' = Paciente.dni_persona, 'Nombre_Persona' = nombre_persona, 'Primer_Apellido' = apellido_1,
 	'Segundo_Apellido' = apellido_2, ok = 1
