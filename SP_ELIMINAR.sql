@@ -47,7 +47,7 @@ AS
 		    DECLARE @Id_Usuario_Hexa VARBINARY(128)
 			SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
 			SET CONTEXT_INFO @Id_Usuario_Hexa
-			SELECT message = 'Se ha eliminado la especalidad', ok = 0
+			SELECT message = 'Se ha eliminado la especalidad', ok = 1
 			DELETE FROM Especialidad WHERE Especialidad.id_especialidad = @id_especialidad
 			SET CONTEXT_INFO 0x0
 		END
@@ -116,7 +116,7 @@ AS
 			DECLARE @Id_Usuario_Hexa VARBINARY(128)
 			SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
 			SET CONTEXT_INFO @Id_Usuario_Hexa
-			SELECT message = 'Se ha eliminado unidad', ok = 0
+			SELECT message = 'Se ha eliminado unidad', ok = 1
 			DELETE FROM Unidad WHERE Unidad.id_unidad = @id_unidad
 			SET CONTEXT_INFO 0x0
 		END
@@ -146,7 +146,7 @@ AS
 			SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
 			SET CONTEXT_INFO @Id_Usuario_Hexa
 			SET @idPersonaPaciente = (SELECT dni_persona FROM Paciente WHERE id_paciente = @id_paciente)
-			SELECT message = 'Se ha eliminado el paciente', ok = 0
+			SELECT message = 'Se ha eliminado el paciente', ok = 1
 			
 			--Cambia el estado del paciente
 			UPDATE Paciente
@@ -176,11 +176,11 @@ AS
 		END
 	ELSE IF EXISTS (SELECT id_consulta FROM Consulta WHERE Consulta.id_consulta = @id_consulta)
 		BEGIN
-		    SELECT message = 'Se ha eliminado la consulta', ok = 0
-				DECLARE @Id_Usuario_Hexa VARBINARY(128)
-				SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
-				SET CONTEXT_INFO @Id_Usuario_Hexa
-				SET CONTEXT_INFO 0x0
+		    SELECT message = 'Se ha eliminado la consulta', ok = 1
+			DECLARE @Id_Usuario_Hexa VARBINARY(128)
+			SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
+			SET CONTEXT_INFO @Id_Usuario_Hexa
+			SET CONTEXT_INFO 0x0
 
             ---Cambia el estado del consulta
 			UPDATE Consulta
