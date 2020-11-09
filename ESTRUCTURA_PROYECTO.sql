@@ -100,7 +100,7 @@ GO
 CREATE TABLE Paciente (
 	id_paciente INT IDENTITY (1,1),
 	numero_seguro_social INT NOT NULL,
-	fecha_ingreso DATE NOT NULL,
+	fecha_ingreso DATETIME NOT NULL,
 	dni_persona VARCHAR(12),
 	estado_paciente BIT NOT NULL,
 	CONSTRAINT PK_id_paciente PRIMARY KEY (id_paciente),
@@ -112,7 +112,7 @@ USE	GUANA_HOSPI
 GO
 CREATE TABLE Consulta(
 	id_consulta INT IDENTITY (1,1),
-	fecha_consulta DATE NOT NULL,
+	fecha_consulta DATETIME NOT NULL,
 	descripcion VARCHAR(150),
 	id_paciente INT NOT NULL,
 	id_unidad INT NOT NULL, 
@@ -173,10 +173,10 @@ GO
 USE GUANA_HOSPI
 GO 
 	CREATE TABLE Auditoria(
-		IdAuditoria int IDENTITY (1,1) NOT NULL,
-		Usuario varchar(50),
-		Fecha date,
-		Descripcion varchar(50)
+		IdAuditoria INT IDENTITY (1,1) NOT NULL,
+		Usuario VARCHAR(50),
+		Fecha DATETIME,
+		Descripcion VARCHAR(50)
 		CONSTRAINT PK_IdAuditoria PRIMARY KEY (IdAuditoria)
 )
 GO

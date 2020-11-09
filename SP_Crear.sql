@@ -191,12 +191,11 @@ USE GUANA_HOSPI
 GO
 CREATE PROC SP_Crear_Paciente(
 	@Numero_seguro_social VARCHAR(8),
-	@FechaIngreso VARCHAR(12),
 	@DniPersona VARCHAR(12),
 	@Id_Usuario VARCHAR(12)
 )
 AS
-	IF(@Numero_seguro_social = '' OR @FechaIngreso = '' OR @DniPersona = '')
+	IF(@Numero_seguro_social = '' OR @DniPersona = '')
 		BEGIN
 			SELECT message = 'No se permiten campos vacios', ok = 0
 		END
@@ -227,7 +226,7 @@ AS
 			SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
 			SET CONTEXT_INFO @Id_Usuario_Hexa
 			INSERT INTO Paciente(numero_seguro_social, fecha_ingreso, dni_persona, estado_paciente)
-			VALUES (CONVERT(int, @Numero_seguro_social), CONVERT(varchar, @FechaIngreso, 5), @DniPersona, 1)
+			VALUES (CONVERT(int, @Numero_seguro_social), CONVERT(datetime, GETDATE()), @DniPersona, 1)
 			SET CONTEXT_INFO 0x0
 		END
 GO
@@ -272,7 +271,7 @@ AS
 			SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
 			SET CONTEXT_INFO @Id_Usuario_Hexa
 			INSERT INTO Consulta(fecha_consulta, descripcion, id_paciente, id_unidad, id_medico,estado_consulta)
-			VALUES (CONVERT(date, GETDATE()), @descripcion, CONVERT(int, @IdPaciente), CONVERT(int, @IdUnidad), CONVERT(int, @IdMedico),1)
+			VALUES (CONVERT(datetime, GETDATE()), @descripcion, CONVERT(int, @IdPaciente), CONVERT(int, @IdUnidad), CONVERT(int, @IdMedico),1)
 			SET CONTEXT_INFO 0x0
 		END
 GO
@@ -444,5 +443,5 @@ AS
 	DECLARE @Email NVARCHAR(MAX)
 	SELECT @Email = email FROM users WHERE id = CONVERT(INT, @Id_Usuario)
     INSERT INTO Auditoria (Usuario, Fecha, Descripcion) 
-    VALUES (@Email, GETDATE(), @Descripcion)
+    VALUES (@Email, CONVERT(datetime, GETDATE()), @Descripcion)
 GO
