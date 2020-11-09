@@ -84,11 +84,11 @@ EXEC SP_Crear_Unidad 'Sala D2', 2, null, 1
 -----------------------PACIENTE----------------------------------
 --numero_seguro_social / fecha_ingreso / dni_persona / id_usuario
 
-EXEC SP_Crear_Paciente 2332, '6', 1, 1
-EXEC SP_Crear_Paciente 3839, '7', 1, 1
-EXEC SP_Crear_Paciente 5022, '5022', 1, 1
-EXEC SP_Crear_Paciente 4039, '8', 1, 1
-EXEC SP_Crear_Paciente 9284, '9', 1, 1
+EXEC SP_Crear_Paciente 2332, '2020-11-08 23:22:46', '6', 1
+EXEC SP_Crear_Paciente 3839, '2020-11-08 23:22:46', '7', 1
+EXEC SP_Crear_Paciente 5022, '2020-11-08 23:22:46', '254', 1
+EXEC SP_Crear_Paciente 4039, '2020-11-08 23:22:46', '8', 1
+EXEC SP_Crear_Paciente 9284, '2020-11-08 23:22:46' ,'9', 1
 
 -----------------------CONSULTA-----------------------------------
 --descripcion / id_paciente / id_unidad / id_medico /estado_consulta/ id_usuario
