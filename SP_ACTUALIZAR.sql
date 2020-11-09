@@ -79,8 +79,7 @@ CREATE PROCEDURE SP_ActualizarMedico
 					SET CONTEXT_INFO @Id_Usuario_Hexa
 					UPDATE Medico
 						Set	codigo_medico = @codigo_medico,
-							dni_persona = @dni_persona,
-							estado = @estado
+							dni_persona = @dni_persona
 						WHERE id_medico = convert(int,@id_medico)
 					SET CONTEXT_INFO 0x0
 				END
@@ -297,8 +296,7 @@ CREATE PROCEDURE SP_ActualizarConsulta
 						descripcion = @descripcion,
 						id_paciente = @id_paciente,
 						id_unidad = @id_unidad,
-						id_medico = @id_medico,
-						estado_consulta = @estado_consulta
+						id_medico = @id_medico
 						WHERE id_consulta = convert(int,@id_consulta)
 					SET CONTEXT_INFO 0x0
 		END

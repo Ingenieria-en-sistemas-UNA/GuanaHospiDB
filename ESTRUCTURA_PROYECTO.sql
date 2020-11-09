@@ -3,13 +3,13 @@ GO
 	CREATE DATABASE  GUANA_HOSPI
 	ON PRIMARY
 	(NAME = 'GUANA_HOSPIL_Data',
-	FILENAME= 'C:\Data\GUANA_HOSPI_Data.Mdf',
+	FILENAME= 'D:\Data\GUANA_HOSPI_Data.Mdf',
 	SIZE = 5MB,
 	MAXSIZE = 10MB,
 	FILEGROWTH = 1Mb)
 	LOG ON
 	(NAME = 'GUANA_HOSPI_Log',
-	FILENAME= 'C:\Log\GUANA_HOSPI_Log.Ldf',
+	FILENAME= 'D:\Log\GUANA_HOSPI_Log.Ldf',
 	SIZE = 5MB,
 	MAXSIZE = 10MB,
 	FILEGROWTH = 1Mb)
@@ -143,7 +143,7 @@ CREATE TABLE Padece(
 	id_consulta INT NOT NULL,
 	CONSTRAINT PK_id_padece PRIMARY KEY (id_padece),
 	CONSTRAINT FK_id_paciente_padece FOREIGN  KEY (id_paciente) REFERENCES Paciente (id_paciente) ON DELETE CASCADE,
-	CONSTRAINT FK_id_enfermedad_padece FOREIGN KEY (id_enfermedad) REFERENCES Enfermedad(id_enfermedad) ON DELETE CASCADE,
+	CONSTRAINT FK_id_enfermedad_padece FOREIGN KEY (id_enfermedad) REFERENCES Enfermedad(id_enfermedad),
 	CONSTRAINT FK_id_consulta_padece FOREIGN KEY (id_consulta) REFERENCES Consulta(id_consulta),
 )
 GO
