@@ -267,13 +267,8 @@ AS
 			DECLARE @Id_Usuario_Hexa VARBINARY(128)
 			SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
 			SET CONTEXT_INFO @Id_Usuario_Hexa
-			INSERT INTO Consulta(fecha_consulta, descripcion, id_paciente, id_unidad, id_medico)
-			VALUES (CONVERT(date, GETDATE()), @descripcion, CONVERT(int, @IdPaciente), CONVERT(int, @IdUnidad), CONVERT(int, @IdMedico))
-			SET CONTEXT_INFO 0x0
-
-			INSERT INTO Consulta(descripcion, IdPaciente,IdUnidad,IdMedico, estado)
-			VALUES (@descripcion, @IdPaciente,@IdUnidad, @IdMedico, 1)
-
+			INSERT INTO Consulta(fecha_consulta, descripcion, id_paciente, id_unidad, id_medico,estado_consulta)
+			VALUES (CONVERT(date, GETDATE()), @descripcion, CONVERT(int, @IdPaciente), CONVERT(int, @IdUnidad), CONVERT(int, @IdMedico),1)
 			SET CONTEXT_INFO 0x0
 		END
 GO

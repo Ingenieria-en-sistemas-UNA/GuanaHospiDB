@@ -171,11 +171,22 @@ AS
 	FROM Consulta
 GO
 
-CREATE PROC SP_Obtener_Consultas_Por_Paciente
+CREATE PROC SP_Obtener_Consultas_Activas
+AS
+	SELECT 'Id_Consulta' = id_consulta, 'Fehca_Consulta' = fecha_consulta , descripcion , 'Id_Paciente' = id_paciente, 
+	'Id_Medico' = id_medico, 'Id_Unidad' = id_unidad ,'Estado_Consulta'=estado_consulta,ok = 1
+	FROM Consulta
+	WHERE estado_consulta = 1
+GO
+
+
+CREATE PROC SP_Obtener_Consultas_Por_Paciente_Id
+	(@Id_paciente VARCHAR(5))
 AS
 	SELECT 'Id_Consulta' = id_consulta, 'Fehca_Consulta' = fecha_consulta , descripcion , 'Id_Paciente' = id_paciente, 
 	'Id_Medico' = id_medico, 'Id_Unidad' = id_unidad ,ok = 1
 	FROM Consulta
+	WHERE id_paciente = @Id_paciente 
 GO
 
 USE GUANA_HOSPI
@@ -230,7 +241,7 @@ AS
 		END
 	ELSE
 		BEGIN
-			SELECT 'Id_Enfermedad' = Enfermedad.id_enfermedad, 'Nombre_Enfermedad' = Enfermedad.nombre_enfermedad, ok = 1
+			SELECT 'Id_Enfermedad' = Enfermedad.id_enfermedad, 'Nombre_Enfermedad' = Enfermedad.nombre_enfermedad, 'Id_Consulta' = Padece.id_consulta, ok = 1
 			FROM Enfermedad INNER JOIN Padece ON Enfermedad.id_enfermedad = Padece.id_enfermedad
 			WHERE id_paciente = @id_paciente AND id_consulta = @id_consulta
 		END
