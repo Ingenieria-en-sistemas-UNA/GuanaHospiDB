@@ -100,7 +100,7 @@ GO
 CREATE TABLE Paciente (
 	id_paciente INT IDENTITY (1,1),
 	numero_seguro_social INT NOT NULL,
-	fecha_ingreso DATETIME2 NOT NULL,
+	fecha_ingreso DATE NOT NULL,
 	dni_persona VARCHAR(12),
 	estado_paciente BIT NOT NULL,
 	CONSTRAINT PK_id_paciente PRIMARY KEY (id_paciente),

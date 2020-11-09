@@ -231,7 +231,7 @@ AS
 			SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
 			SET CONTEXT_INFO @Id_Usuario_Hexa
 			INSERT INTO Paciente(numero_seguro_social, fecha_ingreso, dni_persona, estado_paciente)
-			VALUES (CONVERT(int, @Numero_seguro_social), CONVERT(datetime2, @FechaIngreso), @DniPersona, 1)
+			VALUES (CONVERT(int, @Numero_seguro_social), CONVERT(date, @FechaIngreso), @DniPersona, 1)
 			SET CONTEXT_INFO 0x0
 		END
 GO
