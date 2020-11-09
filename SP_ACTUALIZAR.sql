@@ -171,6 +171,10 @@ CREATE PROCEDURE SP_ActualizarUnidad
 		BEGIN
 			SELECT message = 'El id debe ser un dato numerico', ok = 0; 
 		END
+	ELSE IF ( EXISTS(SELECT Unidad.id_medico FROM Unidad WHERE Unidad.id_medico = @Id_Medico))
+		BEGIN
+			SELECT message = 'El medico ya tiene una unidad a cargo', ok = 0;
+		END
 	ELSE IF ( EXISTS(SELECT id_unidad FROM Unidad WHERE id_unidad = @id_unidad))
 		BEGIN
 			IF ((@nombre = '') OR (@numeroPlanta = ''))
