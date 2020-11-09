@@ -260,6 +260,7 @@ AS
 		END
 	ELSE IF EXISTS (SELECT id_padece FROM Padece WHERE id_paciente = @id_paciente AND id_consulta = @id_consulta)
 		BEGIN
+		    SELECT message = 'Se ha eliminado el id del paciente', ok = 1
 			DELETE FROM Padece WHERE id_paciente = @id_paciente AND id_consulta = @id_consulta
 	    END    
 	ELSE
