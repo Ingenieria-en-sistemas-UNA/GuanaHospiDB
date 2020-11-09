@@ -208,6 +208,10 @@ AS
 		BEGIN
 			SELECT message = 'El numero de seguro social ya habia registrado anteriormente', ok = 0
 		END
+	ELSE IF EXISTS(SELECT dni_persona FROM Paciente WHERE dni_persona = @DniPersona)
+		BEGIN
+			SELECT message = 'La persona ya fue registrada', ok = 0
+		END
 	ELSE IF NOT EXISTS(SELECT dni_persona FROM Persona WHERE dni_persona = @DniPersona)
 		BEGIN
 			SELECT message = 'La persona no existe', ok = 0
@@ -222,8 +226,8 @@ AS
 			DECLARE @Id_Usuario_Hexa VARBINARY(128)
 			SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
 			SET CONTEXT_INFO @Id_Usuario_Hexa
-			INSERT INTO Paciente(numero_seguro_social, fecha_ingreso, dni_persona)
-			VALUES (CONVERT(int, @Numero_seguro_social), CONVERT(varchar, @FechaIngreso, 5), @DniPersona)
+			INSERT INTO Paciente(numero_seguro_social, fecha_ingreso, dni_persona, estado_paciente)
+			VALUES (CONVERT(int, @Numero_seguro_social), CONVERT(varchar, @FechaIngreso, 5), @DniPersona, 1)
 			SET CONTEXT_INFO 0x0
 		END
 GO

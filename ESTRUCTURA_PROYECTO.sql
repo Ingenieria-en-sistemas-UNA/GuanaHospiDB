@@ -102,6 +102,7 @@ CREATE TABLE Paciente (
 	numero_seguro_social INT NOT NULL,
 	fecha_ingreso DATE NOT NULL,
 	dni_persona VARCHAR(12),
+	estado_paciente BIT NOT NULL,
 	CONSTRAINT PK_id_paciente PRIMARY KEY (id_paciente),
 	CONSTRAINT FK_dni_persona_paciente FOREIGN KEY (dni_persona) REFERENCES Persona(dni_persona) ON DELETE CASCADE,
 )

@@ -197,6 +197,7 @@ CREATE PROCEDURE SP_ActualizarPaciente
 	@numeroSeguroSocial INT,
 	@fecha_ingreso DATE,
 	@dni_persona VARCHAR(12),
+	@estado_paciente BIT,
 	@Id_Usuario VARCHAR(12)
 	AS
 	IF (@id_paciente = '')
@@ -222,7 +223,8 @@ CREATE PROCEDURE SP_ActualizarPaciente
 					UPDATE Paciente
 						Set	numero_seguro_social = @numeroSeguroSocial,
 						fecha_ingreso = @fecha_ingreso,
-						dni_persona = @dni_persona
+						dni_persona = @dni_persona,
+						estado_paciente = @estado_paciente
 						WHERE id_paciente = @id_paciente
 					SET CONTEXT_INFO 0x0
 				END
@@ -292,8 +294,6 @@ CREATE PROCEDURE SP_ActualizarConsulta
 			SELECT message = 'El id de la consulta no existe', ok = 0;
 		END
 GO
-
-
 
 USE GUANA_HOSPI
 GO

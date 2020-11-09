@@ -147,9 +147,12 @@ AS
 			SET CONTEXT_INFO @Id_Usuario_Hexa
 			SET @idPersonaPaciente = (SELECT dni_persona FROM Paciente WHERE id_paciente = @id_paciente)
 			SELECT message = 'Se ha eliminado el paciente', ok = 0
-			DELETE FROM Paciente WHERE Paciente.id_paciente = @id_paciente
-			SELECT message = 'Se ha eliminado la persona', ok = 0
-			DELETE FROM Persona WHERE Persona.dni_persona = @idPersonaPaciente
+			
+			--Cambia el estado del paciente
+			UPDATE Paciente
+			SET estado_paciente = 0
+			WHERE id_paciente = @id_paciente
+
 			SET CONTEXT_INFO 0x0
 		END
 	ELSE
