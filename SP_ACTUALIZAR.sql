@@ -57,7 +57,7 @@ CREATE PROCEDURE SP_ActualizarMedico
 		BEGIN
 			SELECT message = 'El id debe ser numerico', ok = 0;
 		END
-	ELSE IF EXISTS(SELECT Persona.dni_persona FROM Persona WHERE Persona.dni_persona = @dni_persona)
+	ELSE IF EXISTS(SELECT Medico.dni_persona FROM Medico WHERE Medico.dni_persona = @dni_persona)
 		BEGIN
 			SELECT message = 'El DNI de persona ya esta registrado', ok = 0
 		END
@@ -219,7 +219,7 @@ CREATE PROCEDURE SP_ActualizarPaciente
 		BEGIN
 			SELECT message = 'El numero de seguro social ya habia registrado anteriormente', ok = 0
 		END
-	ELSE IF EXISTS(SELECT Persona.dni_persona FROM Persona WHERE Persona.dni_persona = @dni_persona)
+	ELSE IF EXISTS(SELECT Paciente.dni_persona FROM Paciente WHERE Paciente.dni_persona = @dni_persona)
 		BEGIN
 			SELECT message = 'El DNI de persona ya esta registrado', ok = 0
 		END
