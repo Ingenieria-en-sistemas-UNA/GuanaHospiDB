@@ -240,6 +240,8 @@ CREATE PROCEDURE SP_ActualizarConsulta
 	@descripcion varchar(150),
 	@id_paciente INT,
 	@id_unidad INT,
+	@id_medico INT,
+	@estado_consulta BIT,
 	@Id_Usuario VARCHAR(12)
 	AS
 	IF (@id_consulta = '')
@@ -256,9 +258,17 @@ CREATE PROCEDURE SP_ActualizarConsulta
 				BEGIN
 					SELECT message = 'El id debe ser numerico y positivo', ok = 0; 
 				END
-		ELSE IF NOT EXISTS(SELECT id_unidad FROM Unidad WHERE id_unidad = @id_unidad)
+			ELSE IF NOT EXISTS(SELECT id_medico FROM Medico WHERE id_medico = @id_medico)
 				BEGIN
-				SELECT message = 'El id de la consulta no existe', ok = 0;
+		    		SELECT message = 'El id de medico no existe', ok = 0;
+				END
+			ELSE IF NOT EXISTS(SELECT id_paciente FROM Paciente WHERE id_paciente = @id_paciente)
+				BEGIN
+					SELECT message = 'El id de paciente no existe', ok = 0;
+				END
+			ELSE IF NOT EXISTS(SELECT id_unidad FROM Unidad WHERE id_unidad = @id_unidad)
+				BEGIN
+					SELECT message = 'El id de la consulta no existe', ok = 0;
 				END
 		ELSE 
 		BEGIN
@@ -270,9 +280,10 @@ CREATE PROCEDURE SP_ActualizarConsulta
 						Set	fecha_consulta = GETDATE(),
 						descripcion = @descripcion,
 						id_paciente = @id_paciente,
-						id_unidad = @id_unidad
+						id_unidad = @id_unidad,
+						id_medico = @id_medico,
+						estado_consulta = @estado_consulta
 						WHERE id_consulta = @id_consulta
-						PRINT 'SE HA ACTUALIZADO CORRECTAMENTE'	
 					SET CONTEXT_INFO 0x0
 		END
 	END
@@ -281,6 +292,8 @@ CREATE PROCEDURE SP_ActualizarConsulta
 			SELECT message = 'El id de la consulta no existe', ok = 0;
 		END
 GO
+
+
 
 USE GUANA_HOSPI
 GO

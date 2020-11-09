@@ -173,22 +173,25 @@ AS
 		END
 	ELSE IF EXISTS (SELECT id_consulta FROM Consulta WHERE Consulta.id_consulta = @id_consulta)
 		BEGIN
-		    SELECT message = 'Se ha eliminado la consulata', ok = 0
-			IF EXISTS(SELECT id_consulta FROM Padece WHERE id_consulta = @id_consulta)
-				BEGIN
-				DELETE FROM Padece WHERE id_consulta = @id_consulta 
-				END
+		    SELECT message = 'Se ha eliminado la consulta', ok = 0
 				DECLARE @Id_Usuario_Hexa VARBINARY(128)
 				SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
 				SET CONTEXT_INFO @Id_Usuario_Hexa
-					DELETE FROM Consulta WHERE Consulta.id_consulta = @id_consulta
 				SET CONTEXT_INFO 0x0
+
+            ---Cambia el estado del consulta
+			UPDATE Consulta
+			SET estado_consulta = 0
+			WHERE id_consulta = @id_consulta
+
+			SET CONTEXT_INFO 0x0	
 		END
 	ELSE
 		BEGIN
 			SELECT message = 'La consulta no existe', ok = 0
 		END
 GO
+
 -----------------------------------ELIMINAR ENFERMEDAD-----------------------------------
 USE	GUANA_HOSPI
 GO

@@ -91,15 +91,14 @@ EXEC SP_Crear_Paciente 4039, '2020/07/3', '8', 1
 EXEC SP_Crear_Paciente 9284, '2020/06/16', '9', 1
 
 -----------------------CONSULTA-----------------------------------
---descripcion / id_paciente / id_unidad / id_medico / id_usuario
+--descripcion / id_paciente / id_unidad / id_medico /estado_consulta/ id_usuario
 
-EXEC SP_Crear_Consulta 'Se presentó con dolor', 1, 1, 1, 1
+EXEC SP_Crear_Consulta 'Se presentó con dolor', 1, 1, 1,1
 EXEC SP_Crear_Consulta 'Pierna rota', 2, 2, 1, 1
 EXEC SP_Crear_Consulta 'Brazo roto', 3, 3, 1, 2
 EXEC SP_Crear_Consulta 'Dolor abdominal', 4, 4, 2, 2
 EXEC SP_Crear_Consulta 'Sangrado anal', 1, 4, 2, 2
 EXEC SP_Crear_Consulta 'Dolor de cabeza', 1, 4, 2, 3
-
 ----------------------ENFERMEDAD---------------------------------
 --nombre_enfermedad / id_usuario / apellido1 / apellido2 / edad
 
