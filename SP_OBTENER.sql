@@ -177,7 +177,7 @@ AS
 	SELECT 'Id_Consulta' = id_consulta, 'Fehca_Consulta' = fecha_consulta , descripcion , 'Id_Paciente' = id_paciente, 
 	'Id_Medico' = id_medico, 'Id_Unidad' = id_unidad ,ok = 1
 	FROM Consulta
-	WHERE id_paciente = @Id_paciente
+	WHERE id_paciente = @Id_paciente 
 GO
 
 USE GUANA_HOSPI
