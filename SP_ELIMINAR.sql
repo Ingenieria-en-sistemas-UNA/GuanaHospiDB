@@ -280,6 +280,10 @@ AS
 		BEGIN
 			SELECT message = 'Los datos deben de ser de tipo numerico', ok = 0
 		END
+	ELSE IF EXISTS(SELECT id_tipo_intervencion FROM Intervenciones WHERE id_tipo_intervencion = @id_tipo_intervencion)
+		BEGIN
+			SELECT message = 'Hay intervenciones relacionadas con este tipo de intervención', ok = 0
+		END
 	ELSE IF EXISTS (SELECT id_tipo_intervencion FROM Tipo_Intervencion WHERE id_tipo_intervencion = @id_tipo_intervencion)
 		BEGIN
 			SELECT message = 'Se ha eliminado el tipo de intervencion', ok = 1
