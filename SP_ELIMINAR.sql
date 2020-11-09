@@ -208,6 +208,10 @@ AS
 		BEGIN
 			SELECT message = 'Los datos deben de ser de tipo numerico', ok = 0
 		END
+	ELSE IF EXISTS(SELECT id_enfermedad FROM Padece WHERE id_enfermedad = @id_enfermedad)
+		BEGIN
+			SELECT message = 'Hay pacientes registrados con esta enfermedad', ok = 0
+		END
 	ELSE IF EXISTS (SELECT id_enfermedad FROM Enfermedad WHERE id_enfermedad = @id_enfermedad)
 		BEGIN
 			DECLARE @Id_Usuario_Hexa VARBINARY(128)
