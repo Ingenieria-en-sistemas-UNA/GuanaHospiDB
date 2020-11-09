@@ -46,7 +46,6 @@ CREATE PROCEDURE SP_ActualizarMedico
 	@id_medico INT,
 	@codigo_medico INT,
 	@dni_persona VARCHAR(12),
-	@estado BIT,
 	@Id_Usuario VARCHAR(12)
 	AS
 	IF (@id_medico = '')
@@ -55,7 +54,7 @@ CREATE PROCEDURE SP_ActualizarMedico
 		END
 	ELSE IF ( EXISTS(SELECT id_medico FROM Medico WHERE id_medico = @id_medico))
 		BEGIN
-			IF ((@codigo_medico = '') OR (@dni_persona = '') OR (@estado = ''))
+			IF ((@codigo_medico = '') OR (@dni_persona = ''))
 				BEGIN
 					SELECT message = 'No se permiten campos vacios', ok = 0;
 				END
@@ -71,8 +70,7 @@ CREATE PROCEDURE SP_ActualizarMedico
 					SET CONTEXT_INFO @Id_Usuario_Hexa
 					UPDATE Medico
 						Set	codigo_medico = @codigo_medico,
-							dni_persona = @dni_persona,
-							estado = @estado
+							dni_persona = @dni_persona
 						WHERE id_medico = @id_medico
 					SET CONTEXT_INFO 0x0
 				END
@@ -197,7 +195,6 @@ CREATE PROCEDURE SP_ActualizarPaciente
 	@numeroSeguroSocial INT,
 	@fecha_ingreso DATE,
 	@dni_persona VARCHAR(12),
-	@estado_paciente BIT,
 	@Id_Usuario VARCHAR(12)
 	AS
 	IF (@id_paciente = '')
@@ -223,8 +220,7 @@ CREATE PROCEDURE SP_ActualizarPaciente
 					UPDATE Paciente
 						Set	numero_seguro_social = @numeroSeguroSocial,
 						fecha_ingreso = @fecha_ingreso,
-						dni_persona = @dni_persona,
-						estado_paciente = @estado_paciente
+						dni_persona = @dni_persona
 						WHERE id_paciente = @id_paciente
 					SET CONTEXT_INFO 0x0
 				END
@@ -243,7 +239,6 @@ CREATE PROCEDURE SP_ActualizarConsulta
 	@id_paciente INT,
 	@id_unidad INT,
 	@id_medico INT,
-	@estado_consulta BIT,
 	@Id_Usuario VARCHAR(12)
 	AS
 	IF (@id_consulta = '')
@@ -283,8 +278,7 @@ CREATE PROCEDURE SP_ActualizarConsulta
 						descripcion = @descripcion,
 						id_paciente = @id_paciente,
 						id_unidad = @id_unidad,
-						id_medico = @id_medico,
-						estado_consulta = @estado_consulta
+						id_medico = @id_medico
 						WHERE id_consulta = @id_consulta
 					SET CONTEXT_INFO 0x0
 		END
