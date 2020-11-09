@@ -208,6 +208,10 @@ AS
 		BEGIN
 			SELECT message = 'Los datos deben de ser de tipo numerico', ok = 0
 		END
+	ELSE IF EXISTS(SELECT id_enfermedad FROM Padece WHERE id_enfermedad = @id_enfermedad)
+		BEGIN
+			SELECT message = 'Hay pacientes registrados con esta enfermedad', ok = 0
+		END
 	ELSE IF EXISTS (SELECT id_enfermedad FROM Enfermedad WHERE id_enfermedad = @id_enfermedad)
 		BEGIN
 			DECLARE @Id_Usuario_Hexa VARBINARY(128)
@@ -280,6 +284,10 @@ AS
 	ELSE IF(ISNUMERIC(@id_tipo_intervencion) = 0)
 		BEGIN
 			SELECT message = 'Los datos deben de ser de tipo numerico', ok = 0
+		END
+	ELSE IF EXISTS(SELECT id_tipo_intervencion FROM Intervenciones WHERE id_tipo_intervencion = @id_tipo_intervencion)
+		BEGIN
+			SELECT message = 'Hay intervenciones relacionadas con este tipo de intervención', ok = 0
 		END
 	ELSE IF EXISTS (SELECT id_tipo_intervencion FROM Tipo_Intervencion WHERE id_tipo_intervencion = @id_tipo_intervencion)
 		BEGIN
