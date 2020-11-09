@@ -231,7 +231,7 @@ AS
 			SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
 			SET CONTEXT_INFO @Id_Usuario_Hexa
 			INSERT INTO Paciente(numero_seguro_social, fecha_ingreso, dni_persona, estado_paciente)
-			VALUES (CONVERT(int, @Numero_seguro_social), CONVERT(datetime, @FechaIngreso), @DniPersona, 1)
+			VALUES (CONVERT(int, @Numero_seguro_social), CONVERT(datetime2, @FechaIngreso), @DniPersona, 1)
 			SET CONTEXT_INFO 0x0
 		END
 GO
@@ -276,7 +276,7 @@ AS
 			SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
 			SET CONTEXT_INFO @Id_Usuario_Hexa
 			INSERT INTO Consulta(fecha_consulta, descripcion, id_paciente, id_unidad, id_medico,estado_consulta)
-			VALUES (CONVERT(datetime, GETDATE()), @descripcion, CONVERT(int, @IdPaciente), CONVERT(int, @IdUnidad), CONVERT(int, @IdMedico),1)
+			VALUES (CONVERT(datetime2(0), SYSDATETIME()), @descripcion, CONVERT(int, @IdPaciente), CONVERT(int, @IdUnidad), CONVERT(int, @IdMedico),1)
 			SET CONTEXT_INFO 0x0
 		END
 GO
@@ -448,5 +448,5 @@ AS
 	DECLARE @Email NVARCHAR(MAX)
 	SELECT @Email = email FROM users WHERE id = CONVERT(INT, @Id_Usuario)
     INSERT INTO Auditoria (Usuario, Fecha, Descripcion) 
-    VALUES (@Email, CONVERT(datetime, GETDATE()), @Descripcion)
+    VALUES (@Email, CONVERT(datetime2(0), SYSDATETIME()), @Descripcion)
 GO
