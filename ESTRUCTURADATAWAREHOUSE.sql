@@ -102,11 +102,3 @@ CREATE TABLE Intervenciones(
 	CONSTRAINT PK_id_intervencion PRIMARY KEY (id_intervencion)
 )
 GO
-
-use GUANA_HOSPI
-go
-select * from Consulta
-
-use DW_GUANA_HOSPI
-go
-select * from Consulta
