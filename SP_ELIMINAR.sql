@@ -176,7 +176,7 @@ AS
 		END
 	ELSE IF EXISTS (SELECT id_consulta FROM Consulta WHERE Consulta.id_consulta = @id_consulta)
 		BEGIN
-		    SELECT message = 'Se ha eliminado la consulta', ok = 0
+		    SELECT message = 'Se ha eliminado la consulta', ok = 1
 				DECLARE @Id_Usuario_Hexa VARBINARY(128)
 				SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
 				SET CONTEXT_INFO @Id_Usuario_Hexa
@@ -237,6 +237,7 @@ AS
 		END
 	ELSE IF EXISTS (SELECT id_padece FROM Padece WHERE id_padece  = @id_padece )
 		BEGIN
+			SELECT message = 'Se ha eliminado el padecimiento', ok = 1
 			DELETE FROM Padece WHERE id_padece = @id_padece
 	    END    
 	ELSE
@@ -260,6 +261,7 @@ AS
 		END
 	ELSE IF EXISTS (SELECT id_padece FROM Padece WHERE id_paciente = @id_paciente AND id_consulta = @id_consulta)
 		BEGIN
+			SELECT message = 'Se ha eliminado la la consulta', ok = 1
 			DELETE FROM Padece WHERE id_paciente = @id_paciente AND id_consulta = @id_consulta
 	    END    
 	ELSE
