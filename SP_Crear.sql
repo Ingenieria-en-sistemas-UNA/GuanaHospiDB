@@ -17,7 +17,7 @@ AS
         END
 	ELSE IF (EXISTS(SELECT dni_persona FROM Persona WHERE dni_persona= @Dni))
 		BEGIN
-			SELECT message = 'Este id ya habia sido registrado anteriormente', ok = 0
+			SELECT message = 'Esta cedula ya habia sido registrado anteriormente', ok = 0
 		END
 	ELSE
 		BEGIN
@@ -71,7 +71,7 @@ AS
 		END
 	ELSE IF (NOT EXISTS(SELECT dni_persona FROM Persona WHERE dni_persona=@DniPersona))
 		BEGIN
-			SELECT message = 'El id de la persona no existe', ok = 0
+			SELECT message = 'La cedula de la persona no existe', ok = 0
 		END
 	ELSE IF (EXISTS(SELECT dni_persona FROM Medico WHERE dni_persona=@DniPersona))
 		BEGIN
