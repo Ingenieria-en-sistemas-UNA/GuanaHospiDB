@@ -1,4 +1,3 @@
-
 USE GUANA_HOSPI
 GO
 CREATE PROCEDURE SP_ActualizarPersona
