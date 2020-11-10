@@ -153,6 +153,8 @@ AS
 GO
 
 
+EXEC SP_ActualizarUnidad 10,'Sala A1', 1, 9, 1
+
 USE GUANA_HOSPI
 GO
 CREATE PROCEDURE SP_ActualizarUnidad

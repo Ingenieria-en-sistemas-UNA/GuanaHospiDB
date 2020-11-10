@@ -39,6 +39,7 @@ EXEC SP_Crear_Medico 5344, 3, 1
 EXEC SP_Crear_Medico 6453, 4, 1
 EXEC SP_Crear_Medico 4656, 5, 1
 EXEC SP_Crear_Medico 4852, 89, 1
+EXEC SP_Crear_Medico 5022, 6, 1
 
 -----------------------Usuarios Medicos------------------------------
 
@@ -80,6 +81,7 @@ EXEC SP_Crear_Unidad 'Sala A2', 2, 5, 1
 EXEC SP_Crear_Unidad 'Sala B2', 2, null, 1
 EXEC SP_Crear_Unidad 'Sala C2', 2, null, 1
 EXEC SP_Crear_Unidad 'Sala D2', 2, null, 1
+EXEC SP_Crear_Unidad 'Sala D3', 2, null, 1
 
 -----------------------PACIENTE----------------------------------
 --numero_seguro_social / fecha_ingreso / dni_persona / id_usuario
