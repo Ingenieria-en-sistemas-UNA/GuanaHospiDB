@@ -50,6 +50,8 @@ AS
                 END
 GO
 
+EXEC SP_obtener_diccionario_tabla 'Persona', 'GUANA_HOSPI'
+/*
 EXEC SP_obtener_diccionario_tabla 'Auditoria', 'GUANA_HOSPI'
 EXEC SP_obtener_diccionario_tabla 'Consulta', 'GUANA_HOSPI'
 EXEC SP_obtener_diccionario_tabla 'Enfermedad', 'GUANA_HOSPI'
@@ -59,8 +61,8 @@ EXEC SP_obtener_diccionario_tabla 'Medico', 'GUANA_HOSPI'
 EXEC SP_obtener_diccionario_tabla 'Medico_Especialidad', 'GUANA_HOSPI'
 EXEC SP_obtener_diccionario_tabla 'Paciente', 'GUANA_HOSPI'
 EXEC SP_obtener_diccionario_tabla 'Padece', 'GUANA_HOSPI'
-EXEC SP_obtener_diccionario_tabla 'Persona', 'GUANA_HOSPI'
 EXEC SP_obtener_diccionario_tabla 'Roles', 'GUANA_HOSPI'
 EXEC SP_obtener_diccionario_tabla 'Tipo_Intervencion', 'GUANA_HOSPI'
 EXEC SP_obtener_diccionario_tabla 'Unidad', 'GUANA_HOSPI'
 EXEC SP_obtener_diccionario_tabla 'users', 'GUANA_HOSPI'
+*/
