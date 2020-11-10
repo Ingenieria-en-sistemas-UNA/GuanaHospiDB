@@ -44,7 +44,7 @@ AS
 	SELECT TOP 5 ti.nombre_tipo_intervencion, i.tratamiento, ti.id_tipo_intervencion , 'Cantidad' = COUNT(ti.id_tipo_intervencion)
 	FROM DW_GUANA_HOSPI.DBO.Tipo_Intervencion ti
 		INNER JOIN DW_GUANA_HOSPI.DBO.Intervenciones i ON ti.id_tipo_intervencion = i.id_tipo_intervencion
-	GROUP BY ti.nombre_tipo_intervencion, i.tratamiento, ti.id_tipo_intervencion
+	GROUP BY ti.nombre_tipo_intervencion, ti.id_tipo_intervencion
 	ORDER BY COUNT(ti.id_tipo_intervencion) DESC
 GO
 
