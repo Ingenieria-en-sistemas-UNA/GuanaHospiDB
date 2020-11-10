@@ -77,30 +77,45 @@ EXEC SP_Crear_Unidad 'Sala A1', 1, 1, 1
 EXEC SP_Crear_Unidad 'Sala B1', 1, 2, 1
 EXEC SP_Crear_Unidad 'Sala C1', 1, 3, 1
 EXEC SP_Crear_Unidad 'Sala D1', 1, 4, 1
+EXEC SP_Crear_Unidad 'Sala E1', 1, 4, 1
 EXEC SP_Crear_Unidad 'Sala A2', 2, 5, 1
 EXEC SP_Crear_Unidad 'Sala B2', 2, null, 1
 EXEC SP_Crear_Unidad 'Sala C2', 2, null, 1
 EXEC SP_Crear_Unidad 'Sala D2', 2, null, 1
+<<<<<<< HEAD
 EXEC SP_Crear_Unidad 'Sala D3', 2, null, 1
+=======
+EXEC SP_Crear_Unidad 'Sala E2', 2, null, 1
+>>>>>>> 7e3bdc6fa4a39aa199b0aadf0429ddf4d19e9751
 
 -----------------------PACIENTE----------------------------------
 --numero_seguro_social / fecha_ingreso / dni_persona / id_usuario
 
 EXEC SP_Crear_Paciente 2332, '2020-11-08 23:22:46', '6', 1
 EXEC SP_Crear_Paciente 3839, '2020-11-08 23:22:46', '7', 1
-EXEC SP_Crear_Paciente 5022, '2020-11-08 23:22:46', '254', 1
+EXEC SP_Crear_Paciente 5022, '2020-11-08 23:22:46', '10', 1
 EXEC SP_Crear_Paciente 4039, '2020-11-08 23:22:46', '8', 1
 EXEC SP_Crear_Paciente 9284, '2020-11-08 23:22:46' ,'9', 1
+EXEC SP_Crear_Paciente 7451, '2020-11-08 23:22:46' ,'89', 1
 
 -----------------------CONSULTA-----------------------------------
 --descripcion / id_paciente / id_unidad / id_medico /estado_consulta/ id_usuario
 
 EXEC SP_Crear_Consulta 'Se presentó con dolor', 1, 1, 1,1
+EXEC SP_Crear_Consulta 'Se presentó malestar estomacal', 1, 2, 2,1
+EXEC SP_Crear_Consulta 'Fiebre', 1, 2, 2,1
+
 EXEC SP_Crear_Consulta 'Pierna rota', 2, 2, 1, 1
+EXEC SP_Crear_Consulta 'Brazo roto', 2, 2, 2, 1
+EXEC SP_Crear_Consulta 'Sudoración', 2, 3, 3, 1
+
 EXEC SP_Crear_Consulta 'Brazo roto', 3, 3, 1, 2
 EXEC SP_Crear_Consulta 'Dolor abdominal', 4, 4, 2, 2
 EXEC SP_Crear_Consulta 'Sangrado anal', 1, 4, 2, 2
 EXEC SP_Crear_Consulta 'Dolor de cabeza', 1, 4, 2, 3
+
+SELECT m.id_medico, m.dni_persona, u.id_unidad FROM Medico m
+INNER JOIN Unidad u ON m.id_medico = u.id_medico 
 ----------------------ENFERMEDAD---------------------------------
 --nombre_enfermedad / id_usuario / apellido1 / apellido2 / edad
 
@@ -121,7 +136,10 @@ EXEC SP_Crear_Padece 2, 2, 2
 EXEC SP_Crear_Padece 3, 3, 1
 EXEC SP_Crear_Padece 4, 4, 3
 EXEC SP_Crear_Padece 1, 1, 2
-EXEC SP_Crear_Padece 2, 1, 1
+EXEC SP_Crear_Padece 2, 2, 1
+EXEC SP_Crear_Padece 5, 1, 1
+EXEC SP_Crear_Padece 6, 1, 1
+EXEC SP_Crear_Padece 1, 4, 1
 
 --------------------------TIPO INTERVENCION--------------------------
 --nombre_tipo_intervencion / id_usuario 
@@ -138,5 +156,8 @@ EXEC SP_Crear_Tipo_Intervencion 'Salud', 1
 EXEC SP_Crear_Intervencion 'Tomar dos pastillas cada 6 horas', 1, 1
 EXEC SP_Crear_Intervencion 'Comer frutas y tomar 2 litos de agua', 2, 2
 EXEC SP_Crear_Intervencion 'Caminar 20 minutos por dia', 3, 3
-EXEC SP_Crear_Intervencion 'Evitar comida chatarra', 4, 4
+EXEC SP_Crear_Intervencion 'Hacer ejercicio', 4, 4
+EXEC SP_Crear_Intervencion 'Tomar pastillas cada dos horas', 1, 7
+EXEC SP_Crear_Intervencion 'Comer sano', 1, 6
 
+	
