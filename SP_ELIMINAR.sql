@@ -47,7 +47,7 @@ AS
 		    DECLARE @Id_Usuario_Hexa VARBINARY(128)
 			SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
 			SET CONTEXT_INFO @Id_Usuario_Hexa
-			SELECT message = 'Se ha eliminado la especalidad', ok = 0
+			SELECT message = 'Se ha eliminado la especalidad', ok = 1
 			DELETE FROM Especialidad WHERE Especialidad.id_especialidad = @id_especialidad
 			SET CONTEXT_INFO 0x0
 		END
@@ -116,7 +116,7 @@ AS
 			DECLARE @Id_Usuario_Hexa VARBINARY(128)
 			SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
 			SET CONTEXT_INFO @Id_Usuario_Hexa
-			SELECT message = 'Se ha eliminado unidad', ok = 0
+			SELECT message = 'Se ha eliminado unidad', ok = 1
 			DELETE FROM Unidad WHERE Unidad.id_unidad = @id_unidad
 			SET CONTEXT_INFO 0x0
 		END
@@ -146,7 +146,7 @@ AS
 			SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
 			SET CONTEXT_INFO @Id_Usuario_Hexa
 			SET @idPersonaPaciente = (SELECT dni_persona FROM Paciente WHERE id_paciente = @id_paciente)
-			SELECT message = 'Se ha eliminado el paciente', ok = 0
+			SELECT message = 'Se ha eliminado el paciente', ok = 1
 			
 			--Cambia el estado del paciente
 			UPDATE Paciente
@@ -177,11 +177,9 @@ AS
 	ELSE IF EXISTS (SELECT id_consulta FROM Consulta WHERE Consulta.id_consulta = @id_consulta)
 		BEGIN
 		    SELECT message = 'Se ha eliminado la consulta', ok = 1
-				DECLARE @Id_Usuario_Hexa VARBINARY(128)
-				SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
-				SET CONTEXT_INFO @Id_Usuario_Hexa
-				SET CONTEXT_INFO 0x0
-
+			DECLARE @Id_Usuario_Hexa VARBINARY(128)
+			SET @Id_Usuario_Hexa = CAST(@Id_Usuario AS VARBINARY(128))
+			SET CONTEXT_INFO @Id_Usuario_Hexa
             ---Cambia el estado del consulta
 			UPDATE Consulta
 			SET estado_consulta = 0
@@ -207,6 +205,10 @@ AS
 	ELSE IF(ISNUMERIC(@id_enfermedad) = 0)
 		BEGIN
 			SELECT message = 'Los datos deben de ser de tipo numerico', ok = 0
+		END
+	ELSE IF EXISTS(SELECT id_enfermedad FROM Padece WHERE id_enfermedad = @id_enfermedad)
+		BEGIN
+			SELECT message = 'Hay pacientes registrados con esta enfermedad', ok = 0
 		END
 	ELSE IF EXISTS (SELECT id_enfermedad FROM Enfermedad WHERE id_enfermedad = @id_enfermedad)
 		BEGIN
@@ -237,7 +239,7 @@ AS
 		END
 	ELSE IF EXISTS (SELECT id_padece FROM Padece WHERE id_padece  = @id_padece )
 		BEGIN
-			SELECT message = 'Se ha eliminado el padecimiento', ok = 1
+			SELECT message = 'El id de padecimiento se ha eliminado existosamente!', ok = 1
 			DELETE FROM Padece WHERE id_padece = @id_padece
 	    END    
 	ELSE
@@ -261,7 +263,7 @@ AS
 		END
 	ELSE IF EXISTS (SELECT id_padece FROM Padece WHERE id_paciente = @id_paciente AND id_consulta = @id_consulta)
 		BEGIN
-			SELECT message = 'Se ha eliminado la la consulta', ok = 1
+		    SELECT message = 'Se ha eliminado el id del paciente', ok = 1
 			DELETE FROM Padece WHERE id_paciente = @id_paciente AND id_consulta = @id_consulta
 	    END    
 	ELSE
@@ -281,6 +283,10 @@ AS
 	ELSE IF(ISNUMERIC(@id_tipo_intervencion) = 0)
 		BEGIN
 			SELECT message = 'Los datos deben de ser de tipo numerico', ok = 0
+		END
+	ELSE IF EXISTS(SELECT id_tipo_intervencion FROM Intervenciones WHERE id_tipo_intervencion = @id_tipo_intervencion)
+		BEGIN
+			SELECT message = 'Hay intervenciones relacionadas con este tipo de intervención', ok = 0
 		END
 	ELSE IF EXISTS (SELECT id_tipo_intervencion FROM Tipo_Intervencion WHERE id_tipo_intervencion = @id_tipo_intervencion)
 		BEGIN

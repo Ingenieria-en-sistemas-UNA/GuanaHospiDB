@@ -35,7 +35,7 @@ CREATE TABLE Medico(
 	dni_persona VARCHAR(12) NOT NULL,
 	estado BIT NOT NULL,
 	CONSTRAINT PK_id_medico PRIMARY KEY (id_medico),
-	CONSTRAINT FK_dni_persona_medico FOREIGN KEY (dni_persona) REFERENCES Persona(dni_persona) ON DELETE CASCADE,
+	CONSTRAINT FK_dni_persona_medico FOREIGN KEY (dni_persona) REFERENCES Persona(dni_persona),
 )
 GO
 
@@ -78,8 +78,8 @@ CREATE TABLE Medico_Especialidad(
 	id_medico INT,
 	id_especialidad INT,
 	CONSTRAINT PK_id_medico_especialidad PRIMARY KEY (id_medico_especialidad),
-	CONSTRAINT FK_id_medico_medico_especialidad FOREIGN KEY (id_medico) REFERENCES Medico (id_medico) ON DELETE CASCADE,
-	CONSTRAINT  FK_id_especialidad_medico_especialidad FOREIGN KEY (id_especialidad) REFERENCES Especialidad(id_especialidad) ON DELETE CASCADE
+	CONSTRAINT FK_id_medico_medico_especialidad FOREIGN KEY (id_medico) REFERENCES Medico (id_medico),
+	CONSTRAINT  FK_id_especialidad_medico_especialidad FOREIGN KEY (id_especialidad) REFERENCES Especialidad(id_especialidad)
 )
 GO
 
@@ -100,11 +100,11 @@ GO
 CREATE TABLE Paciente (
 	id_paciente INT IDENTITY (1,1),
 	numero_seguro_social INT NOT NULL,
-	fecha_ingreso DATETIME NOT NULL,
+	fecha_ingreso DATE NOT NULL,
 	dni_persona VARCHAR(12),
 	estado_paciente BIT NOT NULL,
 	CONSTRAINT PK_id_paciente PRIMARY KEY (id_paciente),
-	CONSTRAINT FK_dni_persona_paciente FOREIGN KEY (dni_persona) REFERENCES Persona(dni_persona) ON DELETE CASCADE,
+	CONSTRAINT FK_dni_persona_paciente FOREIGN KEY (dni_persona) REFERENCES Persona(dni_persona),
 )
 GO
 
@@ -112,7 +112,7 @@ USE	GUANA_HOSPI
 GO
 CREATE TABLE Consulta(
 	id_consulta INT IDENTITY (1,1),
-	fecha_consulta DATETIME NOT NULL,
+	fecha_consulta DATETIME2 NOT NULL,
 	descripcion VARCHAR(150),
 	id_paciente INT NOT NULL,
 	id_unidad INT NOT NULL, 
@@ -143,7 +143,7 @@ CREATE TABLE Padece(
 	id_consulta INT NOT NULL,
 	CONSTRAINT PK_id_padece PRIMARY KEY (id_padece),
 	CONSTRAINT FK_id_paciente_padece FOREIGN  KEY (id_paciente) REFERENCES Paciente (id_paciente) ON DELETE CASCADE,
-	CONSTRAINT FK_id_enfermedad_padece FOREIGN KEY (id_enfermedad) REFERENCES Enfermedad(id_enfermedad) ON DELETE CASCADE,
+	CONSTRAINT FK_id_enfermedad_padece FOREIGN KEY (id_enfermedad) REFERENCES Enfermedad(id_enfermedad),
 	CONSTRAINT FK_id_consulta_padece FOREIGN KEY (id_consulta) REFERENCES Consulta(id_consulta),
 )
 GO
@@ -175,7 +175,7 @@ GO
 	CREATE TABLE Auditoria(
 		IdAuditoria INT IDENTITY (1,1) NOT NULL,
 		Usuario VARCHAR(50),
-		Fecha DATETIME,
+		Fecha DATETIME2,
 		Descripcion VARCHAR(50)
 		CONSTRAINT PK_IdAuditoria PRIMARY KEY (IdAuditoria)
 )
